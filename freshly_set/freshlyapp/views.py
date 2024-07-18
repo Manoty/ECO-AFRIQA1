@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -7,6 +8,15 @@ from django.http import JsonResponse
 from .models import Product, Garden, Service
 from .forms import ProductForm, ServiceRequestForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.forms import PasswordResetForm
+from django.core.mail import send_mail
+from django.urls import reverse_lazy
+from .forms import SignUpForm
 
 
 
@@ -23,33 +33,39 @@ def blogs(request):
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
+            user = form.save()
             login(request, user)
-            return redirect('home')
+            return redirect('profile')
+        else:
+            messages.error(request, 'Please correct the errors below.')
     else:
-        form = UserCreationForm()
+        form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
-
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)  # Correctly pass 'user' here
-            # Redirect to a success page (e.g., dashboard)
-            return redirect('home')  # Replace 'dashboard' with your desired URL name
+        form = AuthenticationForm(request, data=request.POST)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+
+        if form.is_valid():
+            if user is not None:
+                login(request, user)
+                return redirect('profile')
+            else:
+                if not User.objects.filter(username=username).exists():
+                    messages.error(request, 'User does not exist. Please register.')
+                else:
+                    messages.error(request, 'Incorrect username or password.')
         else:
-            messages.error(request, 'Invalid username or password.')
-    
-    # Render the login page with any potential error message
-    return render(request, 'login.html')
+            messages.error(request, 'Incorrect username or password.')
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'login.html', {'form': form})
 
 @login_required
 def products(request):
@@ -80,3 +96,17 @@ def services(request):
 @login_required
 def profile(request):
     return render(request, 'profile.html')
+
+class CustomPasswordResetView(PasswordResetView):
+    email_template_name = 'password_reset_email.html'
+    success_url = reverse_lazy('password_reset_done')
+    template_name = 'registration/password_reset.html'
+    form_class = PasswordResetForm
+
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            return super().form_valid(form)
+        else:
+            messages.error(self.request, 'No user is associated with this email address.')
+            return self.form_invalid(form)

@@ -160,3 +160,11 @@ REACT_APP_DIR = BASE_DIR / 'reactapp/build'
 
 # Including React build static files in STATICFILES_DIRS
 STATICFILES_DIRS.append(REACT_APP_DIR / 'static')
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'snehavaish44@gmail.com'
+EMAIL_HOST_PASSWORD = '1234@aaaa'
