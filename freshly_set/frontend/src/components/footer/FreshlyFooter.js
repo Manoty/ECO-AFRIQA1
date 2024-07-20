@@ -53,7 +53,7 @@ const FreshlyFooter = () => {
               <Link to="tutor">Services</Link>
               <Link to="students">Resources</Link>
               <Link to="about">Our History</Link>
-              <Link to="/contact">Contact Us</Link>
+              <Link to="contact">Contact Us</Link>
             </div>
 
             <div className="text-nowrap flex flex-col">
@@ -79,7 +79,7 @@ const FreshlyFooter = () => {
               <Link to="tutor">Services</Link>
               <Link to="students">Resources</Link>
               <Link to="about">Our History</Link>
-              <Link to="/contact">Contact Us</Link>
+              <Link to="contact">Contact Us</Link>
             </div>
 
           </div>
