@@ -10,7 +10,7 @@ const Blogs = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await api.get('/blogs');
+      const response = await api.get('/api/blogs');
       setBlogs(response.data);
 
     } catch (error) {
@@ -31,8 +31,8 @@ const Blogs = () => {
 //  console.log(blogs)
   return (
     <div className="bg-slate-100 min-h-[100vh] py-8">
-      <h1 className="text-center text-6xl text-green-800 m-0">What's new?</h1>
-        <div className="flex flex-col gap-8 py-8 max-w-[88%] sm:w-full mx-auto">
+      <h1 className="text-center text-6xl text-green-800 tracking-wider m-0">What's new?</h1>
+        <div className="flex flex-col gap-8 py-8 max-w-[96%] sm:w-full mx-auto">
           {
             blogs ? blogs.map((blog) => {
               return <BlogPosts key={blog.id} post={blog} />
