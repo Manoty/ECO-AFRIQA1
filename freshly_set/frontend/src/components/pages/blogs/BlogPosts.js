@@ -13,7 +13,7 @@ const BlogPosts = ({ post }) => {
     }
 
     const haveImage = (
-        <div className={`${toggle ? "h-[240px] sm:h-[400px]" : "h-0" } transition-all delay-150 duration-150 flex items-start justify-between overflow-hidden gap-3 sm:p-6`}>
+        <div className={`${toggle ? " h-[240px] sm:h-[400px]" : "h-[0]" } transition-all delay-150 duration-150 flex items-start justify-between overflow-hidden gap-3`}>
             <div className="flex max-w-[50%] flex-col h-[240px] sm:h-full overflow-hidden">
                 <div>
                     <h6 className="text-sm my-0 font-thin tracking-wider">{post.date}</h6>
@@ -31,13 +31,13 @@ const BlogPosts = ({ post }) => {
                 </div>
             </div>
             <div className="max-h-[360px] rounded-3xl overflow-hidden border border-solid border-gray-300 shadow-sm">
-                <img className="w-full rounded-2xl" src={post.image} alt={post.title} />
+                <img className=" w-full rounded-2xl" src={post.image} alt={post.title} />
             </div>
         </div>
     )
 
     const haveNoImage = (
-        <section className={`${toggle ? "h-[240px]" : "h-0"} transition-all delay-150 duration-300 overflow-hidden`}>
+        <section className={`${toggle ? "h-[320px] sm:h-[240px]" : "h-0"} transition-all delay-150 duration-300 overflow-hidden`}>
             <div className="max-h-[240px] overflow-hidden overflow-y-auto scrollbar scrollbar-track-gray-100">
             <h6 className="text-sm my-0 font-thin tracking-wider">{post.date}</h6>
                 <p>{post.body}</p>
@@ -55,7 +55,7 @@ const BlogPosts = ({ post }) => {
             <section className="text-base sm:text-xl text-gray-900">
                 <div className="w-full border-solid border-[1px] bg-gray-100 border-gray-200 mx-auto rounded-xl hover:shadow-lg shadow-md">
                     <div className="p-6">
-                        <div className={post.image ? "flex justify-between items-center py-3" : "flex justify-between items-center py-3"}>
+                        <div className={post.image ? "flex justify-between items-center py-4" : "flex justify-between items-center py-4"}>
                             <h4 onClick={() => toggleTab(!toggle)} className="text-wrap font-bold m-0 cursor-pointer">{post.title}</h4>
                             {
                                 toggle
