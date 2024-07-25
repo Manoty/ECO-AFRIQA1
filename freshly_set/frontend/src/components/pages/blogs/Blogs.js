@@ -10,7 +10,7 @@ const Blogs = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await api.get('/api/blogs');
+      const response = await api.get('/blogs');
       setBlogs(response.data);
 
     } catch (error) {

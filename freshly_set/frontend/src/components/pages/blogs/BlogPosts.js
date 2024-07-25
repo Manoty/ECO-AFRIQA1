@@ -6,11 +6,11 @@ import { BsShareFill } from "react-icons/bs";
 
 const BlogPosts = ({ post }) => {
 
+    // const { id } = post
+    // console.log(id)
     const [toggle, setToggle] = useState(null);
 
-    const toggleTab = (index) => {
-        setToggle(index)
-    }
+    const toggleTab = (index) => setToggle(index)
 
     const haveImage = (
         <div className={`${toggle ? " h-[240px] sm:h-[400px]" : "h-[0]" } transition-all delay-150 duration-150 flex items-start justify-between overflow-hidden gap-3`}>
@@ -67,7 +67,7 @@ const BlogPosts = ({ post }) => {
                         { post.image
                         ? (
                             haveImage
-                        ) 
+                        )
                         : haveNoImage }
                         </div>
                     </div>
