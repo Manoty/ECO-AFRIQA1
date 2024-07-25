@@ -28,13 +28,15 @@ from .serializers import BlogSerializer, ProductSerializer, GardenSerializer, Co
 
 
 # This is for typical django frontend html
-
+@api_view(['GET'])
 def home(request):
     return render(request, 'index.html')
 
+@api_view(['GET'])
 def about(request):
     return render(request, 'about.html')
 
+@api_view(['GET'])
 def blogs(request):
     return render(request, 'blogs.html')
 
@@ -52,6 +54,7 @@ def signup(request):
     return render(request, '/SignUp/signUp.jsx', {'form': form})
 
 
+@api_view(['GET'])
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -78,7 +81,9 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
 @login_required
+@api_view(['GET'])
 def products(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
@@ -110,6 +115,7 @@ def profile(request):
 
 
 # The blog CRUD 
+@api_view(['GET'])
 def blog_list(request):
     blogs = Blog.objects.all()
     return render(request, 'blog_list.html', {'blogs': blogs})
@@ -148,6 +154,7 @@ def blog_delete(request, slug):
 
 # Implemented views for CRUD operations and like/share actions
 
+
 class BlogListCreateAPIView(generics.ListCreateAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
@@ -161,6 +168,7 @@ class BlogListCreateAPIView(generics.ListCreateAPIView):
                 Q(content__icontains=search_query)
             )
         return queryset
+
 
 class BlogRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Blog.objects.all()
