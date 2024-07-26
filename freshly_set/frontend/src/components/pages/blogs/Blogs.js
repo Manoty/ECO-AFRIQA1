@@ -7,7 +7,7 @@ const Blogs = () => {
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      const response = await axios.get('/api/blogs/', {
+      const response = await axios.get('/freshlyapp/blogs/', {
         headers: {
           'Authorization': `Token ${localStorage.getItem('authToken')}`,
         },
