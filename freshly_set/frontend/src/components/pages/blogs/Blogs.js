@@ -84,7 +84,7 @@ const Blogs = () => {
           </button>
         </div>
           <BlogWidgetsNew />  
-          {/* <BlogWidgets /> */}
+          <BlogWidgets />
         <Contact />
         <FreshlyFooter />
       </div>

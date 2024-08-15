@@ -11,6 +11,7 @@ import FarmingSystemsDetail from './components/pages/farm-produce/FarmingSystems
 import GardenSetupsDetail from './components/pages/farm-produce/GardenSetupsDetail';
 import Detail from "./components/pages/homepage/Detailed"
 import Categories from './components/pages/farm-produce/Categories';
+import BlogsAllArticles from './components/pages/cta-detail/BlogsAllArticles';
 function App() {
   return (
     <Router>
@@ -24,6 +25,7 @@ function App() {
         <Route path="/team-detail" element={<Detail />} />
         <Route path="/farmingSystems" element={<FarmingSystemsDetail />}/>
         <Route path="/gardenSetups" element={<GardenSetupsDetail />}/>
+        <Route path="/allBlogs" element={<BlogsAllArticles />}/>
         {/* <Route path="/api/blogs" element={<Blogs />} /> */}
       </Routes>
     </Router>

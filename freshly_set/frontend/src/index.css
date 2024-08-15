@@ -26,3 +26,7 @@ a:visited {
 .standardBtnLong{
   @apply h-[48px] lg:h-[70px] w-[357px] lg:w-[389px] bg-[#008000] text-white rounded-[15px] mt-5 text-[22px] lg:text-[25px] font-[700]
 }
+
+body{
+  @apply bg-[#F5FAF9]
+}

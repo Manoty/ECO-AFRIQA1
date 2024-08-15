@@ -25,6 +25,7 @@ function BlogWidgetsNew() {
       }
     };
   return (
+    // Make mobile responsive
     <div className="hidden lg:grid lg:grid-cols-3 gap-y-[28px] mx-[7px] lg:mx-[68px] mt-[70px] ">
 
         {/* Cards Start */}
