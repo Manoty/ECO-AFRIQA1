@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { FaChevronDown, FaShareAlt, FaVolumeUp } from 'react-icons/fa'
 import { MdMessage } from 'react-icons/md'
+import PollCard from './PollCard';
 
 function BlogWidgetsNew() {
     const videoRef = useRef(null);
@@ -26,66 +27,11 @@ function BlogWidgetsNew() {
     };
   return (
     // Make mobile responsive
-    <div className="hidden lg:grid lg:grid-cols-3 gap-y-[28px] mx-[7px] lg:mx-[68px] mt-[70px] ">
+    <div className="grid grid-cols-2 lg:grid lg:grid-cols-3 gap-y-[28px] mx-[7px] lg:mx-[68px] mt-[70px] ">
 
         {/* Cards Start */}
 
-        <div className="relative h-[281.016px] lg:h-[506px] w-[195.489px] lg:w-[352px] rounded-[10.546px] bg-white shadow-lg pt-[29px]  block">
-            {/* Card 1 */}
-
-            <FaChevronDown className="absolute top-[42px] right-[20px] h-[18.949px] w-[30.053px] text-black cursor-pointer"/>
-            <h3 className="freshlyGreenText ml-[38px]">Urban Farming?</h3>
-            {/* Polls */}
-                <div className="flex  lg:space-x-[24px] items-center ml-[38px]">
-                        <p className="text-[17.576px]  font-[700] text-black  ">Yes</p>
-                        <div className="bg-[#D9D9D9] rounded-[12px] w-[135px] h-[22.31px]">
-                            <div className="h-[22.31px] w-[100px]  rounded-[12px] bg-[#008000]"/>
-
-                        </div>
-                </div>
-
-
-                <div className="flex  lg:space-x-[24px] items-center ml-[38px]">
-                        <p className="text-[17.576px]  font-[700] text-black  ">No</p>
-                        <div className="bg-[#D9D9D9] rounded-[12px] w-[62px] h-[22.31px]">
-                            <div className="h-[22.31px] w-[100px]  rounded-[12px] bg-[#008000]"/>
-
-                        </div>
-                </div>
-
-                <div className="flex  lg:space-x-[24px] items-center ml-[38px]">
-                        <p className="text-[17.576px]  font-[700] text-black  ">Hm</p>
-                        <div className="bg-[#D9D9D9] rounded-[12px] w-[21.082px] h-[22.31px]">
-                            <div className="h-[22.31px] w-[100px]  rounded-[12px] bg-[#008000]"/>
-
-                        </div>
-                </div>
-
-                   
-
-
-
-                    
-
-                    <h4 className="w-[121px] lg:w-[275.266px] text-[12px] lg:text-[12px] font-[700] font-inter ml-[38px] ">Vote & Give A Reason For Your Choice</h4>
-                    
-                    <div className="">
-                        
-                        <textarea className="h-[101px] w-[179px] ml-[38px] lg:h-[97px] lg:w-[284px] rounded-[19px] border-solid border-[#00000040]/[25%]"/>
-
-                    </div>
-                    <div className="absolute left-[118px] bottom-[42px]">
-                        <div className=" items-center space-x-[32px]  mt-[26px]">
-                            <MdMessage className="h-[23.127px] w-[21px] lg:h-[31.427px] lg:w-[27.617px]"/>
-                            <FaShareAlt className="h-[23.127px] w-[21px] lg:h-[31.427px] lg:w-[27.617px]"/>
-                        </div>
-
-                      
-                    </div>
-
-                      {/* Date and author...can be made dynamic later*/}
-                      <p className="absolute bottom-[0px] left-[25%] text-[10px] lg:text-[11.719px] text-center font-[400]">By Freshly Farms, on 04 Sept, 2024</p>
-        </div>
+        <PollCard />
 
 
         <div className="relative h-[506px] w-[352px] rounded-[10.546px] bg-white shadow-lg pt-[29px]  block">
@@ -284,7 +230,7 @@ function BlogWidgetsNew() {
                       {/* Date and author...can be made dynamic later*/}
                       <p className="absolute bottom-[0px] left-[25%] text-[10px] lg:text-[11.719px] text-center font-[400]">By Freshly Farms, on 04 Sept, 2024</p>
                    
-        </div>
+        </div> 
 
     </div>
   )
