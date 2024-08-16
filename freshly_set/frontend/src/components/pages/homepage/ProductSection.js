@@ -19,8 +19,8 @@ function ProductSection() {
             </div>
             <div className="flex justify-center ">
                 <div className="block mt-[281px] lg:mt-0  ">
-                    <p className="text-black/[0.62] font-josefin text-[15px] font-[600] w-[287px] lg:w-[492px] -mt-[20px] leading-[19.5px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
-                    <p className="text-black/[0.62] font-josefin text-[15px] font-[600] w-[287px] lg:w-[492px] ml-[] leading-[19.5px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+                    <p className="text-black/[0.62] font-josefin text-[15px] font-[600] w-[287px] lg:w-[492px] -mt-[20px] leading-[19.5px] text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+                    <p className="text-black/[0.62] font-josefin text-[15px] font-[600] w-[287px] lg:w-[492px] ml-[] leading-[19.5px] text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
                 </div>
                 
             </div>

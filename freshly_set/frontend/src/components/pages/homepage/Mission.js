@@ -6,12 +6,12 @@ function Mission() {
         {/* Left side */}
 
         <div className="missionLeft">
-            <h2 className="font-inter text-[45px] text-[#008000] font-[700]">Our Mission</h2>
+            <h2 className="font-inter text-[45px] text-[#008000] font-[700] ">Our Mission</h2>
             <div className="missionTextWrapper">
                 <div className="">
                 
-                    <p className="text-[15px] font-josefin font-[400] text-[#525560] w-[552px]  leading-[26px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut. </p>
-                    <p className="text-[15px] font-josefin font-[400] text-[#525560] w-[552px]  leading-[26px]">Aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,</p>
+                    <p className="text-[15px] font-josefin font-[400] text-[#525560] w-[552px]  leading-[26px] text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut. </p>
+                    <p className="text-[15px] font-josefin font-[400] text-[#525560] w-[552px]  leading-[26px] text-start">Aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,</p>
                 </div>
             </div>
           

@@ -9,14 +9,21 @@ import BlogPosts from './BlogList'
 import api from '../../../api/blogs'
 // import BlogForm from './BlogForm';
 import Contact from './Contact';
-import { PageContext } from '../../context/PageContext';
+import { PageContext, SelectedSectionContext } from '../../context/PageContext';
 import BlogWidgetsNew from './BlogWidgetsNew';
 import BlogWidgets from './BlogWidgets';
+import { Link } from 'react-router-dom';
+import BlogMain from './BlogMain';
+import BlogsAllArticles from '../cta-detail/BlogsAllArticles';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [visible, setVisible] = useState(3);
+// To toggle with animation
+  const [isVisible, setIsVisible] = useState(false); 
 
+  const [selectedSection, setSelectedSection] = useContext(SelectedSectionContext);
   const showMore = () => {
     setVisible((prevCount) => Math.min(prevCount + 3, blogs.length));
   };
@@ -28,7 +35,7 @@ const Blogs = () => {
   const [activeTab, setActiveTab] = useContext(PageContext);
 
   useEffect(() => {
-    setActiveTab("products")
+    setActiveTab("blogs")
 },[activeTab])
 
 //  useEffect(() => {
@@ -53,39 +60,35 @@ const Blogs = () => {
 //     console.log("Blogs fetched", blogs)
 //   }, [] };
 
- 
+
   return (
     <div>
 
       <div className=" min-h-[100vh] py-16 bg-[#F5FAF9]">
         <Nav />
+        {
+          selectedSection!=="blogs" && (
+            <FaArrowLeft onClick={() => setSelectedSection("blogs")} className="absolute h-[61px] w-[61px] text-[#008000] lg:top-[200px] left-[38px] cursor-pointer"/>
+
+          )
+        }
         <BlogSearch />
-        <BlogHero />
-        <h1 className="text-center  text-[54px] lg:text-[140px] text-[#008000] font-inter font-[900]">What's new?</h1>
-        <div className="flex flex-col gap-8 py-8 max-w-[96%] sm:w-full mx-auto">
-          {blogs ? blogs.slice(0, visible).map((blog) => (
-            <BlogPosts key={blog.id} post={blog} />
-          )) : <h4>Loading ... </h4>}
-        </div>
-        <div className="flex flex-wrap justify-center mx-auto gap-3 z-10">
-          <button
-            className="standardBtn"
-            disabled={visible >= blogs.length}
-            onClick={showMore}
-          >
-            View All Updates
-          </button>
-          <button
-            className="standardBtn"
-            disabled={visible <= 3}
-            onClick={showLess}
-          >
-            View less Updates
-          </button>
-        </div>
-          <BlogWidgetsNew />  
-          <BlogWidgets />
-        <Contact />
+       { selectedSection === "blogs" && (
+        <BlogMain />
+       )}
+
+{ selectedSection === "all-updates" && (
+       <div
+      //  className={`transform transition-transform duration-500 ease-in-out ${
+      //      isVisible ? 'translate-x-0' : 'translate-x-full'
+      //  }`}
+
+      // For animation
+   >
+        <BlogsAllArticles />
+
+   </div>
+       )}
         <FreshlyFooter />
       </div>
     </div>
