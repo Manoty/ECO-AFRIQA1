@@ -25,7 +25,6 @@ function App() {
         <Route path="/team-detail" element={<Detail />} />
         <Route path="/farmingSystems" element={<FarmingSystemsDetail />}/>
         <Route path="/gardenSetups" element={<GardenSetupsDetail />}/>
-        <Route path="/allBlogs" element={<BlogsAllArticles />}/>
         {/* <Route path="/api/blogs" element={<Blogs />} /> */}
       </Routes>
     </Router>
