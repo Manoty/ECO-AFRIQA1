@@ -12,7 +12,6 @@ function PollCard() {
   ];
 
 
-   // State to hold the poll data
    const [pollData, setPollData] = useState(initialPollData);
    const [totalVotes, setTotalVotes] = useState(0);
  

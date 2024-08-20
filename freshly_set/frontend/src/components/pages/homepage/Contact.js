@@ -25,7 +25,7 @@ function Contact() {
               src="/static/media/phone.png"
               alt="phone"
             />
-            <p className="font-[700] text-[22px] lg:text-[32px] -mt-[5px] font-inter mb-[10px]  mr-[90px]">Phone</p>
+            <p className="font-[700] text-[22px] lg:text-[32px] -mt-[5px] font-inter mb-[10px] lg:-ml-[80px]">Phone</p>
             <p className="font-[400] text-[17px] lg:text-[22px] text-[#525560] font-josefin -mt-[10px]">
               {" "}
               +254 701 234 567{" "}

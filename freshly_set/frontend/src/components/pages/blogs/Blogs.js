@@ -77,17 +77,10 @@ const Blogs = () => {
         <BlogMain />
        )}
 
-{ selectedSection === "all-updates" && (
-       <div
-      //  className={`transform transition-transform duration-500 ease-in-out ${
-      //      isVisible ? 'translate-x-0' : 'translate-x-full'
-      //  }`}
-
-      // For animation
-   >
-        <BlogsAllArticles />
-
-   </div>
+      { selectedSection === "all-updates" && (
+       <div>
+          <BlogsAllArticles />
+        </div>
        )}
         <FreshlyFooter />
       </div>
