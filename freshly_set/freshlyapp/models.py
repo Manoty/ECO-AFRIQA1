@@ -8,6 +8,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.urls import reverse
 import boto3
 import re
 
@@ -85,17 +86,6 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
-
-class Product(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='products/')
-
-    def __str__(self):
-        return self.name
-
 
 class Garden(models.Model):
     name = models.CharField(max_length=100, default='DEFAULT VALUE')
@@ -286,4 +276,67 @@ class IDVerification(models.Model):
         if response['FaceMatches']:
             # Return True if similarity is above the threshold
             return response['FaceMatches'][0]['Similarity'] > 80
-        return False
+
+
+# order models(Product, Category, Cart, Orders)
+#  category model
+class Category(models.Model):
+    CATEGORY_CHOICES = [
+        ('fruits','Fruits'),
+        ('vegetables','Vegetables'),
+        ('legumes','Legumes'),
+        ('spices','Spices'),
+    ]
+
+    name = models.CharField(max_length=200, choices=CATEGORY_CHOICES, default='FR')
+    # slug = models.SlugField(max_length=200, unique=True)
+
+    class Meta:
+        ordering = ['name']
+        indexes = [models.Index(fields=['name'])]
+        verbose_name = 'category'
+        verbose_name_plural = 'categories'
+
+    def __str__(self):
+        return self.name
+    
+    # def get_absolute_url(self):
+    #     return reverse('views:product_list_by_category',)
+                    #    args=[self.slug])
+    
+# products model
+class Product(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)    #unclear usage?
+    category = models.ForeignKey(Category,
+                                 related_name='products',
+                                 on_delete=models.CASCADE)
+    slug = models.SlugField(max_length=200)
+    name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='products/',
+                              blank=True)
+    description = models.TextField(blank=True)
+    price = models.DecimalField(max_digits=10,
+                                decimal_places=2)
+    available = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['name']
+        indexes = [
+            models.Index(fields=['id','slug']),
+            models.Index(fields=['name']),
+            models.Index(fields=['-created_at'])
+        ]
+
+    def __str__(self):
+        return self.name
+    
+    # def get_absolute_url(self):
+    #     return reverse('views:product_detail',
+    #                 args=[self.id,self.slug])
+
+
+# cart models
+# order models
+
