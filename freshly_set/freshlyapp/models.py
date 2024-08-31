@@ -308,7 +308,7 @@ class Category(models.Model):
     
 # products model
 class Product(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)    #unclear usage?
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category,
                                  related_name='products',
                                  on_delete=models.CASCADE)
@@ -340,7 +340,7 @@ class Product(models.Model):
 
 # order models
 class Order(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField()
