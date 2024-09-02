@@ -54,37 +54,61 @@ Accessible after successful registration and email verification:
 1. Clone the repository:
 ```bash
     git clone https://github.com/Manoty/ECO-AFRIQA.git
-    cd freshly_set
 ```
 
-2. Install dependencies:
+2. Create and activate a virtual environment in the root directory.
 ```bash
-    pip install -r requirements.txt
-```
-
-3. Set up environment variables:
-   - Create a .env file in the root directory.
-   - Add the following variables:
-```bash
+    cd ECO-AFRICA1
     python -m venv env
     source env/bin/activate   # On Windows, use `env\Scripts\activate`
 ```
 
-
-4. Apply migrations:
+3. Install dependencies:
 ```bash
-python manage.py makemigrations
-python manage.py migrate
+    pip install -r requirements.txt
+```
+
+
+4. Ensure you have MySQL installed and within it create a database called `freshly`
+```bash
+    sudo -u root mysql -p
+    
+    SHOW DATABASES;
+    CREATE DATABASE freshly;
+    quit; 
+```
+
+
+5. Navigate to the main application and apply migrations
+```bash
+    cd freshly_set
+    python manage.py makemigratilons
+    python manage.py migrate
 ```
 
 5. Create a superuser:
+    > used to login to the admin panel in your django application. for easy recall you could use admin for the password and admin for the username. These are only for development server and will be change in production
 ```bash
-python manage.py createsuperuser
+    python manage.py createsuperuser
 ```
 
-6. Run the development server:
+6. Open the directory with your favourite editor and input your own environmental variables. These are contained within the `.env.example` file. Create your own `.env` file in the root directory and input the variables.
+
+
+7. Run the development server:
 ```bash
-python manage.py runserver
+    python manage.py runserver
+```
+
+8. In another terminal, navigate to the frontend directory
+```bash
+    cd frontend
+```
+
+8. Install all the node packages and dependencies then start the server
+```bash
+    npm install
+    npm start
 ```
 
 # Directory Structure
