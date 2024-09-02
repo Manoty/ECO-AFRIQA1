@@ -32,6 +32,10 @@ module.exports = {
         slideOut: 'slideOut 0.3s ease-in forwards',
       },
 
+      textShadow: {
+        'custom': '2px 2px 2px rgba(0, 0, 0, 0.5)',
+      },
+
 
       },
   },
@@ -42,6 +46,7 @@ module.exports = {
   },
   plugins: [
     require('tailwind-scrollbar'),
+    require('tailwindcss-textshadow'),
   ],
   corePlugins: {
     preflight: false, // Disable Tailwind's preflight reset

@@ -29,12 +29,26 @@ class PollModelAdmin(admin.ModelAdmin):
 
 
 
-@admin.register(IDVerification)
 class IDVerificationAdmin(admin.ModelAdmin):
     list_display = ('user', 'id_document_type', 'id_document_number', 'is_verified', 'submitted_at', 'verified_at')
-    actions = ['mark_as_verified']
+    list_filter = ('is_verified', 'id_document_type')
+    search_fields = ('user__username', 'id_document_number')
+    readonly_fields = ('submitted_at', 'verified_at', 'is_verified')
+    fieldsets = (
+        (None, {
+            'fields': ('user', 'id_document_type', 'id_document_number', 'document_image', 'photo_image')
+        }),
+        ('Verification Info', {
+            'fields': ('is_verified', 'submitted_at', 'verified_at')
+        }),
+    )
 
-    def mark_as_verified(self, request, queryset):
-        queryset.update(is_verified=True, verified_at=timezone.now())
-        self.message_user(request, "Selected verifications have been marked as verified.")
-    mark_as_verified.short_description = "Mark selected as verified"
+    def has_add_permission(self, request):
+        # Prevents adding new verification records through the admin interface
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        # Prevents deletion of verification records through the admin interface
+        return False
+
+admin.site.register(IDVerification, IDVerificationAdmin)

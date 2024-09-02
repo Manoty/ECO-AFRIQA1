@@ -89,8 +89,44 @@ class PollSerializer(serializers.ModelSerializer):
         return obj.vote_counts()
     
 # IDverification 
-
 class IDVerificationSerializer(serializers.ModelSerializer):
+    id_document_number = serializers.CharField(required=True)
+    document_image = serializers.ImageField(required=True)
+    photo_image = serializers.ImageField(required=True)
+
     class Meta:
         model = IDVerification
-        fields = ['id_document_type', 'id_document_number', 'document_image', 'photo_image']
+        fields = ['id_document_type', 'id_document_number', 'document_image', 'photo_image', 'is_verified']
+
+    def validate(self, data):
+        """
+        Validate and verify the ID number and photo.
+        """
+        instance = self.instance if self.instance else IDVerification(**data)
+        
+        # Validate ID number format
+        if not instance.verify_id_number():
+            raise serializers.ValidationError({"id_document_number": "Invalid ID number format for the selected document type."})
+
+        # Validate and verify photo
+        if not instance.verify_photo():
+            raise serializers.ValidationError({"photo_image": "Photo verification failed. The photo does not match the ID document."})
+
+        return data
+
+    def update(self, instance, validated_data):
+        """
+        Update the instance after verification and mark it as verified if successful.
+        """
+        instance.id_document_type = validated_data.get('id_document_type', instance.id_document_type)
+        instance.id_document_number = validated_data.get('id_document_number', instance.id_document_number)
+        instance.document_image = validated_data.get('document_image', instance.document_image)
+        instance.photo_image = validated_data.get('photo_image', instance.photo_image)
+
+        # Perform verification
+        if instance.verify_user():
+            instance.is_verified = True
+            instance.save()
+            return instance
+        else:
+            raise serializers.ValidationError("Verification failed. ID number or photo is not correct.")

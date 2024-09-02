@@ -394,37 +394,39 @@ class VoteCreateView(generics.CreateAPIView):
 # Verification photo and Id views
 # install bot03
 # to configure aws cli for face recogniotn.
-class IDVerificationView(APIView):
+class VerifyIDView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        serializer = IDVerificationSerializer(data=request.data)
-        if serializer.is_valid():
-            id_verification = serializer.save(user=request.user)
-
-            # Add logic for verifying the ID number and photo
-            if id_verification.verify_id_number(id_verification.id_document_number) and \
-               id_verification.verify_photo(id_verification.photo_image):
-                id_verification.is_verified = True
-                id_verification.verified_at = timezone.now()
-                id_verification.save()
-                return Response({"message": "ID verification successful."}, status=status.HTTP_200_OK)
-            else:
-                return Response({"message": "ID verification failed."}, status=status.HTTP_400_BAD_REQUEST)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def get(self, request):
         try:
-            verification = IDVerification.objects.get(user=request.user)
-            return Response({
-                "id_document_type": verification.id_document_type,
-                "id_document_number": verification.id_document_number,
-                "is_verified": verification.is_verified,
-                "submitted_at": verification.submitted_at,
-                "verified_at": verification.verified_at,
-                "document_image_url": verification.document_image.url,
-                "photo_image_url": verification.photo_image.url,
-            })
+            verification = request.user.id_verification
+            if verification.verify_user():
+                return Response({"message": "User successfully verified."}, status=status.HTTP_200_OK)
+            else:
+                return Response({"message": "Verification failed. ID or photo did not match."}, status=status.HTTP_400_BAD_REQUEST)
         except IDVerification.DoesNotExist:
-            return Response({"error": "No ID verification found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "ID verification record not found."}, status=status.HTTP_404_NOT_FOUND)
+        
+
+class IDVerificationUpdateView(generics.UpdateAPIView):
+    queryset = IDVerification.objects.all()
+    serializer_class = IDVerificationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user.id_verification
+
+    def put(self, request, *args, **kwargs):
+        verification_instance = self.get_object()
+        serializer = self.get_serializer(verification_instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": "User successfully verified."}, status=status.HTTP_200_OK)
+    
+class IDVerificationDetailView(generics.RetrieveAPIView):
+    queryset = IDVerification.objects.all()
+    serializer_class = IDVerificationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user.id_verification

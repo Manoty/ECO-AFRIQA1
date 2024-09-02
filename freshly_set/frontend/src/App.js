@@ -23,6 +23,7 @@ import BlogsAllUpdates from "./components/pages/cta-detail/BlogsAllUpdates"
 import Transporters from './components/pages/cta-detail/Transporters';
 import TransporterSuccess from './components/pages/cta-detail/TransporterSuccess';
 import BlogsAllArticles from './components/pages/cta-detail/BlogsAllArticles';
+import Mpesa from './components/pages/cta-detail/Mpesa';
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
         <Route path="/testimonials-detailed" element={<TestimonialsDetails />} />
         <Route path="/transporters" element={<Transporters />} />
         <Route path="/transporter-success" element={<TransporterSuccess />} />
+        <Route path="/mpesa" element={<Mpesa />} />
         
         {/* <Route path="/api/blogs" element={<Blogs />} /> */}
 

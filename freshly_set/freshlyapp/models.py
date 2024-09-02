@@ -1,4 +1,5 @@
 # from argon2 import hash_password
+from datetime import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
@@ -214,6 +215,7 @@ class Vote(models.Model):
 
 
 # Transporter verification 
+
 class IDVerification(models.Model):
     ID_DOCUMENT_TYPES = [
         ('passport', 'Passport'),
@@ -243,8 +245,8 @@ class IDVerification(models.Model):
             # Example: Validate passport number format (alphanumeric, 8-9 characters)
             return bool(re.match(r'^[A-Z0-9]{8,9}$', id_number))
         elif self.id_document_type == 'national_id':
-            # Example: Validate national ID number (numeric, 9-12 digits)
-            return bool(re.match(r'^\d{9,12}$', id_number))
+            # Example: Validate national ID number (numeric, 9-13 digits)
+            return bool(re.match(r'^\d{9,13}$', id_number))
         elif self.id_document_type == 'driver_license':
             # Example: Validate driver license number (alphanumeric, 6-9 characters)
             return bool(re.match(r'^[A-Z0-9]{6,9}$', id_number))
@@ -377,3 +379,19 @@ class OrderItem(models.Model):
     
     def get_cost(self):
         return self.price * self.quantity
+#         return False
+
+    def verify_user(self):
+        """
+        Verifies the user's ID number and photo, and updates the is_verified status.
+        """
+        id_verified = self.verify_id_number()
+        photo_verified = self.verify_photo()
+
+        if id_verified and photo_verified:
+            self.is_verified = True
+            self.verified_at = timezone.now()
+            self.save()
+            return True
+        
+        return False

@@ -3,12 +3,15 @@ from django.urls import path, re_path, include
 from django.contrib.auth import views as auth_views
 from django.urls import re_path
 from rest_framework.routers import DefaultRouter
+
 from .views import BlogListCreateView, BlogListView, CustomPasswordResetView, search_blog, Register
 # from .views import PollListView, PollDetailView, PollCreateView, PollUpdateView, PollDeleteView
 # from .views import VoteNodeListView, VoteNodeDetailView, add_vote
 from .views import BlogListCreateView, BlogListView, CustomPasswordResetView, search_blog
 from .views import  PollDetailView, PollListCreateView, VoteCreateView, IDVerificationView
 
+from .views import BlogListCreateView, BlogListView, CustomPasswordResetView, Register, search_blog
+from .views import  PollDetailView, PollListCreateView, VoteCreateView,VerifyIDView, IDVerificationUpdateView, IDVerificationDetailVie
 
 from .forms import MyPasswordChangeForm, MyPasswordResetForm, MySetPasswordForm
 from . import views
@@ -78,7 +81,9 @@ urlpatterns = [
     path('polls/<int:pk>/vote/', VoteCreateView.as_view(), name='vote-create'),
     
     # Verifications 
-    path('freshlyapp/verify-id/', IDVerificationView.as_view(), name='verify-id'),
+    path('freshlyapp/verification/verify/', VerifyIDView.as_view(), name='verify-id'), 
+    path('freshlyapp/verification/', IDVerificationUpdateView.as_view(), name='id-verification-update'),
+    path('freshlyapp/verification/detail/', IDVerificationDetailView.as_view(), name='id-verification-detail'),
 
     
 ]
