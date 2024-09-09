@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
 import "./Nav.css"
 import { IoMdMenu } from "react-icons/io";
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { FaRegUserCircle, FaShoppingBasket, FaUser, FaUsers } from "react-icons/fa";
 import { CiSettings, CiGlobe } from "react-icons/ci";
 import { PageContext } from '../context/PageContext';
 import { motion } from "framer-motion";
 function NavAuthenticated() {
+
+    const navigate = useNavigate()
 
     const [scrolled, setScrolled ] = useState(false);
 
@@ -40,6 +42,11 @@ function NavAuthenticated() {
       useEffect(() => {
         console.log("open", open)
       },[open])
+
+    const handleCart = () => {
+        navigate('/cart')
+    }
+
   return (
     <div>
         {/* Large screen navbar */}
@@ -156,17 +163,14 @@ function NavAuthenticated() {
 
 
                 <div className="-mt-[20px]">
-                    <FaShoppingBasket className="absolute freshlyGreenText text-[40px]"/>
-
+                    <FaShoppingBasket
+                        className="absolute freshlyGreenText text-[40px] cursor-pointer"
+                        onClick={handleCart}
+                        />
                     <div className="bg-[#f30024] h-[25px] w-[25px] rounded-[100%] relative -top-[12px] left-[30px] text-center font-inter mt-[5px]">{1}</div>
                 </div>
                 
                 <FaRegUserCircle className="text-[40px] freshlyGreenText"/>
-                
-
-                
-
-               
             </div>
             
         </nav>

@@ -20,6 +20,7 @@ import TestimonialsDetails from './components/pages/cta-detail/TestimonialsDetai
 import BlogsAllUpdates from "./components/pages/cta-detail/BlogsAllUpdates"
 import Transporters from './components/pages/cta-detail/Transporters';
 import TransporterSuccess from './components/pages/cta-detail/TransporterSuccess';
+import Cart from './components/pages/farm-produce/Cart';
 
 function App() {
   return (
@@ -28,8 +29,9 @@ function App() {
         <Route path="/SignUp" element={<LoginSignUp />} />
         <Route path="/" element={<Home />} />
         <Route path="/blogs" element={<Blogs />} />
-        <Route path="/blogs/allarticles" element={<BlogsAllArticles />}/>
+        <Route path="/blogs/allarticles" element={<BlogsAllUpdates />}/>
         <Route path="/products" element={<Products />} />
+        <Route path="/cart" element={<Cart />} /> 
         <Route path="/products/categories" element={<Categories />} />
         <Route path="/about-us" element={<About />} />
         <Route path="/whychoose-detail" element={<Detail />} />

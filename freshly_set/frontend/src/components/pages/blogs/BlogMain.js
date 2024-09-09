@@ -48,10 +48,6 @@ function BlogMain() {
     console.log("selected section", selectedSection)
   },[selectedSection])
 
-  useEffect(() => {
-    console.log("Blog posts", blogs)
-  },[])
-
   return (
     <div>
         <BlogHero />
@@ -62,7 +58,7 @@ function BlogMain() {
           
           <button
             className="h-[27.922px] lg:h-[44.571px] w-[144px] lg:w-[229.858px] bg-[#008000] rounded-[9.551px] text-white cursor-pointer"
-            // onClick={() => showDetail()}
+            onClick={() => showDetail()}
           >
             View All Updates
           </button>
