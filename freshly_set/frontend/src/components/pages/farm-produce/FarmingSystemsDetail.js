@@ -6,6 +6,7 @@ import { ModalContext, ModalToggleContentsContext } from '../../context/PageCont
 import FarmingSystemsHero from './FarmingSystemsHero'
 import CtaPopup from './CtaPopup'
 import Nav from '../../Nav/Navbar'
+import FreshlyFooter from "../../footer/FreshlyFooter"
 
 function FarmingSystemsDetail() {
   const [modalOpen, setModalOpen] = useContext(ModalContext);
@@ -37,7 +38,7 @@ function FarmingSystemsDetail() {
                     }
                   </div>
         </div>
-
+      <FreshlyFooter />
     </div>
   )
 }
