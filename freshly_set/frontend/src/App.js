@@ -40,6 +40,7 @@ import GardenEquipment from './components/pages/GardenEquipment/GardenEquipment'
 import ContactUS from './components/pages/cta-detail/ContactUs';
 import Notifications from './components/pages/OrderManagement/Notifications';
 import OrderProgress from './components/pages/OrderManagement/OrderProgress';
+import OrderHistory from './components/pages/profile/OrderHistory';
 import Profile from './components/pages/profile/Profile';
 
 
@@ -90,6 +91,7 @@ function App() {
         <Route path="/contact" element={<ContactUS />} />
         <Route path="/notification" element={<Notifications />} />
         <Route path="/order-progress" element={<OrderProgress />}/>
+        <Route path="/order-history" element={<OrderHistory />}/>
         <Route path="/profile" element={<Profile />}/>
         
 
