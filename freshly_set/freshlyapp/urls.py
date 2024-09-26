@@ -13,6 +13,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
+
+
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+from django.urls import path
+from .views import OrderListCreateView, OrderDetailView
+
+
+
+
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -141,16 +151,20 @@ urlpatterns = [
 
 
 
-    #order url
-    path('orders/', views.my_orders, name='my_orders'),
-    path('order/<str:tracking_no>/', views.view_order, name='view_order'),
-    path('order/cancel/<str:tracking_no>/', views.cancel_order, name='cancel_order'),
-    path('order/create/', views.create_order, name='create_order'),
+
 
 
 
    #notification url
     path('notifications/', NotificationListView.as_view(), name='notification-list'),
-
+    
+    #order
+    path('orders/', OrderListCreateView.as_view(), name='OrderListCreateView'),
+    path('orders/<uuid:order_id>/', OrderDetailView.as_view(), name='order-detail'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    
+    
+ 
     
 ]

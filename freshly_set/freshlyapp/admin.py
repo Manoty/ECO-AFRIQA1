@@ -86,3 +86,25 @@ class BannerAdmin(admin.ModelAdmin):
 admin.site.register(Cart)
 admin.site.register(CartItem)
 admin.site.register(Notification)
+
+
+
+from django.contrib import admin
+from .models import Order, OrderItem
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 1  # Allows you to add one extra item by default when creating an Order
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('order_id', 'customer_name', 'customer_email', 'total_price', 'payment_method', 'created_at')
+    search_fields = ('order_id', 'customer_name', 'customer_email')
+    list_filter = ('payment_method', 'created_at')
+    inlines = [OrderItemInline]  # Allows adding/editing order items directly in the order admin page
+    readonly_fields = ('order_id', 'created_at', 'updated_at')  # Make these fields read-only
+
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ('product_name', 'product_price', 'product_quantity', 'order')
+    search_fields = ('product_name',)
