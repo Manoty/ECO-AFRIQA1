@@ -108,3 +108,20 @@ class OrderAdmin(admin.ModelAdmin):
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ('product_name', 'product_price', 'product_quantity', 'order')
     search_fields = ('product_name',)
+    
+from django.contrib import admin
+from .models import FAQ
+
+@admin.register(FAQ)
+class FAQAdmin(admin.ModelAdmin):
+    list_display = ('question',)
+
+
+# admin.py
+from .models import FAQMainPage
+
+@admin.register(FAQMainPage)
+class FAQMainPageAdmin(admin.ModelAdmin):
+    list_display = ['question']
+    search_fields = ['question']
+

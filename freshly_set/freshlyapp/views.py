@@ -723,3 +723,28 @@ class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
     # You can keep the default permission classes here (IsAuthenticated by default)
 
 
+
+from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import FAQ  # Assuming your FAQ model is named FAQ
+from .serializers import FAQSerializer
+
+class FAQListView(APIView):
+    permission_classes = [AllowAny]  # This line allows unrestricted access to this view
+
+    def get(self, request, *args, **kwargs):
+        faqs = FAQ.objects.all()
+        serializer = FAQSerializer(faqs, many=True)
+        return Response(serializer.data)
+
+
+# views.py
+from rest_framework import generics
+from .models import FAQMainPage
+from .serializers import FAQMainPageSerializer
+
+class FAQMainPageListView(generics.ListAPIView):
+    queryset = FAQMainPage.objects.all()
+    serializer_class = FAQMainPageSerializer
+    permission_classes = [AllowAny]

@@ -557,6 +557,28 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.product_name} - {self.product_quantity} pcs"
+    
+    
+    
+from django.db import models
+
+class FAQ(models.Model):
+    question = models.CharField(max_length=255)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.question
+
+# models.py
+from django.db import models
+
+class FAQMainPage(models.Model):
+    question = models.CharField(max_length=255)
+    answer = models.TextField()
+
+    def __str__(self):
+        return self.question
+
  
     
 

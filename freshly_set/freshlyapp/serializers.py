@@ -392,3 +392,22 @@ class OrderSerializer(serializers.ModelSerializer):
         for item_data in items_data:
             OrderItem.objects.create(order=order, **item_data)
         return order
+    
+    
+from rest_framework import serializers
+from .models import FAQ
+
+class FAQSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FAQ
+        fields = ['id', 'question', 'description']
+
+# serializers.py
+from rest_framework import serializers
+from .models import FAQMainPage
+
+class FAQMainPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FAQMainPage
+        fields = ['id', 'question', 'answer']
+

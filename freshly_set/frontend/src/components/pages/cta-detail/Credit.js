@@ -19,7 +19,7 @@ function Credit() {
 
   // Order data structure
   const orderData = {
-    customer_name: 'John Mungai', // Replace with actual data as needed
+    customer_name: 'friday', // Replace with actual data as needed
     customer_email: 'johndoe@example.com', // Replace with actual data as needed
     customer_phone: '+254899098678', // Replace with actual data as needed
     items: cartItems.map(item => ({
