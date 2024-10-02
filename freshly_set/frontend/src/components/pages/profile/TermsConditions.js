@@ -41,7 +41,7 @@ function TermsConditions() {
             {
                 (
                     <div 
-                    className={`${ !isVisible ? "h-0 " : "h-[201px]"} transition-all duration-1000 ease-in-out fixed z-10 bottom-0 w-full sm:w-[80%] bg-slate-100 flex items-start justify-around gap-4 pt-2`}>
+                    className={`${ !isVisible ? "h-0 opacity-0" : "h-[201px] opacity-100"} transition-all duration-1000 ease-in-out fixed z-10 bottom-0 w-full sm:w-[80%] bg-slate-100 flex items-start justify-around gap-4 pt-2`}>
                     <button
                     onClick={handleToggle}
                     className="rounded-[12px] bg-[#FF0C1A] h-[67px] w-[232px]  border-none text-white font-bold text-xl cursor-pointer">DECLINE</button>
