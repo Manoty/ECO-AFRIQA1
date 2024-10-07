@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './LoginSignUp.css';
+import { IoEye } from "react-icons/io5";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { BiShow } from "react-icons/bi";
 import Nav from '../../Nav/Navbar';
@@ -98,169 +98,171 @@ const LoginSignUp = () => {
     return Object.keys(errors).length === 0;  // Return true if no errors, false otherwise
   };
   
-
   return (
-    <div className="signup-form ">
-      <Nav />
-      <div className="flex justify-center mt-[100px]">
-        
-        
-        
-        <div className="flex flex-col lg:flex-row justify-between lg:px-[77px] lg:py-[88px] lg:w-[1197px] mx-[40px] my-[100px] bg-white  rounded-[132px]">
-        {/* <div className="close-btn">×</div> */}
-        
-        {/* Left side */}
-        <div className="block w-[] order-2 lg:order-1">
-            <div>
-              <img className="hidden lg:flex h-[193px] w-[187px]"src="/static/media/logo2.png" alt="Logo"/>
-            </div>
-
-            <h3 className="text-black font-inter text-[25px] font-[700] mx-[20px]">Sign Up with our community of farmers</h3>
-            <div className="flex justify-center">
-              <div className="block mx-[30px] lg:mx-[0px]">
-                <p className=" mt-[28px] lg:w-[552px] font-josefin leading-[26px] text-[15px] text-start text-[#525560]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
-                <p className=" mt-[28px] lg:w-[552px] font-josefin leading-[26px] text-[15px] text-start text-[#525560]">Aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,</p>
-              </div>
-             
-
-            </div>
-        </div>
-        {/* Right side */}
-        <div className="order-1 lg:order-2 w-[394px] ">
-          <h2 className="text-black text-[30px] font-[700] font-inter">Create Your Profile</h2>
-
-          <form className="space-y-[25px] lg:space-y-[20px]" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              className="h-[58px] w-[300px] lg:w-[389px] lg: rounded-[13px] bg-[#D9D9D9] font-[300] text-[15px]  text-black font-inter border-none pl-[11px] lg:pl-[26px] mx-auto"
-              name="firstName"
-              placeholder="First Name"
-              value={formData.firstName}
-              onChange={handleChange}
-              required
-            />
-            {errors.firstName && <p className="error">{errors.firstName}</p>}
-            <input
-              type="text"
-              name="lastName"
-              className="h-[58px] w-[300px] lg:w-[389px] lg: rounded-[13px] bg-[#D9D9D9] font-[300] text-[15px]  text-black font-inter border-none pl-[11px] lg:pl-[26px] mx-auto"
-
-              placeholder="Last Name"
-              value={formData.lastName}
-              onChange={handleChange}
-              required
-            />
-            {errors.lastName && <p className="error">{errors.lastName}</p>}
-            <input
-              type="email"
-              name="email"
-              className="h-[58px] w-[300px] lg:w-[389px] lg: rounded-[13px] bg-[#D9D9D9] font-[300] text-[15px]  text-black font-inter border-none pl-[11px] lg:pl-[26px] mx-auto"
-
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-            {errors.email && <p className="error">{errors.email}</p>}
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Phone"
-              className="h-[58px] w-[300px] lg:w-[389px] lg: rounded-[13px] bg-[#D9D9D9] font-[300] text-[15px]  text-black font-inter border-none pl-[11px] lg:pl-[26px] mx-auto"
-
-              value={formData.phone}
-              onChange={handleChange}
-              required
-            />
-            {errors.phone && <p className="error">{errors.phone}</p>}
-            <select
-              name="location"
-              value={formData.location}
-              className="h-[58px] w-[300px] lg:w-[389px] lg: rounded-[13px] bg-[#D9D9D9] font-[300] text-[15px]  text-black font-inter border-none pl-[11px] lg:pl-[26px] mx-auto"
-              onChange={handleChange}
-              required
-            >
-              <option value="">Location</option>
-              <option value="location1">Location 1</option>
-              <option value="location2">Location 2</option>
-            </select>
-            {errors.location && <p className="error">{errors.location}</p>}
-            <div className="password-field">
-              <input
-                type={passwordToggle ? 'text' : 'password'}
-                className="h-[58px] w-[300px] lg:w-[389px] lg: rounded-[13px] bg-[#D9D9D9] font-[300] text-[15px]  text-black font-inter border-none pl-[11px] lg:pl-[26px] mx-auto "
-
-                name="password"
-                placeholder="New Password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-              <span className="toggle-password hidden lg:flex" onClick={handlePasswordToggle}>
-                {passwordToggle ? (<AiFillEyeInvisible className="text-black h-[33px] w-[45px]" />) : <BiShow className="text-black h-[33px] w-[45px]"/>}
-              </span>
-            </div>
-            {errors.password && <p className="error">{errors.password}</p>}
-            <div className="password-field">
-              <input
-                type={confirmPasswordToggle ? 'text' : 'password'}
-                name="confirmPassword"
-                className="h-[58px] w-[300px] lg:w-[389px] lg: rounded-[13px] bg-[#D9D9D9] font-[300] text-[15px]  text-black font-inter border-none pl-[11px] lg:pl-[26px] mx-auto "
-
-                placeholder="Confirm Password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-              />
-              <span
-                className="toggle-password hidden lg:flex"
-                onClick={handleConfirmPasswordToggle}
-              >
-                {confirmPasswordToggle ? (<AiFillEyeInvisible className="text-black h-[33px] w-[45px]" />) : <BiShow className="text-black h-[33px] w-[45px]"/>}
-
-              </span>
-            </div>
-            {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
-            {errors.password && <p className="error">{errors.password}</p>}
-{errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
-            <label className="remember-me">
-              <input
-                type="checkbox"
-                name="remember"
-                checked={formData.rememberMe}
-                onChange={(e) =>
-                  setFormData({ ...formData, rememberMe: e.target.checked })
-                }
-              />
-              Remember me
-            </label>
-            <button  className="standardBtnLong cursor-pointer" type="submit">Sign Up</button>
-          </form>
-
-          {backendErrors && <p className="error">{backendErrors}</p>}
-
-         <div className="block space-y-[17px] lg:space-y-[0px] lg:flex lg:space-x-[32px] items-center">
-          <div className="flex justify-center space-x-[30px] lg:space-x-[23px] items-center">
-              <p className="text-black text-[15px] font-[700] whitespace-nowrap">Sign in With Google</p>
-              <img className="h-[44px] w-[43px]" src="/static/media/googleIcon.png" alt="Google Image"/>
-              
-          </div>
-
-          <div className="flex justify-center space-x-[30px] lg:space-x-[23px] items-center">
-              <p className="text-black text-[15px] font-[700] whitespace-nowrap">Sign in With Facebook</p>
-              <img className="h-[44px] w-[43px]" src="/static/media/facebookIcon.png" alt="Google Image"/>
-              
-          </div>
-           
-         </div>
-         <p>Already Have an Account? <a className="text-[#434AF6]" href="/login">Login</a></p>
-        </div>
-        
-        </div>
+    <div className="SignUpPage relative">
+      {/*Navbar */}
+      <div className='Navbar'>
+        <Nav />
       </div>
-        </div>
-          
-      
+
+      {/*Main Contents */}
+      <div className="MainContentsflex block mt-[100px] pt-[20px] lg:bg-loginSignUp bg-cover bg-center bg-no-repeat">
+        <div className='MainContentsWrapper  pb-[60px] mx-[12px] lg:mx-[270px]'>
+          <div className='SignUpCard block lg:flex justify-between bg-[#F5FAF9] mt-[20px] lg:mt-[100px] pt-[20px] pb-[60px] lg:py-[60px] px-[20px] lg:px-[30px] rounded-[24px] lg:rounded-[55px]'>
+            {/*SignUp Details */}
+            <div className='SignUpDetails w-[60%] mr-[20px]'>
+              <div className='block w-[113px] h-[116px]'>
+                <img src="/static/media/logo2.png" alt="Logo" className="h-full w-full"  />
+              </div>
+              <div className='SignUpHeading mt-[20px]'>
+                <h3 className="text-start text-black font-inter text-[20px] font-[700] my-0">Sign Up with our community of farmers</h3>
+              </div>
+              <div className='TextBlock mt-[20px]'>
+                <p className='text-start text-[#525560] text-[14px] font-josefin font-[400] my-0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,</p>
+              </div>
+              <div className='TextBlock mt-[16px]'>
+                <p className='text-start text-[#525560] text-[14px] font-josefin font-[400] my-0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,</p>
+              </div>
+            </div>  {/*SignUp Details */}
+
+            {/*SignUp Form */}
+            <div className='SignUpForm w-[40%] bg-pink-00'>
+              <div className='FormInputs block mx-auto mt-[20px] lg:mt-0'>
+                {/*SignUp */}
+                <div className='SignUpTittle block'>
+                  <h3 className="text-start text-black text-[21px] font-[700] font-inter my-0">Create Your Profile</h3>
+                </div>
+
+                <form className="block" onSubmit={handleSubmit}>
+                  {/*First Name */}
+                  <div className='Firstname block mt-[20px] rounded-[7px] bg-white overflow-hidden object-fill px-[20px] shadow-md shadow-[#00000040]'>
+                    <input type="text" name="firstName" placeholder="First Name" className="bg-inherit font-[300] w-[100%]  text-[16px] py-[14px] text-black font-inter outline-none border-none"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      required
+                    />
+                    {errors.firstName && <p className="error">{errors.firstName}</p>}
+                  </div>
+
+                  {/*Last Name */}
+                  <div className='LastName block mt-[20px] rounded-[7px] bg-white overflow-hidden object-fill px-[20px] shadow-md shadow-[#00000040]'>
+                    <input type="text" name="lastName" placeholder="Last Name" className="bg-inherit font-[300] w-[100%]  text-[16px] py-[14px] text-black font-inter outline-none border-none"    
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      required
+                    />
+                    {errors.lastName && <p className="error">{errors.lastName}</p>}
+                  </div>
+
+                  {/*Email */}
+                  <div className='Email block mt-[20px] rounded-[7px] bg-white overflow-hidden object-fill px-[20px] shadow-md shadow-[#00000040]'>
+                    <input type="email" name="email" placeholder="Email" className="bg-inherit font-[300] w-[100%]  text-[16px] py-[14px] text-black font-inter outline-none border-none"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                    />
+                    {errors.email && <p className="error">{errors.email}</p>}
+                  </div>
+
+                  {/*Phone */}
+                  <div className='Phone block mt-[20px] rounded-[7px] bg-white overflow-hidden object-fill px-[20px] shadow-md shadow-[#00000040]'>
+                    <input type="tel" name="phone" placeholder="Phone" className="bg-inherit font-[300] w-[100%]  text-[16px] py-[14px] text-black font-inter outline-none border-none"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required
+                    />
+                    {errors.phone && <p className="error">{errors.phone}</p>}
+                  </div>
+
+                  {/*Location */}
+                  <div className='Location block mt-[20px] rounded-[7px] bg-white overflow-hidden object-fill px-[20px] shadow-md shadow-[#00000040]'>
+                    <select name="location" className="bg-inherit font-[300] w-[100%]  text-[16px] py-[14px] text-black font-inter outline-none border-none"
+                      value={formData.location}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="">Location</option>
+                      <option value="location1">Location 1</option>
+                      <option value="location2">Location 2</option>
+                    </select>
+                    {errors.location && <p className="error">{errors.location}</p>}
+                  </div>
+                  
+                  {/*Password Field 1 */}
+                  <div className="password-field mt-[24px] flex justify-between rounded-[7px] bg-white px-[20px] shadow-md shadow-[#00000040]">
+                    <input type={passwordToggle ? 'text' : 'password'} name="password" placeholder="New Password" className="bg-white font-[300] text-[16px] py-[14px] w-[80%] text-black font-inter outline-none border-none"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+                    <div className="toggle-password py-[6px] flex" onClick={handlePasswordToggle}>
+                      {passwordToggle ? (<AiFillEyeInvisible className="text-black h-[33px] w-[45px]" />) : <IoEye className="text-black h-[33px] w-[45px]" />}
+                    </div>
+                    {errors.password && <p className="error">{errors.password}</p>}
+                  </div>
+                  
+                  {/*Password Field 2 */}
+                  <div className="password-field mt-[24px] flex justify-between rounded-[7px] bg-white px-[20px] shadow-md shadow-[#00000040]">
+                    <input type={confirmPasswordToggle ? 'text' : 'password'} name="confirmPassword" placeholder="Confirm Password" className=" bg-white font-[300] text-[16px] py-[14px] w-[80%] text-black font-inter outline-none border-none "
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      required
+                    />
+                    <div className="toggle-password py-[6px] flex" onClick={handleConfirmPasswordToggle}>
+                      {confirmPasswordToggle ? (<AiFillEyeInvisible className="text-black h-[33px] w-[45px]" />) : <IoEye className="text-black h-[33px] w-[45px]" />}
+                    </div>
+                    
+                  </div>
+                  {errors.confirmPassword && <p className="error text-center text-[#FF0C1A] text-[14px] font-[700] font-inter">{errors.confirmPassword}</p>}
+                  {errors.password && <p className="error text-center text-[#FF0C1A] text-[14px] font-[700] font-inter">{errors.password}</p>}
+                 
+                  {/*Remember Me Field */}
+                  <div className='RememberMe lg:mt-[16px] flex justify-start'>
+                    <input type="checkbox" name="remember" className='block w-[20px] h-[20px] mx-[10px]'
+                      checked={formData.rememberMe}
+                      onChange={(e) =>
+                        setFormData({ ...formData, rememberMe: e.target.checked })
+                      }
+                    />
+                    <label className="remember-me block text-start font-inter font-[600] text-[12px] lg:text-[14px] my-0 py-[5px]"> Remember me </label>
+                  </div>
+
+                  {/*SignUp Button */}
+                  <div className='SignUpButton block mt-[30px] lg:mt-[20px] active:scale-90 transition-all duration-100 ease-out'>
+                    <button className="bg-[#008000] w-full cursor-pointer  text-white text-center text-[24px] py-[8px] rounded-[16px] lg:rounded-[11px] font-inter font-[700] outline-none border-none" type="submit">Sign Up</button>
+                  </div>
+                </form>
+              </div> {/*Form Inputs */}
+
+              {/*Alternative SignUp Methods */}
+              <div className='SignUpAlternatives block mx-[50px] lg:mx-auto lg:flex justify-center mt-[30px] lg:mt-[10px]'>
+                {/*SignUp with Google */}
+                <div className="SignUpViaGoogle flex justify-between lg:justify-center lg:mx-[10px] space-x-[20px] lg:space-x-[10px] items-center">
+                  <p className="text-start text-black text-[12px] font-[700] font-inter whitespace-nowrap">sign up with google</p>
+                  <div className='h-[34px] w-[34px] cursor-pointer'>
+                    <img src="/static/media/googleIcon.png" alt="Google Image" className="w-full h-full" />
+                  </div>
+                </div>
+
+                {/*SignUp with Facebook */}
+                <div className='SignUpViaFacebook flex justify-between lg:justify-center lg:mx-[10px] space-x-[20px] lg:space-x-[10px] items-center'>
+                  <p className="text-start text-black text-[12px] font-[700] font-inter whitespace-nowrap">sign up with facebook</p>
+                  <div className='w-[34px] h-[30px] cursor-pointer'>
+                    <img src="/static/media/facebookIcon.png" alt="Login by Facebook" className="w-full h-full" />
+                  </div>
+                </div> 
+              </div>  {/*Alternative SignUp Methods */}
+
+              {/*Already Have an Account */}
+              <div className='HaveAccount flex justify-center mt-[10px]'>
+                <p className='text-start font-inter text-[12px] font-[300] my-0'>Already Have an Account ?<span className='mx-[20px] text-[#097EEB] lg:text-[#434AF6] font-[800] lg:font-[900] text-[16px]'><a className="no-underline" href="/login">Login</a></span></p>
+              </div>
+            </div>  {/*SignUp Form */}
+          </div> {/*SignUp Card */}
+
+        </div>  {/*main Contents Wrapper */}     
+      </div> {/*Main Contents */}
+    </div> //SignUp Page
   );
 };
 
