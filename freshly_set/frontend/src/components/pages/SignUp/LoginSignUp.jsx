@@ -42,46 +42,48 @@ const LoginSignUp = () => {
     e.preventDefault();
 
     if (validateForm()) {
-      const payload = {
-        username: formData.email,
-        email: formData.email,
-        password: formData.password,
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        profile: {
-          phone: formData.phone,
-          location: formData.location,
-          remember_me: formData.rememberMe,
-        },
-      };
+        const payload = {
+            username: formData.email,
+            email: formData.email,
+            password: formData.password,
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            profile: {
+                phone: formData.phone,
+                location: formData.location,
+                remember_me: formData.rememberMe,
+            },
+        };
 
-      try {
-        const response = await axios.post('http://127.0.0.1:8000/freshlyapp/register/', payload, {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCsrfToken(),
-          },
-          withCredentials: true,  // Ensure cookies are sent with the request
+        try {
+            const response = await axios.post('http://localhost:8000/freshlyapp/register/', payload, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken(),
+                },
+                withCredentials: true,
+            });
 
-        });
-
-        if (response.status === 200) {
-          alert('Signup successful!');
-          console.log("Signup Succesful")
-        } else {
-          // Handle the error message returned from the backend
-          setBackendErrors(response.data.error || 'Signup failed. Please try again.');
+            if (response.status === 201) {
+                // Clear backend error messages if the signup is successful
+                setBackendErrors('');
+                alert('Signup successful!');
+                console.log("Signup Successful");
+            }
+        } catch (error) {
+            // Handle different error messages
+            if (error.response && error.response.status === 400) {
+                if (error.response.error) {
+                    setBackendErrors(error.response.error); // Display the specific error from the backend
+                } else {
+                    setBackendErrors('Signup failed. Please try again.');
+                }
+            } else {
+                setBackendErrors('An error occurred during signup. Please try again later.');
+            }
         }
-      } catch (error) {
-        // Handle errors such as network issues or server errors
-        if (error.response && error.response.data) {
-          setBackendErrors(error.response.data.error || 'An error occurred during signup. Please try again later.');
-        } else {
-          setBackendErrors('An error occurred during signup. Please try again later.');
-        }
-      }
     }
-  }; 
+};
 
   const validateForm = () => {
     const errors = {};
@@ -126,6 +128,7 @@ const LoginSignUp = () => {
             </div>
         </div>
         {/* Right side */}
+
         <div className="order-1 lg:order-2 w-[394px] ">
           <h2 className="text-black text-[30px] font-[700] font-inter">Create Your Profile</h2>
 
@@ -222,7 +225,6 @@ const LoginSignUp = () => {
             </div>
             {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
             {errors.password && <p className="error">{errors.password}</p>}
-{errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
             <label className="remember-me">
               <input
                 type="checkbox"
@@ -236,7 +238,6 @@ const LoginSignUp = () => {
             </label>
             <button  className="standardBtnLong cursor-pointer" type="submit">Sign Up</button>
           </form>
-
           {backendErrors && <p className="error">{backendErrors}</p>}
 
          <div className="block space-y-[17px] lg:space-y-[0px] lg:flex lg:space-x-[32px] items-center">

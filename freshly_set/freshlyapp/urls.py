@@ -28,6 +28,8 @@ from .views import (
 
 urlpatterns = [
     path('register/', Register, name='register'),
+    path('login/', login, name='login'),
+
     path('admin/', admin.site.urls),
     path('freshlyapp/token/', TokenObtainPairView.as_view(),
          name='token_obtain_pair'),

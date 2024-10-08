@@ -709,6 +709,28 @@ def create_order(request):
         return Response({"error": "Failed to create order"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def login(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    # Authenticate the user
+    user = authenticate(request, username=email, password=password)
+
+    if user is not None:
+        # If authentication is successful, generate a token
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user_id': user.id,
+            'email': user.email,
+        }, status=status.HTTP_200_OK)
+    else:
+        # If authentication fails
+        return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 # View all orders for a user
