@@ -8,6 +8,7 @@ import { BlogsContextProvider } from './components/context/BlogsContext';
 import { ActiveSectionProvider } from './components/context/ActiveSectionContext';
 import { CartProvider } from './components/context/CartContext';
 import { AuthProvider } from './components/context/AuthContext';
+import { ProfileProvider } from './components/context/ProfileContext';
 // import reportWebVitals from './reportWebVitals';
 // import './styles/tailwind.css';
 
@@ -20,7 +21,9 @@ root.render(
         <ActiveSectionProvider>
           <CartProvider>
             <AuthProvider>
-              <App />
+              <ProfileProvider>
+                <App />
+              </ProfileProvider>
             </AuthProvider>
           </CartProvider>
         </ActiveSectionProvider>

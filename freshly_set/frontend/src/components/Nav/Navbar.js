@@ -9,6 +9,7 @@ import { PageContext } from '../context/PageContext';
 import { TiShoppingCart } from "react-icons/ti";
 import { CartContext, CartOpenContext } from '../context/CartContext';
 import { FaRegCircleUser } from 'react-icons/fa6';
+import { AuthContext } from '../context/AuthContext';
 
 function Nav() {
 
@@ -26,6 +27,9 @@ function Nav() {
 
 
   const [servicesToggled, setServicesToggled] = useState(false);
+
+  const { isAuthenticated, logout } = useContext(AuthContext);
+
 
   const scrollNow = () => {
     if (window.scrollY > 60) {
@@ -163,9 +167,14 @@ function Nav() {
           </div>
             </Link>
             
-            <Link to="/profile">
+            { !isAuthenticated ? (
+              <Link to="/profile">
               <FaRegCircleUser className="text-[39px] text-white/[50%]" />
-            </Link>
+              </Link>
+            ): (
+              <p onClick={logout} className="text-white cursor-pointer">Logout</p>
+            )}
+           
           </div>
         </div>
       </nav>

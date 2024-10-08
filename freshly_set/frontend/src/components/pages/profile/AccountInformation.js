@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { BiSolidEdit } from "react-icons/bi";
 import { CiCircleCheck } from "react-icons/ci";
+import { ProfileContext } from '../../context/ProfileContext';
 
 function AccountInformation() {
     // Single state object for all fields
+    const [profile, setProfile] = useContext(ProfileContext);
+
     const [fields, setFields] = useState({
-        firstName: 'John',
-        lastName: 'Doe',
-        email:"sosahlawe@gmail.com",
+        firstName: profile?.first_name,
+        lastName: profile?.last_name,
+        email:profile?.email,
         phone:"+123 456 789",
         location:"Heights Apartments, Ruiru"
     });
