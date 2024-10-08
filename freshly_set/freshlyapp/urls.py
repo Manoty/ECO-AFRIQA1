@@ -41,7 +41,7 @@ urlpatterns = [
 
     path('about-us/', TemplateView.as_view(template_name='index.html')),
     path("marketplace/", TemplateView.as_view(template_name="index.html")),
-        path("signup/", TemplateView.as_view(template_name="index.html")),
+    path("signup/", TemplateView.as_view(template_name="index.html")),
 
     # path('blogs/', views.blogs, name='blogs'),
     path('freshlyapp/blogs/', BlogListView.as_view(), name='blog-list'),
@@ -52,7 +52,7 @@ urlpatterns = [
     path('freshlyapp/search/', views.search_blog, name='search_blog'),
 
 
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view, name='login'),
     # path('signup/', views.signup, name='signup'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('password_change/', auth_views.PasswordChangeView.as_view(
@@ -69,7 +69,8 @@ urlpatterns = [
     #     path('products/', views.products, name='products'),
     path('services/', views.services, name='services'),
     path('profile/', views.GetUserProfile.as_view(), name='profile'),
-    path('profile/update/', UpdateUserProfile.as_view(), name='user-profile-update'),
+    path('profile/update/', UpdateUserProfile.as_view(),
+         name='user-profile-update'),
 
     # path('blogs/', BlogListCreateAPIView.as_view(), name='blog_list_create'),
     path('blogs/<int:pk>/', BlogRetrieveUpdateDestroyAPIView.as_view(),
@@ -91,14 +92,14 @@ urlpatterns = [
     # Poll URLs
     path('freshlyapp/polls/', PollListCreateView.as_view(), name='poll-list-create'),
     path('polls/<int:pk>/', PollDetailView.as_view(), name='poll-detail'),
-#     path('polls/<int:pk>/vote/', SubmitVote.as_view(), name='vote-create'),
+    #     path('polls/<int:pk>/vote/', SubmitVote.as_view(), name='vote-create'),
     path('submit-vote/', SubmitVote, name='submit_vote'),
 
-     # Testing new format
-     path('api/polls/', PollListView.as_view(), name='poll-list'),
-#     path('api/polls/<int:pk>/vote/', PollVoteView.as_view(), name='poll-vote'),
+    # Testing new format
+    path('api/polls/', PollListView.as_view(), name='poll-list'),
+    #     path('api/polls/<int:pk>/vote/', PollVoteView.as_view(), name='poll-vote'),
 
-        path('api/polls/<int:poll_id>/vote/', views.vote_poll, name='vote_poll'),
+    path('api/polls/<int:poll_id>/vote/', views.vote_poll, name='vote_poll'),
 
     # Verifications
     path('freshlyapp/verification/verify/',
@@ -143,20 +144,22 @@ urlpatterns = [
 
 
 
-    #order url
+    # order url
     path('orders/', views.my_orders, name='my_orders'),
     path('order/<str:tracking_no>/', views.view_order, name='view_order'),
-    path('order/cancel/<str:tracking_no>/', views.cancel_order, name='cancel_order'),
+    path('order/cancel/<str:tracking_no>/',
+         views.cancel_order, name='cancel_order'),
     path('order/create/', views.create_order, name='create_order'),
 
 
 
-   #notification url
-    path('notifications/', NotificationListView.as_view(), name='notification-list'),
+    # notification url
+    path('notifications/', NotificationListView.as_view(),
+         name='notification-list'),
 
-   # Payment urls
+    # Payment urls
     path('api/initiate-payment/', initiate_payment, name='initiate-payment'),
     path('api/mpesa-callback/', mpesa_callback, name='mpesa-callback'),
 
-    
+
 ]

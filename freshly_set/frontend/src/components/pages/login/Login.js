@@ -5,47 +5,42 @@ import Nav from '../../Nav/Navbar';
 import axios from 'axios';
 
 const Login = () => {
-  const [showForm, setShowForm] = useState(true);
   const [formData, setFormData] = useState({
-    email: '',   
+    username: '',  
     password: '',
-    rememberMe: false,
-  });
-  const [error, setError] = useState("")
+});
+const [error, setError] = useState("");
 
+const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+};
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    
-    // const loginData = {
-    //   email: email,
-    //   password: password,
-    // };
+const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await axios.post('http://localhost:8000/login/', formData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
 
-    try {
-      const response = await axios.post('http://localhost:8000/freshlyapp/token/', formData);
-      const { access, refresh } = response.data;
-
-      // Save tokens in localStorage or cookies
-      localStorage.setItem('accessToken', access);
-      localStorage.setItem('refreshToken', refresh);
-
-      // Redirect user or update UI based on successful login
+    // Check if login was successful
+    if (response.status === 200) {
+      // Handle successful login
       console.log('Login successful');
-    } catch (error) {
-      console.error('Login failed:', error.response);
-      setError('Invalid username or password');
+      // Redirect or update UI here
     }
-  };
-
+  } catch (error) {
+    console.error('Login failed:', error.response);
+    setError('Invalid username or password');
+  }
+};
   const [passwordToggle, setPasswordToggle] = useState(false);
   const [confirmPasswordToggle, setConfirmPasswordToggle] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+
 
   const handlePasswordToggle = () => {
     setPasswordToggle(!passwordToggle);
@@ -85,7 +80,7 @@ const Login = () => {
               <form onSubmit={handleLogin}>
                 {/*Your Email */}
                 <div className='YourEmail block mt-[20px] rounded-[7px] bg-white overflow-hidden object-fill px-[20px] shadow-md shadow-[#00000040]'>
-                  <input type="text" name='email' required placeholder='Your Email' className="bg-inherit font-[300] w-[100%]  text-[16px] py-[14px] text-black font-inter outline-none border-none"/>
+                  <input type="text" name='username' value={formData.username} onChange={handleChange}required placeholder='Your Email' className="bg-inherit font-[300] w-[100%]  text-[16px] py-[14px] text-black font-inter outline-none border-none"/>
                 </div>
 
                 {/* Password Field*/}
