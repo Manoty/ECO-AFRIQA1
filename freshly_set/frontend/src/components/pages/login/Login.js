@@ -6,10 +6,10 @@ import Nav from '../../Nav/Navbar';
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',   
+    username: '',  
     password: '',
   });
-  const [error, setError] = useState(""
+  const [error, setError] = useState("")
   const handleLogin = async (e) => {
     e.preventDefault();
     
@@ -28,21 +28,21 @@ const Login = () => {
 
       // Redirect user or update UI based on successful login
       console.log('Login successful');
-    } catch (error) {
-      console.error('Login failed:', error.response);
-      setError('Invalid username or password');
-    }
-  };
+      console.log('Login successful', access);
 
+      // Redirect or update UI here
+    }
+   catch (error) {
+    console.error('Login failed:', error.response);
+    setError('Invalid username or password');
+  }
+};
   const [passwordToggle, setPasswordToggle] = useState(false);
   const [errors, setErrors] = useState({});
   const [backendErrors, setBackendErrors] = useState('');
 
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+
 
   const handlePasswordToggle = () => {
     setPasswordToggle(!passwordToggle);
@@ -96,63 +96,14 @@ const Login = () => {
     return Object.keys(errors).length === 0; // Return true if no errors
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+};
+
   return (
-    <div className="signup-form h-[100vh]">
-      <Nav />
-      <div className="flex justify-center mt-[100px]">
-        <div className="flex justify-center lg:px-[77px] lg:py-[88px] lg:w-[1197px] mx-[40px] my-[100px] bg-white  rounded-[132px]">
-          <form onSubmit={handleSubmit}>
-            <div className="block space-y-[30.08px]">
-              <h1>Login to Your Account</h1>
-
-              <input      
-                type="text"
-                placeholder='Your Email'         
-                name="email"  // Correct name binding
-                value={formData.email}  // Correct value binding
-                onChange={handleChange}  // Correct event handling
-                className="h-[58px] w-[300px] lg:w-[389px] lg: rounded-[13px] bg-white font-[300] text-[15px]  text-black font-inter border-none pl-[11px] lg:pl-[26px] mx-auto shadow-lg"
-              />
-
-              {/* Password */}
-              <div className="password-field">
-                <input
-                  type={passwordToggle ? 'text' : 'password'}
-                  className="h-[58px] w-[300px] lg:w-[389px] lg: rounded-[13px] bg-white font-[300] text-[15px]  text-black font-inter border-none pl-[11px] lg:pl-[26px] mx-auto shadow-lg "
-                  name="password"
-                  placeholder="New Password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-                <span className="toggle-password hidden lg:flex" onClick={handlePasswordToggle}>
-                  {passwordToggle ? (<AiFillEyeInvisible className="text-black h-[33px] w-[45px]" />) : <BiShow className="text-black h-[33px] w-[45px]"/>}
-                </span>
-              </div>
-              {backendErrors && <p className="error">{backendErrors}</p>}
-
-              <div className="flex justify-center">
-                <button className="standardBtnLong" type="submit">Sign In</button>
-              </div>
-            </div>
-
-            <div className="block space-y-[17px] lg:space-y-[0px] lg:flex lg:space-x-[32px] items-center">
-              <div className="flex justify-center space-x-[30px] lg:space-x-[23px] items-center">
-                <p className="text-black text-[15px] font-[700] whitespace-nowrap">Sign in With Google</p>
-                <img className="h-[44px] w-[43px]" src="/static/media/googleIcon.png" alt="Google Image"/>
-              </div>
-              <div className="flex justify-center space-x-[30px] lg:space-x-[23px] items-center">
-                <p className="text-black text-[15px] font-[700] whitespace-nowrap">Sign in With Facebook</p>
-                <img className="h-[44px] w-[43px]" src="/static/media/facebookIcon.png" alt="Google Image"/>
-              </div>
-            </div>
-
-            <p>Don't Have an Account? <a className="text-[#434AF6]" href="/signup">Signup</a></p>
-
-          </form>
-        </div>
-      </div>
-    </div>
+    <div>
+    
     <div className="LoginPage relative">
       {/*Navbar */}
       <div className='Navbar'>
@@ -172,7 +123,7 @@ const Login = () => {
               <form onSubmit={handleLogin}>
                 {/*Your Email */}
                 <div className='YourEmail block mt-[20px] rounded-[7px] bg-white overflow-hidden object-fill px-[20px] shadow-md shadow-[#00000040]'>
-                  <input type="text" name='email' required placeholder='Your Email' className="bg-inherit font-[300] w-[100%]  text-[16px] py-[14px] text-black font-inter outline-none border-none"/>
+                  <input type="text" name='username' value={formData.username} onChange={handleChange}required placeholder='Your Email' className="bg-inherit font-[300] w-[100%]  text-[16px] py-[14px] text-black font-inter outline-none border-none"/>
                 </div>
 
                 {/* Password Field*/}
@@ -242,6 +193,7 @@ const Login = () => {
         </div> {/*MainContentsWrapper */}
       </div> {/*main Contents */}
     </div> //Login page
+    </div>
             
   );
 };

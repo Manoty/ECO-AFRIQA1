@@ -1,3 +1,4 @@
+from .models import Profile
 import os
 from PIL import Image
 from django.core.exceptions import ValidationError
@@ -29,6 +30,15 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', '')
         )
+
+        # Create the Profile instance
+        # Profile.objects.create(
+        #     user=user,
+        #     phone=phone,
+        #     location=location,
+        #     remember_me=remember_me
+        # )
+
         return user
 
 
@@ -50,9 +60,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-from .models import Profile
-
-
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
@@ -72,8 +79,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
         # Update user fields only if provided
         instance.username = validated_data.get('username', instance.username)
         instance.email = validated_data.get('email', instance.email)
-        instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.first_name = validated_data.get(
+            'first_name', instance.first_name)
+        instance.last_name = validated_data.get(
+            'last_name', instance.last_name)
         instance.save()
 
         # Update profile fields only if provided
@@ -83,7 +92,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         profile.save()
 
         return instance
- 
+
 
 class ProductSerializer(serializers.ModelSerializer):
 
@@ -173,14 +182,17 @@ class ReviewSerializer(serializers.ModelSerializer):
 class FarmerSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     email = serializers.EmailField(source='user.email', read_only=True)
-    first_name = serializers.CharField(source='user.first_name', read_only=True)
+    first_name = serializers.CharField(
+        source='user.first_name', read_only=True)
     last_name = serializers.CharField(source='user.last_name', read_only=True)
     phone = serializers.CharField(source='user.profile.phone', read_only=True)
-    location = serializers.CharField(source='user.profile.location', read_only=True)
+    location = serializers.CharField(
+        source='user.profile.location', read_only=True)
 
     class Meta:
         model = Farmer
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'phone', 'location', 'user']
+        fields = ['id', 'username', 'email', 'first_name',
+                  'last_name', 'phone', 'location', 'user']
 
 
 class GardenSerializer(serializers.ModelSerializer):
@@ -224,7 +236,6 @@ class ShareSerializer(serializers.ModelSerializer):
 # Polls serializer
 
 
-
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
@@ -245,10 +256,12 @@ class VoteSerializer(serializers.ModelSerializer):
 
         return vote
 
+
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
         fields = ['id', 'poll', 'user', 'choice', 'created_at']
+
 
 class PollSerializer(serializers.ModelSerializer):
     votes = VoteSerializer(many=True, read_only=True)
@@ -308,8 +321,9 @@ class IDVerificationSerializer(serializers.ModelSerializer):
             instance.save()
             return instance
         else:
-            raise serializers.ValidationError("Verification failed. ID number or photo is not correct.")
-        
+            raise serializers.ValidationError(
+                "Verification failed. ID number or photo is not correct.")
+
 
 # Serializer for the Order model
 
@@ -319,20 +333,24 @@ class OrderItemSerializer(serializers.ModelSerializer):
         model = OrderItem
         fields = ['product', 'price', 'quantity']
 
+
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'fname', 'lname', 'email', 'phone', 'address', 'city', 'state', 'country', 'pincode', 'total_price', 'payment_mode', 'status', 'tracking_no', 'created_at', 'items']
-       
+        fields = ['id', 'user', 'fname', 'lname', 'email', 'phone', 'address', 'city', 'state', 'country',
+                  'pincode', 'total_price', 'payment_mode', 'status', 'tracking_no', 'created_at', 'items']
+
         def validate(self, data):
             if not self.context.get('is_verified'):  # Example of a condition
-                raise serializers.ValidationError("Verification failed. ID number or photo is not correct.")
-        
+                raise serializers.ValidationError(
+                    "Verification failed. ID number or photo is not correct.")
+
             return data
 
 # Banner Serializer for Marketplace Page
+
 
 class BannerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -397,13 +415,9 @@ class CartSerializer(serializers.ModelSerializer):
                 {'discount_code': 'Discount code cannot exceed 50 characters.'})
 
         return data
-    
-
-
 
 
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
-        fields = ['id', 'message', 'read', 'timestamp','user']
-    
+        fields = ['id', 'message', 'read', 'timestamp', 'user']

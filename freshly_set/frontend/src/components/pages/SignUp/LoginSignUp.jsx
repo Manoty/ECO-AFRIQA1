@@ -56,7 +56,7 @@ const LoginSignUp = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/freshlyapp/register/', payload, {
+            const response = await axios.post('http://localhost:8000/register/', payload, {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCsrfToken(),

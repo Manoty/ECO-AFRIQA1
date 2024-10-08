@@ -75,7 +75,8 @@ a {
 
 @media (min-width: 769px) {
   .signup-form {
-    background-image: url('../../../../public/static/media/signUpBg.png')  ;
+    /* background-image: url('../../../../public/static/media/signUpBg.png')  ; */
+    background-image: url('../../../../public/static/media/signUpLoginBg.jpg')  ;
 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
