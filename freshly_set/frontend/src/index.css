@@ -7,6 +7,10 @@ body
   box-sizing: border-box;
   background-color: #F5FAF9;
 }
+a{
+  text-decoration: none;
+}
+
 
 li{
   list-style-type: none
