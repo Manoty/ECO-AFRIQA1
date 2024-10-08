@@ -1,44 +1,46 @@
 import React, { useState } from 'react';
+import axios from 'axios'; // Ensure axios is imported
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { BiShow } from "react-icons/bi";
 import Nav from '../../Nav/Navbar';
-import axios from 'axios';
 
 const Login = () => {
   const [formData, setFormData] = useState({
     username: '',  
     password: '',
-});
-const [error, setError] = useState("");
+  });
+  const [error, setError] = useState("")
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    
+    // const loginData = {
+    //   email: email,
+    //   password: password,
+    // };
 
-const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-};
+    try {
+      const response = await axios.post('http://localhost:8000/freshlyapp/token/', formData);
+      const { access, refresh } = response.data;
 
-const handleLogin = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await axios.post('http://localhost:8000/login/', formData, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    });
+      // Save tokens in localStorage or cookies
+      localStorage.setItem('accessToken', access);
+      localStorage.setItem('refreshToken', refresh);
 
-    // Check if login was successful
-    if (response.status === 200) {
-      // Handle successful login
+      // Redirect user or update UI based on successful login
       console.log('Login successful');
+      console.log('Login successful', access);
+
       // Redirect or update UI here
     }
-  } catch (error) {
+   catch (error) {
     console.error('Login failed:', error.response);
     setError('Invalid username or password');
   }
 };
   const [passwordToggle, setPasswordToggle] = useState(false);
-  const [confirmPasswordToggle, setConfirmPasswordToggle] = useState(false);
   const [errors, setErrors] = useState({});
+  const [backendErrors, setBackendErrors] = useState('');
+
 
 
 
@@ -46,21 +48,62 @@ const handleLogin = async (e) => {
     setPasswordToggle(!passwordToggle);
   };
 
-  
   const handleSubmit = async (e) => {
-   
-  }; 
+    e.preventDefault();
+    
+    if (validateForm()) {
+        const payload = {
+            email: formData.email,
+            password: formData.password,
+        };
+
+        try {
+            const response = await axios.post('http://localhost:8000/freshlyapp/login/', payload, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true, // Ensures cookies and authentication tokens are handled
+            });
+
+            if (response.status === 200) {
+                // Clear errors and redirect user upon successful login
+                setErrors({});
+                alert('Login successful!');
+                console.log("Login Successful");
+                // Redirect to dashboard or some other page if needed
+            }
+        } catch (error) {
+          if (error.response && error.response.status === 400) {
+            if (error.response.data) {
+                setBackendErrors(error.response.data); // Display specific error from backend
+            } else {
+                setBackendErrors('Login failed. Please check your credentials.');
+            }
+        } else {
+            setBackendErrors('An error occurred during login. Please try again later.');
+        }
+      }
+    }
+  };
 
   const validateForm = () => {
     const errors = {};
-  
     if (!formData.email) errors.email = 'Required';
-    
     if (!formData.password) errors.password = 'Required';
+    
     setErrors(errors);
+
+    return Object.keys(errors).length === 0; // Return true if no errors
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+};
+
   return (
+    <div>
+    
     <div className="LoginPage relative">
       {/*Navbar */}
       <div className='Navbar'>
@@ -150,6 +193,7 @@ const handleLogin = async (e) => {
         </div> {/*MainContentsWrapper */}
       </div> {/*main Contents */}
     </div> //Login page
+    </div>
             
   );
 };

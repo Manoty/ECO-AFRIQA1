@@ -28,6 +28,8 @@ from .views import (
 
 urlpatterns = [
     path('register/', Register, name='register'),
+    path('login/', login, name='login'),
+
     path('admin/', admin.site.urls),
     path('freshlyapp/token/', TokenObtainPairView.as_view(),
          name='token_obtain_pair'),
@@ -160,6 +162,10 @@ urlpatterns = [
     # Payment urls
     path('api/initiate-payment/', initiate_payment, name='initiate-payment'),
     path('api/mpesa-callback/', mpesa_callback, name='mpesa-callback'),
+
+
+    # Verified Farmers
+    path('verified-farmers/', FarmerListView.as_view(), name='verified-farmers'),
 
 
 ]

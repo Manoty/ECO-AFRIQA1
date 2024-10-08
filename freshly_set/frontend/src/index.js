@@ -7,6 +7,7 @@ import { PageContextProvider } from './components/context/PageContext';
 import { BlogsContextProvider } from './components/context/BlogsContext';
 import { ActiveSectionProvider } from './components/context/ActiveSectionContext';
 import { CartProvider } from './components/context/CartContext';
+import { AuthProvider } from './components/context/AuthContext';
 // import reportWebVitals from './reportWebVitals';
 // import './styles/tailwind.css';
 
@@ -18,7 +19,9 @@ root.render(
       <BlogsContextProvider>
         <ActiveSectionProvider>
           <CartProvider>
-            <App />
+            <AuthProvider>
+              <App />
+            </AuthProvider>
           </CartProvider>
         </ActiveSectionProvider>
       </BlogsContextProvider>
