@@ -16,40 +16,9 @@ import { ProfileContext } from '../../context/ProfileContext';
 
 function Profile() {
   const [selectedSection, setSelectedSection] = useState('Account');
-  const [profile, setProfile] = useContext(ProfileContext);
+  const { profile, loading, error } = useContext(ProfileContext);
 
 
-const getUserProfile = async () => {
-  const token = localStorage.getItem('accessToken');  // Retrieve the JWT token
-
-  try {
-    const response = await axios.get('http://localhost:8000/profile/', {
-      headers: {
-        'Authorization': `Bearer ${token}`  
-      }
-    });
-
-    console.log(response.data);  // The profile data
-    return response.data;
-    setProfile(response.data)
-  } catch (error) {
-    console.error('Error fetching profile:', error.response);
-    if (error.response && error.response.status === 401) {
-      console.log('Unauthorized! Please log in again.');
-    }
-  }
-};
-
-useEffect(() => {
-  // Fetch profile data on component mount
-  const fetchProfile = async () => {
-    const data = await getUserProfile();
-    setProfile(data);
-    console.log("Profile Data", profile)
-  };
-
-  fetchProfile();
-}, []);
 
 
   const renderSection = () => {

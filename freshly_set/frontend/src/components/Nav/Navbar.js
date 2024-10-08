@@ -167,12 +167,14 @@ function Nav() {
           </div>
             </Link>
             
-            { !isAuthenticated ? (
+            { isAuthenticated ? (
               <Link to="/profile">
               <FaRegCircleUser className="text-[39px] text-white/[50%]" />
               </Link>
             ): (
-              <p onClick={logout} className="text-white cursor-pointer">Logout</p>
+              <Link to="/login">
+                <p className="text-white cursor-pointer">Login</p>
+              </Link>
             )}
            
           </div>

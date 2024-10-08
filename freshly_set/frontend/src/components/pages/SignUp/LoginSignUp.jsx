@@ -5,6 +5,7 @@ import { BiShow } from "react-icons/bi";
 import Nav from '../../Nav/Navbar';
 import axios from 'axios';
 import { getCsrfToken } from '../../../utils/getCsrfToken';
+import { useNavigate } from 'react-router-dom';
 const LoginSignUp = () => {
   const [showForm, setShowForm] = useState(true);
   const [formData, setFormData] = useState({
@@ -23,7 +24,7 @@ const LoginSignUp = () => {
   const [errors, setErrors] = useState({});
 
   const [backendErrors, setBackendErrors] = useState('');
-
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,6 +70,7 @@ const LoginSignUp = () => {
                 setBackendErrors('');
                 alert('Signup successful!');
                 console.log("Signup Successful");
+                navigate("/profile")
             }
         } catch (error) {
             // Handle different error messages

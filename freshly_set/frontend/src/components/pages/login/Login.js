@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios'; // Ensure axios is imported
 import { useNavigate } from 'react-router-dom';
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { BiShow } from "react-icons/bi";
 import Nav from '../../Nav/Navbar';
+import { ProfileContext } from '../../context/ProfileContext';
 
 const Login = () => {
   const navigate = useNavigate();
-
+  const { fetchProfile } = useContext(ProfileContext);
   const [formData, setFormData] = useState({
     username: '',  
     password: '',
@@ -32,7 +33,8 @@ const Login = () => {
       // Redirect user or update UI based on successful login
       console.log('Login successful');
       console.log('Login successful', access);
-      navigate('/');  // Redirect to the homepage after logout
+      fetchProfile();
+      navigate('/profile');  
 
 
       // Redirect or update UI here
