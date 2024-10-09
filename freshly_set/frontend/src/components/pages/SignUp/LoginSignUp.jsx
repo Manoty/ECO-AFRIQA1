@@ -109,26 +109,11 @@ const LoginSignUp = () => {
 
       {/*Main Contents */}
       <div className="MainContentsflex block mt-[100px] pt-[20px] lg:bg-loginSignUp bg-cover bg-center bg-no-repeat">
-        <div className='MainContentsWrapper  pb-[60px] mx-[12px] lg:mx-[270px]'>
-          <div className='SignUpCard block lg:flex justify-between bg-[#F5FAF9] mt-[20px] lg:mt-[100px] pt-[20px] pb-[60px] lg:py-[60px] px-[20px] lg:px-[30px] rounded-[24px] lg:rounded-[55px]'>
-            {/*SignUp Details */}
-            <div className='SignUpDetails w-[60%] mr-[20px]'>
-              <div className='block w-[113px] h-[116px]'>
-                <img src="/static/media/logo2.png" alt="Logo" className="h-full w-full"  />
-              </div>
-              <div className='SignUpHeading mt-[20px]'>
-                <h3 className="text-start text-black font-inter text-[20px] font-[700] my-0">Sign Up with our community of farmers</h3>
-              </div>
-              <div className='TextBlock mt-[20px]'>
-                <p className='text-start text-[#525560] text-[14px] font-josefin font-[400] my-0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,</p>
-              </div>
-              <div className='TextBlock mt-[16px]'>
-                <p className='text-start text-[#525560] text-[14px] font-josefin font-[400] my-0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,</p>
-              </div>
-            </div>  {/*SignUp Details */}
-
-            {/*SignUp Form */}
-            <div className='SignUpForm w-[40%] bg-pink-00'>
+        <div className='MainContentsWrapper pb-[30px] lg:pb-[60px] mx-[12px] lg:mx-[270px]'>
+          <div className='SignUpCard block lg:flex flex-row-reverse justify-between bg-[#F5FAF9] border-solid lg:border-none border-[0.1px] border-[#0000008F] shadow-lg lg:shadow-none shadow-[#00000040] mt-[20px] lg:mt-[100px] pt-[20px] pb-[30px] lg:pb-[60px] lg:py-[60px] px-[20px] lg:px-[30px] rounded-[24px] lg:rounded-[55px]'>
+            
+            {/*Right-SignUp Form (Reversed flex on Desktop Version) */}
+            <div className='SignUpForm lg:w-[40%]'>
               <div className='FormInputs block mx-auto mt-[20px] lg:mt-0'>
                 {/*SignUp */}
                 <div className='SignUpTittle block'>
@@ -219,7 +204,7 @@ const LoginSignUp = () => {
                   {errors.password && <p className="error text-center text-[#FF0C1A] text-[14px] font-[700] font-inter">{errors.password}</p>}
                  
                   {/*Remember Me Field */}
-                  <div className='RememberMe lg:mt-[16px] flex justify-start'>
+                  <div className='RememberMe mt-[12px] lg:mt-[16px] flex justify-start'>
                     <input type="checkbox" name="remember" className='block w-[20px] h-[20px] mx-[10px]'
                       checked={formData.rememberMe}
                       onChange={(e) =>
@@ -260,6 +245,22 @@ const LoginSignUp = () => {
                 <p className='text-start font-inter text-[12px] font-[300] my-0'>Already Have an Account ?<span className='mx-[20px] text-[#097EEB] lg:text-[#434AF6] font-[800] lg:font-[900] text-[16px]'><a className="no-underline" href="/login">Login</a></span></p>
               </div>
             </div>  {/*SignUp Form */}
+
+            {/*Left-SignUp Details (Reversed Flex on Desktop Version) */}
+            <div className='SignUpDetails lg:mt-0 mt-[40px] lg:w-[60%] lg:mr-[20px]'>
+              <div className='hidden lg:block w-[113px] h-[116px]'>  {/*Only Visible on Desktop Version */}
+                <img src="/static/media/logo2.png" alt="Logo" className="h-full w-full" />
+              </div>
+              <div className='SignUpHeading mt-[20px]'>
+                <h3 className="text-start text-black font-inter text-[15px] lg:text-[20px] font-[700] my-0">Sign Up with our community of farmers</h3>
+              </div>
+              <div className='TextBlock mt-[14px] lg:mt-[20px]'>
+                <p className='text-start text-[#525560] text-[14px] font-josefin font-[400] my-0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,</p>
+              </div>
+              <div className='TextBlock mt-[12px] lg:mt-[16px]'>
+                <p className='text-start text-[#525560] text-[14px] font-josefin font-[400] my-0'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,</p>
+              </div>
+            </div>  {/*SignUp Details */}
           </div> {/*SignUp Card */}
 
         </div>  {/*main Contents Wrapper */}     
