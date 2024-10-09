@@ -102,9 +102,7 @@ const Login = () => {
     setFormData({ ...formData, [name]: value });
 };
 
-  return (
-    <div>
-    
+  return (  
     <div className="LoginPage relative">
       {/*Navbar */}
       <div className='Navbar'>
@@ -113,8 +111,8 @@ const Login = () => {
 
       {/*Main Contents */}
       <div className="MainContent block mt-[100px] pt-[20px] lg:bg-loginSignUp bg-cover bg-no-repeat ">
-        <div className='MainContentsWrapper pb-[80px] mx-[12px] lg:mx-[270px]'>
-          <div className="LoginCard block mt-[20px] lg:mt-[100px] lg:bg-[#F5FAF9] pt-[20px] pb-[60px] lg:py-[80px] px-[20px] lg:px-[60px] rounded-[24px] lg:rounded-[43px]">
+        <div className='MainContentsWrapper pb-[30px] lg:pb-[80px] mx-[12px] lg:mx-[270px]'>
+          <div className="LoginCard block mt-[20px] lg:mt-[100px] bg-[#F5FAF9] border-solid lg:border-none border-[0.3px] border-[#0000008F] shadow-lg lg:shadow-none shadow-[#00000040] pt-[20px] pb-[60px] lg:py-[80px] px-[20px] lg:px-[60px] rounded-[24px] lg:rounded-[43px]">
 
             {/*CloseButton (Only Visible on Mobile Version) */}
              <Link to="/" className="block lg:hidden">
@@ -180,13 +178,13 @@ const Login = () => {
             {/*Login Alternatives */}
             <div className='LoginAlternatives block mx-[50px] lg:mx-auto lg:flex justify-center mt-[30px] lg:mt-[10px]'>
               
-                  {/*Login with Google */}
+              {/*Login with Google */}
               <div className="LoginViaGoogle flex justify-between lg:justify-center lg:mx-[10px] space-x-[20px] lg:space-x-[10px] items-center">
                 <p className="text-start text-black text-[12px] font-[700] font-inter whitespace-nowrap">Login with google</p>
                 <div className='h-[34px] w-[34px] cursor-pointer'>
                     <img src="/static/media/googleIcon.png" alt="Google Image" className="w-full h-full" />
                 </div>
-              </div> {/*Login with Google */}
+              </div>
 
               {/*Login with Facebook */}
               <div className='LoginViaFacebook flex justify-between lg:justify-center lg:mx-[10px] space-x-[20px] lg:space-x-[10px] items-center'>
@@ -194,14 +192,12 @@ const Login = () => {
                 <div className='w-[34px] h-[30px] cursor-pointer'>
                   <img src="/static/media/facebookIcon.png" alt="Login by Facebook" className="w-full h-full" />
                 </div>
-              </div> {/*Login with Facebook */}
+              </div> 
 
               {/*Forgot Password (Only Visile on Desktop Devices*/}
               <div className='ForgotPassword hidden lg:block mx-[10px] cursor-pointer'>
                 <p className='text-start font-inter font-[700] text-[17px] text-[#434AF6] '>Forgot Password ?</p>
-             
               </div>
-              
             </div> {/*Login Alternatives */}
           
             {/*Don't Have Account */}
@@ -213,8 +209,7 @@ const Login = () => {
         </div> {/*MainContentsWrapper */}
       </div> {/*main Contents */}
     </div> //Login page
-    </div>
-            
+   
   );
 };
 
