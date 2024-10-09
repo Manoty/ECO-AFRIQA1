@@ -118,7 +118,7 @@ class Product(models.Model):
     desc = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     qtty = models.IntegerField(default=0)
-    unit = models.CharField(max_length=250, null=True,
+    unit = models.CharField(max_length=255, null=True,
                             blank=True, default="PACKET")
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name='products', blank=True, null=True)
@@ -200,14 +200,10 @@ class Review(models.Model):
 
 
 class Farmer(models.Model):
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name='farmer', blank=True, null=True)
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=15)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.user.username  # Use the username field from the User model
 
 
 class Garden(models.Model):
