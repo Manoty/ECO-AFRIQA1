@@ -4,15 +4,14 @@ import { CiCircleCheck } from "react-icons/ci";
 import { ProfileContext } from '../../context/ProfileContext';
 
 function AccountInformation() {
-    // Single state object for all fields
     const { profile, loading, error } = useContext(ProfileContext);
 
     const [fields, setFields] = useState({
         firstName: profile?.first_name,
         lastName: profile?.last_name,
         email:profile?.email,
-        phone:"+123 456 789",
-        location:"Heights Apartments, Ruiru"
+        phone:profile?.profile.phone,
+        location:profile?.profile.location
     });
 
     // State to track which field is being edited

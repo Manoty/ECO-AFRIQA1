@@ -4,11 +4,13 @@ import Nav from '../../Nav/Navbar';
 import { CartContext } from "../../context/CartContext";
 import axios from "axios";
 import { getCsrfToken } from "../../../utils/getCsrfToken";
+import { ProfileContext } from "../../context/ProfileContext";
 
 function Mpesa2() {
 
   const { cartItems, totalPrice, delivery } = useContext(CartContext);
 
+  const { profile } = useContext(ProfileContext);
  // Example order data to send (based on your app's structure)
  const orderData = {
   customer: {
@@ -121,11 +123,9 @@ const handleCheckout = async () => {
     {/* Container for Input Boxes */}
     <div className="flex flex-col space-y-0 mt-2">
         <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-            <input 
+            <p 
                 className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
-                placeholder="First Name" 
-                value={'Owner:           Maria Lisa'} 
-            />
+            >Name:   {profile?.first_name}  {profile?.last_name}</p>
             <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]"/>
         </div>
 
