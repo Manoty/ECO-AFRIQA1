@@ -137,7 +137,7 @@ function Nav() {
                   <p className="hover:bg-[#008000] cursor-pointer text-start px-[20px] py-[12px] text-[22px] text-white hover:text-white">Garden Equipment</p>
                 </Link>
 
-                <Link to="/">
+                <Link to="/installation">
                   <p className="hover:bg-[#008000] cursor-pointer text-start px-[20px] py-[12px] text-[22px] text-white hover:text-white">Installations</p>
                 </Link>
               </div>

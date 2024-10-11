@@ -1,38 +1,43 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Banner() {
   return (
-    <section id="promotion" className="hidden lg:flex relative h-[198.251px] lg:h-[570px] w-auto bg-gradient-to-t from-[#FF0C1A]   via-[#1A1A1A] via-[20%] to-[#1A1A1A]  pl-[14px] rounded-[29px] mx-[10px]  lg:mt-[67px]">
-        
-        <p className="block">
-          <h3 className="text-[13.727px] lg:text-[40px] font-[800] font-inter text-[#F5FAF9] w-[292.3px] lg:w-[870px]"><span className="freshlyGreenText">15% OFF</span> ON ALL FARM PRODUCE TO THE FIRST 500 NEW USERS WHO <span className="text-red-600">SIGN UP</span>ON OUR WEBSITE</h3>
-          <p className="text-[5.148px] lg:text-[15px] w-[112.888px] lg:w-[336px] text-white text-start font-josefin font-[600] leading-[6.692px] lg:leading-[19.5px] lg:ml-[16px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
-          <p className="text-[5.148px] lg:text-[15px] w-[112.888px] lg:w-[336px] text-white text-start font-josefin font-[600] leading-[6.692px] lg:leading-[19.5px] lg:ml-[16px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+    <section id="promotion" className="Banner mx-[6px]  lg:mx-[10px] mt-[60px]  lg:mt-[67px]">
+      <div className='BannerWrapper relative bg-gradient-to-t from-[#FF0C1A]   via-[#1A1A1A] via-[20%] to-[#1A1A1A] pl-[8px] lg:pl-[14px] rounded-[10px] lg:rounded-[29px]'>
+         {/*Banner Images */}
+        <div className='BannerImage absolute right-0 bottom-0'>
+          <div className='Image Wrapper  lg:w-[488px] h-[180px] lg:h-[500px]'>
+             <img src="/static/media/BannerImage.png"  alt="BannerImg" className='w-full h-full'/>
+          </div>
+        </div> {/*Banner Images */}
 
-        </p>
+        {/*Descriptions Block */}
+        <div className='Block relative pt-[10px] lg:pt-[28px] pb-[22px] lg:pb-[110px] mr-[140px] lg:mr-[500px]'>
+          {/*Banner Header */}
+          <div className='BannerHeader'>
+            <h3 className="text-[10px] lg:text-[40px] font-[800] font-inter text-[#F5FAF9] my-0"><span className="freshlyGreenText">15% OFF</span> ON ALL FARM PRODUCE TO THE FIRST 500 NEW USERS WHO <span className="text-red-600">SIGN UP</span> ON OUR WEBSITE</h3>
+          </div>
 
-        <button className="hidden lg:flex absolute lg:bottom-[164px] lg:left-[433px] h-[48px] w-[236px] bg-[#008000] text-white rounded-[15px] text-[25px] font-inter font-[500] border-none cursor-pointer active:scale-90 transition-all duration-500 ease-out">Click Here</button>
-
-
-        {/* <p className="text-[5.148px] lg:text-[15px] w-[112.888px] lg:w-[336px] text-white text-start font-josefin font-[600] leading-[6.692px] lg:leading-[19.5px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p> */}
-
-        <div>
-            <img className="absolute lg:-bottom-[22px] lg:right-[180px] h-[128.761px] w-[145.814px] lg:h-[379px] lg:w-[434px] z-[11]" src="/static/media/banner1.png"  alt="BannerImg"/>
-            <img className="absolute lg:-bottom-[22px] lg:right-[180px] h-[59.778px] w-[85.318px] lg:h-[243.246px] lg:w-[266.767px] z-[10]" src="/static/media/banner5.png"  alt="BannerImg"/>
-            <img className="absolute lg:-bottom-[22px] lg:right-[40px] h-[59.778px] w-[85.318px] lg:h-[243.246px] lg:w-[266.767px] z-[10]" src="/static/media/banner6.png"  alt="BannerImg"/>
-
-
-
-            <img className="absolute -top-[22px] lg:right-[50px] h-[85.57px] w-[93.066px] lg:h-[244px] lg:w-[277px] z-[10]" src="/static/media/banner2.png"  alt="BannerImg"/>
-            <img className="absolute top-[152px] lg:right-[90px] h-[85.57px] w-[93.066px] lg:h-[244px] lg:w-[277px] z-[10]" src="/static/media/banner4.png"  alt="BannerImg"/>
-
-            <img className="absolute top-[152px] lg:right-[0px] h-[85.57px] w-[93.066px] lg:h-[244px] lg:w-[277px] z-[10]" src="/static/media/banner3.png"  alt="BannerImg"/>
-           
-            <img className="absolute top-[152px] lg:right-[140px] h-[85.57px] w-[93.066px] lg:h-[244px] lg:w-[277px] z-[10]" src="/static/media/banner9.png"  alt="BannerImg"/>
-
-
-        </div>
-    </section>
+          {/*Banner Descriptions and Button */}
+          <div className='DescAndButton mt-[10px] lg:mt-[40px] bg-yellow-30'>
+            <div className='Descriptions block mr-[110px] lg:mr-[436px]'>
+              <p className="text-[6px] lg:text-[15px] text-white text-start font-josefin font-[600] my-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+            </div>
+            
+            <div className='DescriptionAndButton mt-[10px] lg:mt-[30px] grid grid-cols-2'>
+              <div className='Descriptions block mr-[10px] lg:mr-0'>
+                  <p className="text-[6px] lg:text-[15px] text-white text-start font-josefin font-[600] my-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+              </div>
+              <Link to="/SignUp" className='Button block h-fit w-fit  lg:mx-auto bg-[#008000] cursor-pointer rounded-[6px] lg:rounded-[15px]  active:scale-90 transition-all duration-500 ease-out'>
+                  <p className="text-center  text-white text-[8px] lg:text-[20px] font-inter font-[700] py-[4px] lg:py-[8px] px-[10px] lg:px-[40px] my-0 ">Click Here</p>
+              </Link>
+            </div> 
+          </div> {/*Banner Desctiptions and Button */}
+        </div> {/*Descriptions Block */}
+  
+      </div> {/*Banner Wrapper */}
+    </section> //Banner
   )
 }
 

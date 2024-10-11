@@ -48,9 +48,13 @@ Accessible after successful registration and email verification:
 - Django
 - packages
 - React 
-  
-# Steps
 
+> [!WARNING]
+> Don't change the `settings.py` without informing Backend Team leader 
+> DON'T DELETE THE `package.json` file!
+# Steps
+> [!TIP]
+> code with us
 1. Clone the repository:
 ```bash
     git clone https://github.com/Manoty/ECO-AFRIQA.git

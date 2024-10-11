@@ -118,7 +118,7 @@ class Product(models.Model):
     desc = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     qtty = models.IntegerField(default=0)
-    unit = models.CharField(max_length=250, null=True,
+    unit = models.CharField(max_length=255, null=True,
                             blank=True, default="PACKET")
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name='products', blank=True, null=True)
@@ -200,14 +200,10 @@ class Review(models.Model):
 
 
 class Farmer(models.Model):
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name='farmer', blank=True, null=True)
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=15)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.user.username  # Use the username field from the User model
 
 
 class Garden(models.Model):
@@ -530,6 +526,7 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification for {self.user.username} at {self.timestamp}"
+    
 
 
 import uuid
@@ -581,6 +578,29 @@ class FAQMainPage(models.Model):
 
  
     
+# payment transation model
+class Transaction(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+        ('retry', 'Retry')
+    ]
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=12)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    mpesa_receipt_number = models.CharField(max_length=100, blank=True, null=True)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='pending')
+    transaction_date = models.DateTimeField(auto_now_add=True)
+    error_message = models.TextField(blank=True, null=True)  # Store error messages, if any
+    retry_count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.user} - {self.amount}'
+
+    def can_retry(self):
+        return self.retry_count < 3 and self.status == 'failed'  # Set retry limit to 3 attempts
 
 
 
@@ -588,3 +608,8 @@ class FAQMainPage(models.Model):
 
 
 
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    location = models.CharField(max_length=255, blank=True, null=True)
+    phone = models.CharField(max_length=15, blank=True, null=True)

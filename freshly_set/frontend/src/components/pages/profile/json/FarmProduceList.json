@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "Crop": "Tomatoes",
+        "GrownBy": "Hydroponic System",
+        "BagsHarvested": 20,
+        "BagsSold": 10
+    },
+    {
+        "id": 2,
+        "Crop": "Garlic",
+        "GrownBy": "Raised Bed Garden",
+        "BagsHarvested": 30,
+        "BagsSold": 15
+    },
+    {
+        "id": 3,
+        "Crop": "Tomatoes",
+        "GrownBy": "Hydroponic System",
+        "BagsHarvested": 20,
+        "BagsSold": 30
+    },
+    {
+        "id": 4,
+        "Crop": "Tomatoes",
+        "GrownBy": "Raised Bed Garden",
+        "BagsHarvested": 40,
+        "BagsSold": 65
+    },
+    {
+        "id": 5,
+        "Crop": "Garlic",
+        "GrownBy": "Hydroponic System",
+        "BagsHarvested": 20,
+        "BagsSold": 30
+    },
+    {
+        "id": 6,
+        "Crop": "Fruitss",
+        "GrownBy": "Raised Bed Garden",
+        "BagsHarvested": 70,
+        "BagsSold": 20
+    },
+    {
+        "id": 7,
+        "Crop": "Tomatoes",
+        "GrownBy": "Hydroponic System",
+        "BagsHarvested": 22,
+        "BagsSold": 16
+    },
+    {
+        "id": 8,
+        "Crop": "Spices",
+        "GrownBy": "Raised Bed Garden",
+        "BagsHarvested": 40,
+        "BagsSold": 20
+    },
+    {
+        "id": 9,
+        "Crop": "Tomatoes",
+        "GrownBy": "Hydroponic System",
+        "BagsHarvested": 10,
+        "BagsSold": 10
+    },
+    {
+        "id": 10,
+        "Crop": "Legumes",
+        "GrownBy": "Hydroponic System",
+        "BagsHarvested": 100,
+        "BagsSold": 50
+    }
+]

@@ -1,10 +1,19 @@
 from datetime import timedelta
-# from logging import config
 from logging import config
 import os
 from pathlib import Path
+from decouple import config
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+
+import environ
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -57,6 +66,9 @@ REST_FRAMEWORK = {
 # CSRF_COOKIE_SECURE = True
 # SESSION_COOKIE_HTTPONLY = True
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+
+
 
 
 # made it False as we are still in development , it is rejecting the site without secured requet.
@@ -113,12 +125,12 @@ WSGI_APPLICATION = 'freshly_set.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
+         'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT'),
     }
 }
 
@@ -167,6 +179,32 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'user@example.com'
 EMAIL_HOST_PASSWORD = 'fake-email-password'
 EMAIL_USE_TLS = True
+
+# Payment setting
+# Initialize environment variables
+env = environ.Env()
+
+environ.Env.read_env(env_file=str(BASE_DIR) + '/.env')  
+# MPESA Configuration
+
+MPESA_API_URL = os.environ.get('MPESA_API_URL')
+
+
+if not MPESA_API_URL:
+    raise ImproperlyConfigured("Set the MPESA_API_URL environment variable")
+MPESA_API_URL = env('MPESA_API_URL')
+MPESA_SHORTCODE = env('MPESA_SHORTCODE')
+MPESA_PASSKEY = env('MPESA_PASSKEY')
+MPESA_CONSUMER_KEY = env('MPESA_CONSUMER_KEY')
+MPESA_CONSUMER_SECRET = env('MPESA_CONSUMER_SECRET')
+MPESA_CALLBACK_URL = env('MPESA_CALLBACK_URL')
+
+
+# Retry configurations for payments
+MAX_RETRIES = 3  # Number of retry attempts
+RETRY_DELAY = 5  # Delay between retries in seconds
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -243,3 +281,8 @@ LOGGING = {
         },
     },
 }
+
+
+
+
+

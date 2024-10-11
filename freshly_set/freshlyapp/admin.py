@@ -124,4 +124,5 @@ from .models import FAQMainPage
 class FAQMainPageAdmin(admin.ModelAdmin):
     list_display = ['question']
     search_fields = ['question']
+admin.site.register(Profile)
 
