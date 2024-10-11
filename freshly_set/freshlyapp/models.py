@@ -529,6 +529,34 @@ class Notification(models.Model):
     
 
 
+# payment transation model
+class Transaction(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+        ('retry', 'Retry')
+    ]
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=12)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    mpesa_receipt_number = models.CharField(max_length=100, blank=True, null=True)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='pending')
+    transaction_date = models.DateTimeField(auto_now_add=True)
+    error_message = models.TextField(blank=True, null=True)  # Store error messages, if any
+    retry_count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.user} - {self.amount}'
+
+    def can_retry(self):
+        return self.retry_count < 3 and self.status == 'failed'  # Set retry limit to 3 attempts
+
+
+
+
+
 import uuid
 from django.utils import timezone
 
@@ -601,10 +629,6 @@ class Transaction(models.Model):
 
     def can_retry(self):
         return self.retry_count < 3 and self.status == 'failed'  # Set retry limit to 3 attempts
-
-
-
-
 
 
 

@@ -398,6 +398,7 @@ class CartSerializer(serializers.ModelSerializer):
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
+
         fields = ['id', 'message', 'read', 'timestamp','user']
     
 from rest_framework import serializers
