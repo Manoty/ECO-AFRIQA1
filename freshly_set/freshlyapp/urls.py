@@ -13,6 +13,20 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
+
+
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+from django.urls import path
+from .views import OrderListCreateView, OrderDetailView
+
+#faq
+from .views import FAQListView
+from .views import FAQMainPageListView
+
+
+
+
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,

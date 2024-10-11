@@ -1,8 +1,60 @@
-import React from "react";
+import React, { useContext, useState } from "react"; // Import useState here
 import { Link } from "react-router-dom";
 import Nav from '../../Nav/Navbar';
+import { CartContext } from "../../context/CartContext"; // Ensure you have CartContext defined
+import axios from "axios";
+import { getCsrfToken } from "../../../utils/getCsrfToken"; // Make sure this utility is available
 
 function Credit() {
+  const { cartItems, totalPrice, delivery } = useContext(CartContext);
+
+  // State variables for card inputs
+  const [cardNumber, setCardNumber] = useState(''); // State for card number
+  const [expiryDate, setExpiryDate] = useState(''); // State for expiry date
+  const [cvc, setCvc] = useState(''); // State for CVC
+
+
+
+
+
+  // Order data structure
+  const orderData = {
+    customer_name: 'friday', // Replace with actual data as needed
+    customer_email: 'johndoe@example.com', // Replace with actual data as needed
+    customer_phone: '+254899098678', // Replace with actual data as needed
+    items: cartItems.map(item => ({
+      product_name: item.name,
+      product_price: item.price,
+      product_quantity: item.qtty,
+    })),
+    total_price: cartItems.reduce((sum, item) => sum + item.price * item.qtty, 0),
+    delivery_fee: delivery,
+    payment_method: 'credit/debit', // Adjust based on actual payment method
+  };
+
+  const handleCheckout = async () => {
+    const csrfToken = getCsrfToken();
+    try {
+      const response = await axios.post('http://localhost:8000/orders/', orderData, { 
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,
+        },
+        withCredentials: true,
+      });
+      if (response.status === 201) {
+        console.log('Order created:', response.data);
+        alert(`Order placed successfully! Your Order ID is ${response.data.order_id}`);
+      } else {
+        console.error('Unexpected response:', response);
+        alert('Unexpected response from the server.');
+      }
+    } catch (error) {
+      console.log('Error response:', error.response?.data);
+      alert('There was an issue placing the order. Check the console for more details.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#F5FAF9] overflow-x-hidden">
       <Nav /> {/* The Upper NavBar */}
@@ -16,6 +68,7 @@ function Credit() {
 
       {/* Heading */}
       <h1 className="lg:text-center text-center mt-6 text-[35px] font-bold">Checkout</h1>
+
 
       <div className="InnerContents px-[4px] lg:px-[40px] mx-[6px] lg:mx-[50px] lg:my-[20px] rounded-[20px] border-gray-400 border-[2px] shadow-lg shadow-white lg:shadow-gray-700 mb-[40px]">
         
@@ -56,7 +109,9 @@ function Credit() {
                     <input
                       className="border-none outline-none font-inter font-[700] text-[16px] w-full"
                       placeholder="Card Number"
-                      value={'Card Number'}
+              
+                      value={cardNumber} // Updated: Controlled input
+                      onChange={(e) => setCardNumber(e.target.value)} // Updated: Set state on change
                     />
                     <span className="ml-2 text-red-500 text-[16px]">*</span>
                   </div>
@@ -68,7 +123,9 @@ function Credit() {
                       <input
                         className="border-none outline-none font-inter font-[700] text-[16px] w-full"
                         placeholder="Expiry Date (MM/YY)"
-                        value={'Expiry Date'}
+                        
+                        value={expiryDate} // Updated: Controlled input
+                        onChange={(e) => setExpiryDate(e.target.value)} // Updated: Set state on change
                       />
                       <span className="ml-2 text-red-500 text-[16px]">*</span>
                     </div>
@@ -78,7 +135,9 @@ function Credit() {
                       <input
                         className="border-none outline-none font-inter font-[700] text-[16px] w-full"
                         placeholder="CVC/CVV"
-                        value={'CVC/CVV'}
+                        
+                        value={cvc} // Updated: Controlled input
+                        onChange={(e) => setCvc(e.target.value)} // Updated: Set state on change
                       />
                       <span className="ml-2 text-red-500 text-[16px]">*</span>
                     </div>
@@ -162,17 +221,17 @@ function Credit() {
     <div className="Metrics mx-[30px] lg:mt-12 lg:mx-[40px]">
               <div className="flex justify-between mt-[14px] lg:mt-[8px]">
                 <p className="text-start font-[900] my-0 font-inter text-[#000000B2] text-[16px] lg:text-[18px] ">SUB TOTAL</p>
-                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">KSH 500</p>
+                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">{totalPrice}</p>
               </div>
 
               <div className="flex justify-between mt-[14px] lg:mt-[20px]">
                 <p className="text-start font-[900] my-0 font-inter text-[#000000B2] text-[16px] lg:text-[18px]">DELIVERY</p>
-                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">KSH 200</p>
+                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">{delivery}</p>
               </div>
 
               <div className="flex justify-between mt-[14px] lg:mt-[20px]">
-                <p className="text-start font-[900] my-0 font-inter text-[#000000B2] text-[16px] lg:text-[18px]">Tptal</p>
-                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">KSH 1000</p>
+                <p className="text-start font-[900] my-0 font-inter text-[#000000B2] text-[16px] lg:text-[18px]">Total</p>
+                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">{totalPrice + delivery}</p>
               </div>
 
              {/* Terms and Complete Payment Button */}
@@ -180,7 +239,10 @@ function Credit() {
               <p className="text-[16px] text-gray-600 mb-4  font-inter">
                 By completing purchase, you have accepted our Terms and Conditions.
               </p>
-              <button className="  font-inter w-full text-[18px] font-bold text-white bg-green-700 py-3 mb-32 rounded-[12px] cursor-pointer active:scale-90 transition-all duration-100 ease-out">
+              <button
+              onClick={handleCheckout} // Updated: Directly on the button
+              className="  font-inter w-full text-[18px] font-bold text-white bg-green-700 py-3 mb-32 rounded-[12px] cursor-pointer active:scale-90 transition-all duration-100 ease-out">
+              
                 Complete Payment
               </button>
             </div>

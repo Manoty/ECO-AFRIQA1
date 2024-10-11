@@ -1,10 +1,11 @@
+from .models import FAQMainPage
 from .models import Profile
 import os
 from PIL import Image
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from .models import Blog, Product, Garden, Comment, Like, Share, Poll, Vote, IDVerification, Review, Farmer, Cart, CartItem, Banner, Category, Notification
+from .models import Blog, Product, Garden, Comment, Like, Share, Poll, Vote, IDVerification, Review, Farmer, Cart, CartItem, Banner, Category, Notification, FAQMainPage, FAQ
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework.validators import ValidationError
 from django.contrib.auth.models import User
@@ -425,4 +426,44 @@ class CartSerializer(serializers.ModelSerializer):
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
+        fields = ['id', 'message', 'read', 'timestamp', 'user']
+
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = ['product_name', 'product_price', 'product_quantity']
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = ['order_id', 'customer_name', 'customer_email', 'customer_phone',
+                  'delivery_fee', 'total_price', 'payment_method', 'items', 'created_at', 'updated_at']
+        read_only_fields = ['order_id', 'created_at', 'updated_at']
+
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        order = Order.objects.create(**validated_data)
+        for item_data in items_data:
+            OrderItem.objects.create(order=order, **item_data)
+        return order
+
+
+class FAQSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FAQ
+        fields = ['id', 'question', 'description']
+
+
+# serializers.py
+
+
+class FAQMainPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FAQMainPage
+        fields = ['id', 'question', 'answer']
+
         fields = ['id', 'message', 'read', 'timestamp', 'user']
