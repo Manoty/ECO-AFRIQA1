@@ -418,61 +418,7 @@ class IDVerification(models.Model):
         
         return False
     
-from django.db import models
-from django.contrib.auth.models import User
-from .models import Product  # Ensure Product model is already defined
 
-class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    product_qty = models.IntegerField()
-
-    def __str__(self):
-        return f"{self.user.username}'s Cart"
-
-    
-
-
-# Order model to store user and order details
-class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    fname = models.CharField(max_length=150, null=False)
-    lname = models.CharField(max_length=150, null=False)
-    email = models.CharField(max_length=150, null=False)
-    phone = models.CharField(max_length=150, null=False)
-    address = models.TextField(null=False)
-    city = models.CharField(max_length=150, null=False)
-    state = models.CharField(max_length=150, null=False)
-    country = models.CharField(max_length=150, null=False)
-    pincode = models.CharField(max_length=150, null=False)
-    total_price = models.CharField(max_length=150, null=False)
-    payment_id = models.CharField(max_length=150, null=False)
-    
-    ORDER_STATUS = (
-        ('pending', 'Pending'),
-        ('out_for_shipping', 'Out for Shipping'),
-        ('completed', 'Completed'),
-    )
-    
-    status = models.CharField(max_length=150, choices=ORDER_STATUS, default='pending')
-    message = models.TextField(null=True)
-    tracking_no = models.CharField(max_length=150, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return '{} - {}'.format(self.tracking_no, self.status)
-
-# OrderItem model to track items in each order
-class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    product = models.ForeignKey('Product', on_delete=models.CASCADE)  # Assuming Product model exists
-    price = models.IntegerField(null=False)
-
-    def __str__(self):
-        return '{} {}'.format(self.order.id, self.product.name)
-
-        return False
 
 # Banners for Updated Marketplace Page
 
@@ -611,6 +557,64 @@ class Transaction(models.Model):
 
 
 
+<<<<<<< HEAD
+import uuid
+from django.utils import timezone
+
+class Order(models.Model):
+    order_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, null=True, blank=True)
+    customer_name = models.CharField(max_length=100, null=True, blank=True)  # Allows null and blank values
+    customer_email = models.EmailField(null=True, blank=True)                # Allows null and blank values
+    customer_phone = models.CharField(max_length=15, null=True, blank=True)  # Allows null and blank values
+    delivery_fee = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Nullable
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)   # Nullable
+    payment_method = models.CharField(max_length=20, null=True, blank=True)  # Nullable
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Order {self.order_id}"
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    product_name = models.CharField(max_length=100, default="Unknown Product")  # Default value
+    product_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Default value
+    product_quantity = models.PositiveIntegerField(default=1)  # Default value
+
+    def __str__(self):
+        return f"{self.product_name} - {self.product_quantity} pcs"
+    
+    
+    
+from django.db import models
+
+class FAQ(models.Model):
+    question = models.CharField(max_length=255)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.question
+
+# models.py
+from django.db import models
+
+class FAQMainPage(models.Model):
+    question = models.CharField(max_length=255)
+    answer = models.TextField()
+
+    def __str__(self):
+        return self.question
+
+ 
+    
+
+
+
+
+
+
+
+=======
 
 
 
@@ -618,3 +622,4 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
+>>>>>>> main

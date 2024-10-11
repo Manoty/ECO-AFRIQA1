@@ -420,4 +420,50 @@ class CartSerializer(serializers.ModelSerializer):
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
+<<<<<<< HEAD
+        fields = ['id', 'message', 'read', 'timestamp','user']
+    
+from rest_framework import serializers
+from .models import Order, OrderItem
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = ['product_name', 'product_price', 'product_quantity']
+
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True)
+    
+    class Meta:
+        model = Order
+        fields = ['order_id', 'customer_name', 'customer_email', 'customer_phone', 'delivery_fee', 'total_price', 'payment_method', 'items', 'created_at', 'updated_at']
+        read_only_fields = ['order_id', 'created_at', 'updated_at']
+
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        order = Order.objects.create(**validated_data)
+        for item_data in items_data:
+            OrderItem.objects.create(order=order, **item_data)
+        return order
+    
+    
+from rest_framework import serializers
+from .models import FAQ
+
+class FAQSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FAQ
+        fields = ['id', 'question', 'description']
+
+# serializers.py
+from rest_framework import serializers
+from .models import FAQMainPage
+
+class FAQMainPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FAQMainPage
+        fields = ['id', 'question', 'answer']
+
+=======
         fields = ['id', 'message', 'read', 'timestamp', 'user']
+>>>>>>> main

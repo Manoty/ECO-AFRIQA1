@@ -53,6 +53,8 @@ from django.utils import timezone
 import json
 from django.views.decorators.http import require_http_methods
 
+<<<<<<< HEAD
+=======
 # imports for checkout
 
 from django.contrib.auth.decorators import login_required
@@ -60,13 +62,9 @@ from .models import Cart, Order, OrderItem, Product
 from .mpesa_utils import lipa_na_mpesa_online
 
 import random
+>>>>>>> main
 
 
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework import status
-from .models import Order, OrderItem
-from .serializers import OrderSerializer, OrderItemSerializer
 
 
 # This is for typical django frontend html
@@ -75,53 +73,6 @@ from rest_framework import status
 import logging
 
 logger = logging.getLogger(__name__)
-
-"""
-class UserRegister(APIView):
-    permission_classes =(permissions.AllowAny,)
-    throttle_classes = []
-
-    def post(self, request):
-        clean_data = custom_validation(request.data)
-        serializer = UserRegisterSerializer(data=clean_data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.create(clean_data)
-            if user:
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-
-class UserLogin(APIView):
-     permission_classes =(permissions.AllowAny,)
-     authentication_classes=(SessionAuthentication,)
-     throttle_classes = []
-
-     def post(self, request):
-         data = request.data
-         assert validate_email(data)
-         assert validate_password(data)
-         serializer = UserLoginSerializer(data=data)
-         if serializer.is_valid(raise_exception=True):
-             user= serializer.check_user(data)
-             login(request, user)
-             return Response(serializer.data, status= status.HTTP_200_OK)
-
-class UserView(APIView):
-    permission_classes = (permissions,IsAuthenticated, )
-    authentication_classes = (SessionAuthentication,)
-    throttle_classes = []
-
-
-    def get(self, request):
-        serializer = UserSerializer(request.user)
-        return Response({'user':serializer.data}, status=status.HTTP_200_OK)
-
-class UserLogout(APIView):
- throttle_classes = []
-
-    def post(self, request):
-        logout(request)
-        return Response(status=status.HTTP_200_OK)
-"""
 
 
 def index(request):
@@ -396,14 +347,7 @@ class BlogViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-# query for blog articles
-"""
-- The search_blog function handles HTTP GET requests to search for blog posts by title or content.
-- If a query parameter q is provided, it filters the blog posts to include those where the title or
- content contains the query string.
-- If no query is provided, it returns all blog posts.
-- The result is returned as a JSON response with only the id, title, and content fields.
-"""
+
 
 
 @api_view(['GET'])
@@ -604,6 +548,8 @@ class ProductListView(APIView):
         serializer = ProductSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
 
+<<<<<<< HEAD
+=======
 
 # code for checkout
 # views.py
@@ -795,6 +741,7 @@ def view_order(request, tracking_no):
     except Exception as e:
         print(f"Error viewing order: {str(e)}")
         return Response({"error": "Failed to fetch order details"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+>>>>>>> main
 
 
 # # Banner for Marketplace Page
@@ -970,6 +917,52 @@ class NotificationListView(APIView):
 
         return response
 
+<<<<<<< HEAD
+from rest_framework import generics
+from rest_framework.permissions import AllowAny
+from .models import Order
+from .serializers import OrderSerializer
+
+# List and Create Orders (No authentication required for creating orders)
+class OrderListCreateView(generics.ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [AllowAny]  # Allow anyone to create an order
+
+# Retrieve, Update, and Delete Order (Still requires authentication)
+class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
+    lookup_field = 'order_id'
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    # You can keep the default permission classes here (IsAuthenticated by default)
+
+
+
+from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import FAQ  # Assuming your FAQ model is named FAQ
+from .serializers import FAQSerializer
+
+class FAQListView(APIView):
+    permission_classes = [AllowAny]  # This line allows unrestricted access to this view
+
+    def get(self, request, *args, **kwargs):
+        faqs = FAQ.objects.all()
+        serializer = FAQSerializer(faqs, many=True)
+        return Response(serializer.data)
+
+
+# views.py
+from rest_framework import generics
+from .models import FAQMainPage
+from .serializers import FAQMainPageSerializer
+
+class FAQMainPageListView(generics.ListAPIView):
+    queryset = FAQMainPage.objects.all()
+    serializer_class = FAQMainPageSerializer
+    permission_classes = [AllowAny]
+=======
 # Payment views
 
 
@@ -1035,3 +1028,4 @@ class FarmerListView(APIView):
 
         serializer = FarmerSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
+>>>>>>> main
