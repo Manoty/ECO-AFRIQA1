@@ -1,9 +1,14 @@
+from .models import *
+from .serializers import FarmerSerializer
+from .serializers import UserProfileSerializer
+import json
 from .models import CartItem
 from .serializers import CartSerializer, CartItemSerializer
 from rest_framework.pagination import PageNumberPagination
 from .serializers import ProductSerializer
 from django.shortcuts import render, redirect
 from django.middleware.csrf import get_token
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -48,6 +53,16 @@ from django.utils import timezone
 import json
 from django.views.decorators.http import require_http_methods
 
+<<<<<<< HEAD
+=======
+# imports for checkout
+
+from django.contrib.auth.decorators import login_required
+from .models import Cart, Order, OrderItem, Product
+from .mpesa_utils import lipa_na_mpesa_online
+
+import random
+>>>>>>> main
 
 
 
@@ -224,7 +239,6 @@ class BlogListCreateView(generics.ListCreateAPIView):
 """
 
 
-@csrf_exempt
 @api_view(['POST', 'GET'])
 @permission_classes([AllowAny])
 def Register(request):
@@ -255,7 +269,6 @@ def Register(request):
 
     # Return errors if validation fails
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class BlogRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -365,6 +378,8 @@ class PollListCreateView(generics.ListCreateAPIView):
 class PollDetailView(generics.RetrieveAPIView):
     queryset = Poll.objects.all()
     serializer_class = PollSerializer
+
+
 @permission_classes([AllowAny])
 class PollListView(APIView):
     def get(self, request):
@@ -372,20 +387,24 @@ class PollListView(APIView):
         serializer = PollSerializer(polls, many=True)
         return Response(serializer.data)
 
+
 @permission_classes([AllowAny])
 class PollVoteView(APIView):
     def put(self, request, pk):
         poll = Poll.objects.get(pk=pk)
         choice = request.data.get('choice')
-        user = User.objects.get(id=request.user.id)  # Example of getting the logged-in user
+        # Example of getting the logged-in user
+        user = User.objects.get(id=request.user.id)
 
         # Create or update the vote for the poll
         vote, created = Vote.objects.update_or_create(
             poll=poll, user=user,
             defaults={'choice': choice}
         )
-        
+
         return Response({'status': 'vote updated'}, status=status.HTTP_200_OK)
+
+
 @permission_classes([AllowAny])
 @api_view(['POST'])
 def SubmitVote(request):
@@ -398,6 +417,7 @@ def SubmitVote(request):
             'poll': poll.vote_counts()  # Return updated vote counts
         })
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @require_http_methods(["PUT"])
 def vote_poll(request, poll_id):
@@ -419,6 +439,8 @@ def vote_poll(request, poll_id):
 # Verification photo and Id views
 # install bot03
 # to configure aws cli for face recogniotn.
+
+
 class VerifyIDView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -427,15 +449,14 @@ class VerifyIDView(APIView):
             verification = request.user.id_verification
             if verification.verify_user():
                 notification_message = f'Hi {request.user.email}, you have successfully verified your ID'
-                Notification.objects.create(user=request.user, message=notification_message)
+                Notification.objects.create(
+                    user=request.user, message=notification_message)
 
                 return Response({"message": "User successfully verified."}, status=status.HTTP_200_OK)
             else:
                 return Response({"message": "Verification failed. ID or photo did not match."}, status=status.HTTP_400_BAD_REQUEST)
         except IDVerification.DoesNotExist:
             return Response({"error": "ID verification record not found."}, status=status.HTTP_404_NOT_FOUND)
-
-
 
 
 class IDVerificationUpdateView(generics.UpdateAPIView):
@@ -526,9 +547,201 @@ class ProductListView(APIView):
 
         serializer = ProductSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
-    
+
+<<<<<<< HEAD
+=======
+
+# code for checkout
+# views.py
 
 
+@login_required(login_url='loginpage')
+def checkout(request):
+    # Fetch all cart items of the authenticated user
+    raw_cart = Cart.objects.filter(user=request.user)
+
+    # Validate the cart (e.g., check product quantity)
+    for item in raw_cart:
+        if item.product_qty > item.product.quantity:
+            Cart.objects.filter(id=item.id).delete()
+            messages.warning(
+                request, f"Some products were removed due to insufficient stock.")
+
+    # Calculate total price
+    cart_items = Cart.objects.filter(user=request.user)
+    total_price = 0
+    for item in cart_items:
+        total_price += item.product.selling_price * item.product_qty
+
+    context = {
+        'cart_items': cart_items,
+        'total_price': total_price,
+    }
+
+    return render(request, 'store/checkout.html', context)
+
+
+@login_required(login_url='loginpage')
+def place_order(request):
+    if request.method == 'POST':
+        # Create a new order for the user
+        new_order = Order(
+            user=request.user,
+            fname=request.POST.get('fname'),
+            lname=request.POST.get('lname'),
+            email=request.POST.get('email'),
+            phone=request.POST.get('phone'),
+            address=request.POST.get('address'),
+            city=request.POST.get('city'),
+            state=request.POST.get('state'),
+            country=request.POST.get('country'),
+            pincode=request.POST.get('pincode'),
+            payment_mode=request.POST.get('payment_mode'),
+        )
+
+        # Generate a tracking number for the order
+        track_no = 'freshly' + str(random.randint(1111111, 9999999))
+        while Order.objects.filter(tracking_no=track_no).exists():
+            track_no = 'freshly' + str(random.randint(1111111, 9999999))
+
+        new_order.tracking_no = track_no
+        new_order.total_price = calculate_cart_total(request)
+        new_order.save()
+
+        # Add all items from the user's cart to the order
+        cart_items = Cart.objects.filter(user=request.user)
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=new_order,
+                product=item.product,
+                price=item.product.selling_price,
+                quantity=item.product_qty
+            )
+
+            # Update product stock quantity
+            product = Product.objects.get(id=item.product.id)
+            product.quantity -= item.product_qty
+            product.save()
+
+        # Clear the user's cart after order placement
+        Cart.objects.filter(user=request.user).delete()
+        messages.success(request, "Your order has been placed successfully!")
+
+        return redirect('home')
+    else:
+        return redirect('checkout')
+
+
+def calculate_cart_total(request):
+    """Helper function to calculate total cart price"""
+    cart = Cart.objects.filter(user=request.user)
+    total_price = 0
+    for item in cart:
+        total_price += item.product.selling_price * item.product_qty
+    return total_price
+
+
+# Create a new order after checkout
+# Temporary for testing
+@permission_classes([AllowAny])
+@api_view(['POST'])
+def create_order(request):
+    try:
+        # Extract cart items and other order data from request
+        data = request.data
+        serializer = OrderSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            notification_message = f'Hi {request.user.email} you placed your order successfully'
+            Notification.objects.create(
+                user=request.user, message=notification_message)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        # Log and return an error message
+        print(f"Error creating order: {str(e)}")
+        return Response({"error": "Failed to create order"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def login(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    # Authenticate the user
+    user = authenticate(request, username=email, password=password)
+
+    if user is not None:
+        # If authentication is successful, generate a token
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user_id': user.id,
+            'email': user.email,
+        }, status=status.HTTP_200_OK)
+    else:
+        # If authentication fails
+        return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+# View all orders for a user
+@api_view(['GET'])
+def my_orders(request):
+    try:
+        user_orders = Order.objects.filter(user=request.user)
+        serializer = OrderSerializer(user_orders, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(f"Error fetching orders: {str(e)}")
+        return Response({"error": "Failed to fetch orders"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# Cancel an order (allowed only if the status is 'out for shipping')
+@api_view(['POST'])
+def cancel_order(request, tracking_no):
+    try:
+        order = Order.objects.get(tracking_no=tracking_no, user=request.user)
+        if order.status == 'out_for_shipping':
+            order.status = 'cancelled'
+            order.save()
+            notification_message = f'Hi {request.user.email}, your order of ID : {order.id} has been cancelled'
+            Notification.objects.create(
+                user=request.user, message=notification_message)
+
+            return Response({"message": "Order has been cancelled"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Cannot cancel order unless it is 'out for shipping'"}, status=status.HTTP_400_BAD_REQUEST)
+    except Order.DoesNotExist:
+        return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(f"Error cancelling order: {str(e)}")
+        return Response({"error": "Failed to cancel order"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# View specific order details by tracking number
+@api_view(['GET'])
+def view_order(request, tracking_no):
+    try:
+        order = Order.objects.filter(
+            tracking_no=tracking_no, user=request.user).first()
+        if order:
+            order_items = OrderItem.objects.filter(order=order)
+            order_serializer = OrderSerializer(order)
+            items_serializer = OrderItemSerializer(order_items, many=True)
+            return Response({
+                "order": order_serializer.data,
+                "items": items_serializer.data
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(f"Error viewing order: {str(e)}")
+        return Response({"error": "Failed to fetch order details"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+>>>>>>> main
 
 
 # # Banner for Marketplace Page
@@ -651,34 +864,33 @@ def update_quantity(request):
 
 @api_view(['POST'])
 def remove_from_cart(request):
- cart = get_cart_instance2(request)  # Ensure this returns the cart object, not serialized data
- product_id = request.data.get("product_id")
- quantity= request.data.get("quantity")
+    # Ensure this returns the cart object, not serialized data
+    cart = get_cart_instance2(request)
+    product_id = request.data.get("product_id")
+    quantity = request.data.get("quantity")
 
- if not product_id:
+    if not product_id:
         return Response({"error": "Product ID is required"}, status=status.HTTP_400_BAD_REQUEST)
- try:
+    try:
         cart_item = CartItem.objects.get(cart=cart, product_id=product_id)
- except CartItem.DoesNotExist:
+    except CartItem.DoesNotExist:
         return Response({"error": "Product not found in cart"}, status=status.HTTP_404_NOT_FOUND)
 
- if quantity is None:
+    if quantity is None:
         quantity = cart_item.quantity
 
- if quantity < 1:
+    if quantity < 1:
         return Response({"error": "Quantity must be at least 1"}, status=status.HTTP_400_BAD_REQUEST)
 
- if quantity >= cart_item.quantity:
+    if quantity >= cart_item.quantity:
         # Remove item from cart if quantity to remove is greater than or equal to the existing quantity
         cart_item.delete()
         return Response({"success": "Item removed from cart"}, status=status.HTTP_200_OK)
- else:
+    else:
         # Adjust the quantity of the cart item
         cart_item.quantity -= int(quantity)
         cart_item.save()
         return Response({"success": "Item quantity updated in cart"}, status=status.HTTP_200_OK)
-
-
 
 
 class NotificationListView(APIView):
@@ -686,7 +898,8 @@ class NotificationListView(APIView):
 
     def get(self, request, *args, **kwargs):
         # Get all unread notifications ordered by timestamp
-        notifications = Notification.objects.filter(user=request.user.id, read=False).order_by('-timestamp')
+        notifications = Notification.objects.filter(
+            user=request.user.id, read=False).order_by('-timestamp')
 
         # Paginate the results
         paginator = PageNumberPagination()
@@ -704,6 +917,7 @@ class NotificationListView(APIView):
 
         return response
 
+<<<<<<< HEAD
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from .models import Order
@@ -748,3 +962,70 @@ class FAQMainPageListView(generics.ListAPIView):
     queryset = FAQMainPage.objects.all()
     serializer_class = FAQMainPageSerializer
     permission_classes = [AllowAny]
+=======
+# Payment views
+
+
+@csrf_exempt
+def initiate_payment(request):
+    if request.method == 'POST':
+        phone_number = request.POST.get('phone_number')
+        amount = request.POST.get('amount')
+        user = request.user
+
+        # Initiate the M-Pesa payment
+        response = lipa_na_mpesa_online(user, phone_number, amount)
+
+        return JsonResponse({
+            "status": response.status,
+            "message": "Payment initiated" if response.status == 'completed' else "Payment failed",
+            "error": response.error_message if response.status == 'failed' else None
+        })
+
+
+@csrf_exempt
+def mpesa_callback(request):
+    mpesa_response = json.loads(request.body.decode('utf-8'))
+    # Handle the response here (e.g., save the transaction to your database)
+
+    return JsonResponse({"ResultCode": 0, "ResultDesc": "Accepted"})
+
+
+# Fetch user profile
+
+@permission_classes([IsAuthenticated])
+class GetUserProfile(APIView):
+
+    def get(self, request):
+        user = request.user
+        serializer = UserProfileSerializer(user, many=False)
+        return Response(serializer.data)
+
+
+@permission_classes([IsAuthenticated])
+class UpdateUserProfile(APIView):
+
+    def put(self, request):
+        user = request.user
+        serializer = UserProfileSerializer(
+            user, data=request.data, partial=True)  # Allow partial updates
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FarmerListView(APIView):
+    def get(self, request, *args, **kwargs):
+        # Filter farmers based on verification status
+        verified_farmers = Farmer.objects.filter(
+            user__id_verification__is_verified=True)
+
+        paginator = PageNumberPagination()
+        paginator.page_size = 10  # Set the number of items per page
+        result_page = paginator.paginate_queryset(verified_farmers, request)
+
+        serializer = FarmerSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
+>>>>>>> main

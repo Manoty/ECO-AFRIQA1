@@ -1,3 +1,4 @@
+from .models import Profile
 import os
 from PIL import Image
 from django.core.exceptions import ValidationError
@@ -29,6 +30,15 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', '')
         )
+
+        # Create the Profile instance
+        # Profile.objects.create(
+        #     user=user,
+        #     phone=phone,
+        #     location=location,
+        #     remember_me=remember_me
+        # )
+
         return user
 
 
@@ -44,9 +54,44 @@ class UserLoginSerializer(serializers.Serializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
-        fields = ['email', 'username']
+        fields = '__all__'
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['location', 'phone']
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer()
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'profile']
+
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop('profile', {})
+
+        # Update user fields only if provided
+        instance.username = validated_data.get('username', instance.username)
+        instance.email = validated_data.get('email', instance.email)
+        instance.first_name = validated_data.get(
+            'first_name', instance.first_name)
+        instance.last_name = validated_data.get(
+            'last_name', instance.last_name)
+        instance.save()
+
+        # Update profile fields only if provided
+        profile = instance.profile
+        profile.location = profile_data.get('location', profile.location)
+        profile.phone = profile_data.get('phone', profile.phone)
+        profile.save()
+
+        return instance
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -135,15 +180,19 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class FarmerSerializer(serializers.ModelSerializer):
-    # Nested serializer to display product details
-    product = ProductSerializer(read_only=True)
-    product_id = serializers.PrimaryKeyRelatedField(
-        queryset=Product.objects.all(), source='product', write_only=True
-    )  # To allow assignment of product by ID
+    username = serializers.CharField(source='user.username', read_only=True)
+    email = serializers.EmailField(source='user.email', read_only=True)
+    first_name = serializers.CharField(
+        source='user.first_name', read_only=True)
+    last_name = serializers.CharField(source='user.last_name', read_only=True)
+    phone = serializers.CharField(source='user.profile.phone', read_only=True)
+    location = serializers.CharField(
+        source='user.profile.location', read_only=True)
 
     class Meta:
         model = Farmer
-        fields = ['id', 'product', 'product_id', 'name', 'email', 'phone']
+        fields = ['id', 'username', 'email', 'first_name',
+                  'last_name', 'phone', 'location', 'user']
 
 
 class GardenSerializer(serializers.ModelSerializer):
@@ -187,7 +236,6 @@ class ShareSerializer(serializers.ModelSerializer):
 # Polls serializer
 
 
-
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
@@ -208,10 +256,12 @@ class VoteSerializer(serializers.ModelSerializer):
 
         return vote
 
+
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
         fields = ['id', 'poll', 'user', 'choice', 'created_at']
+
 
 class PollSerializer(serializers.ModelSerializer):
     votes = VoteSerializer(many=True, read_only=True)
@@ -271,8 +321,9 @@ class IDVerificationSerializer(serializers.ModelSerializer):
             instance.save()
             return instance
         else:
-            raise serializers.ValidationError("Verification failed. ID number or photo is not correct.")
-        
+            raise serializers.ValidationError(
+                "Verification failed. ID number or photo is not correct.")
+
 
 # Serializer for the Order model
 
@@ -282,20 +333,24 @@ class OrderItemSerializer(serializers.ModelSerializer):
         model = OrderItem
         fields = ['product', 'price', 'quantity']
 
+
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'fname', 'lname', 'email', 'phone', 'address', 'city', 'state', 'country', 'pincode', 'total_price', 'payment_mode', 'status', 'tracking_no', 'created_at', 'items']
-       
+        fields = ['id', 'user', 'fname', 'lname', 'email', 'phone', 'address', 'city', 'state', 'country',
+                  'pincode', 'total_price', 'payment_mode', 'status', 'tracking_no', 'created_at', 'items']
+
         def validate(self, data):
             if not self.context.get('is_verified'):  # Example of a condition
-                raise serializers.ValidationError("Verification failed. ID number or photo is not correct.")
-        
+                raise serializers.ValidationError(
+                    "Verification failed. ID number or photo is not correct.")
+
             return data
 
 # Banner Serializer for Marketplace Page
+
 
 class BannerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -360,14 +415,12 @@ class CartSerializer(serializers.ModelSerializer):
                 {'discount_code': 'Discount code cannot exceed 50 characters.'})
 
         return data
-    
-
-
 
 
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
+<<<<<<< HEAD
         fields = ['id', 'message', 'read', 'timestamp','user']
     
 from rest_framework import serializers
@@ -411,3 +464,6 @@ class FAQMainPageSerializer(serializers.ModelSerializer):
         model = FAQMainPage
         fields = ['id', 'question', 'answer']
 
+=======
+        fields = ['id', 'message', 'read', 'timestamp', 'user']
+>>>>>>> main

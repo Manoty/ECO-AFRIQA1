@@ -86,6 +86,10 @@ export const CartProvider = ({ children }) => {
     calculateTotalPrice();
   }, [cartItems]);
 
+  useEffect(() => {
+    console.log("Local Storage", localStorage)
+  },[])
+
   return (
     <CartContext.Provider value={{ cartItems, addToCart, removeFromCart }}>
     <CartContext.Provider value={{

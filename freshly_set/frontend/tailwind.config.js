@@ -11,6 +11,7 @@ module.exports = {
     },
     extend: { 
       backgroundImage: theme => ({
+        'loginSignUp': "url('/public/static/media/signUpLoginBg.jpg')",
         'metrics-homepage': "url('/public/static/media/mesh.png')",
         'hero-homepage': "url('/public/static/media/HomeHeroBg.png')",
         'services-homepage-installation': "url('/public/static/media/services_1.png')",

@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "Produce": "Tomatoes",
+        "BagsSold": 10,
+        "Amount": "KSH 5,000",
+        "Date": "27/09/24"
+    },
+    {
+        "id": 2,
+        "Produce": "Garlic",
+        "BagsSold": 15,
+        "Amount": "KSH 15,000",
+        "Date": "17/09/24"
+    },
+    {
+        "id": 3,
+        "Produce": "Tomatoes",
+        "BagsSold": 101,
+        "Amount": "KSH 25,000",
+        "Date": "30/09/24"
+    },
+    {
+        "id": 4,
+        "Produce": "Garlic",
+        "BagsSold": 50,
+        "Amount": "KSH 5,000",
+        "Date": "27/11/24"
+    },
+    {
+        "id": 5,
+        "Produce": "Tomatoes",
+        "BagsSold": 32,
+        "Amount": "KSH 5,000",
+        "Date": "27/09/24"
+    },
+    {
+        "id": 6,
+        "Produce": "Garlic",
+        "BagsSold": 10,
+        "Amount": "KSH 5,000",
+        "Date": "23/12/24"
+    },
+    {
+        "id": 7,
+        "Produce": "Legumes",
+        "BagsSold": 10,
+        "Amount": "KSH 5,000",
+        "Date": "7/09/24"
+    },
+    {
+        "id": 8,
+        "Produce": "Garlic",
+        "BagsSold": 10,
+        "Amount": "KSH 5,000",
+        "Date": "20/09/24"
+    },
+    {
+        "id": 9,
+        "Produce": "Tomatoes",
+        "BagsSold": 10,
+        "Amount": "KSH 32,000",
+        "Date": "27/09/24"
+    },
+    {
+        "id": 10,
+        "Produce": "Fruits",
+        "BagsSold": 10,
+        "Amount": "KSH 1,000",
+        "Date": "27/09/24"
+    }
+]

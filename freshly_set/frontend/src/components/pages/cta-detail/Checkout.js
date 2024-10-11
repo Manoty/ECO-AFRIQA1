@@ -3,53 +3,51 @@ import { Link } from 'react-router-dom';
 
 function Checkout() {
   return (
-    <div className="min-h-screen bg-[#F5FAF9] overflow-x-hidden">
-
-      {/* Container for payment mode */}
-      <div className="flex items-center justify-center mt-[200px] px-6">
-        {/* Image and Content Container with Border */}
-        <div className="flex flex-row items-start space-x-4 p-6 rounded-[26px] border border-[rgba(0,0,0,0.20)] bg-white shadow-[0_4px_4px_rgba(0,0,0,0.25)] lg:w-[822px] w-[352px] h-[250px] lg:h-[262px] flex-shrink-0">
-          
-          {/* Success Header */}
-          <div className="SuccessHeader flex flex-col items-start mt-10">
-            <div className="SuccessImage w-[45px] lg:w-[104px]">
-              <img src="/static/media/productPay.png" alt="" className="w-full -mt-[60px]" />
-            </div>
-
-            {/* Back Button */}
-            <div className="BackButton flex justify-start mt-[20px] ml-12">
-              <Link to="/booking">
-                <img src="/static/media/image10.png" alt="Back" className="lg:m-[6px] h-full" />
-              </Link>
+    <div className="Checkout">
+      <div className="CheckoutWrapper py-[20px] lg:py-[40px] px-[18px] lg:px-[40px] my-[120px] lg:my-[40px] mx-[12px] lg:mx-[260px] border-solid border-[0.1px] rounded-[12px] lg:rounded-[24px]  border-[#0000008F] shadow-lg shadow-[#00000040]">
+        {/*Page Header*/}
+        <div className="HeadingAndImage flex justify-start">
+          <div className="ImageContainer block mr-[8px] lg:mr-[30px]">
+            <div className='ImageWrapper block w-[45px] lg:w-[100px] h-[45px] lg:h-[100px]'>
+               <img src="/static/media/productPay.png" alt="Payment Methods" className="w-full h-full" />
             </div>
           </div>
-
-          {/* Success Message */}
-          <div className="flex flex-col justify-center items-center ml-10">
-            <div className="SuccessMessage pb-[120px]">
-              <p className="font-inter font-[600] text-center text-[16px] lg:text-[30px]">
-                Please Choose Your Preferred payment method
-              </p>
-            </div>
-
-            {/* Mpesa Button */}
-            <div className="MpesaButton mt-[-100px]">
-              <Link to='/Mpesa2'>
-              <img src="/static/media/tag.png" alt="Mpesa" className="w-[80px] mb-4" />
-              </Link>
-            </div>
-             {/* Mpesa Button */}
-             <div className="MpesaButton mt-[10px]">
-             <Link to='/Credit'>
-              <img src="/static/media/debit.png" alt="Mpesa" className="w-[80px] mb-4" />
-              </Link>
-            </div>
+          <div className="Heading block mx-[12px] lg:mx-[30px]">
+            <p className="text-start font-inter font-[600] text-[#000000] text-[14px] lg:text-[35px] my-0">Please Choose Your Preferred Payment Method To Continue</p>
           </div>
-          
-
-        </div>
-      </div>
-    </div>
+        </div> {/*Page Header*/}
+              
+        {/* Back Button */}
+        <div className="BackButton block mx-[6px] lg:mx-[10px] w-fit mt-[10px] lg:mt-[30px]">
+          <Link to="/booking">
+            <div className='ImageWrapper w-[27px] lg:w-[61px] h-[21px] lg:h-[47px]'>
+              <img src="/static/media/image10.png" alt="Back" className="w-full h-full" />
+            </div>
+          </Link>
+        </div> {/* Back Button */}
+         
+        {/*Checkout Methods */}
+        <div className='CheckoutMethods block'>
+          {/* Mpesa Method*/}
+          <div className="MpesaMethod w-fit mx-auto rounded-[8px] lg:rounded-[18px] shadow-md shadow-[#00000040] border-solid border-[1px] border-[#00000040] ">
+            <Link to='/Mpesa2'>
+              <div className='MPesaWrapper py-[10px] lg:py-[12px] px-[12px] lg:px-[16px] h-[45px] lg:h-[102px] w-[100px] lg:w-[228px]'>
+                <img src="/static/media/tag.png" alt="Mpesa" className="h-full" />
+              </div>
+            </Link>
+          </div>
+          {/* Card Method*/}
+          <div className="MpesaMethod w-fit mx-auto mt-[16px] lg:mt-[30px] rounded-[8px] lg:rounded-[18px] shadow-md shadow-[#00000040] border-solid border-[1px] border-[#00000040]">
+            <Link to='/Credit'>
+              <div className='CardWrapper py-[12px] px-[16px] h-[45px] lg:h-[102px] w-[58px] lg:w-[132px] mr-[42px] lg:mr-[96px]'>
+                <img src="/static/media/debit.png" alt="Mpesa" className="h-full w-full" />
+              </div> 
+            </Link>
+          </div>
+        </div> {/*Checkout Methods */}
+             
+      </div> {/*CheckoutWrapper */}
+    </div> //Checkout
   );
 }
 

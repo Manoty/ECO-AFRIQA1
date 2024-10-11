@@ -7,6 +7,10 @@ import OrderHistory from './OrderHistory';
 import QuotationHistory from './QuotationHistory';
 import VerifiedFarmers from './VerifiedFarmers';
 import Transporters from './Transporters';
+import Help from './Help';
+import PrivacyPolicy from './PrivacyPolicy';
+import TermsConditions from './TermsConditions';
+import Logout from './Logout';
 
 function Profile() {
   const [selectedSection, setSelectedSection] = useState('Account');
@@ -15,19 +19,34 @@ function Profile() {
     switch (selectedSection) {
       case 'Account':
         return <AccountInformation />;
+      
       case 'Payment Information':
         return <PaymentInformation />;
-        case 'OrderHistory':
+      
+      case 'OrderHistory':
         return <OrderHistory />;
 
-        case 'QuotationHistory':
+      case 'QuotationHistory':
         return <QuotationHistory />;
 
-        case 'VerifiedFarmers':
+      case 'VerifiedFarmers':
         return <VerifiedFarmers />;
 
-        case 'Transporters':
+      case 'Transporters':
         return <Transporters />;
+      
+      case 'Help':
+        return <Help />;
+
+      case 'Privacy Policy':
+        return <PrivacyPolicy />;
+
+      case 'Terms and Conditions':
+        return <TermsConditions />;
+
+      case 'Logout':
+        return <Logout />;
+      
       default:
         return <AccountInformation />;
     }

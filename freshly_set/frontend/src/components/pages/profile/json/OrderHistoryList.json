@@ -1,0 +1,92 @@
+[
+    {
+        "id": "1",
+        "img": "/static/media/cartItem.png",
+        "CropOrdered": "Lettuce",
+        "QuantityOrdered": "3 Bunches",
+        "DateOrdered": "30TH SEPTMBER 2024",
+        "OrderStatus": "Delivered",
+        "OrderAmount": "KSH 120"
+    },
+     {
+        "id": "2",
+        "img": "/static/media/cartItem.png",
+        "CropOrdered": "Lettuce",
+        "QuantityOrdered": "3 Bunches",
+        "DateOrdered": "30TH SEPTMBER 2024",
+        "OrderStatus": "Delivered",
+        "OrderAmount": "KSH 100"
+    },
+     {
+        "id": "3",
+        "img": "/static/media/cartItem.png",
+        "CropOrdered": "Lettuce",
+        "QuantityOrdered": "8 Bunches",
+        "DateOrdered": "30TH MAY 2024",
+        "OrderStatus": "Delivered",
+        "OrderAmount": "KSH 920"
+    },
+     {
+        "id": "4",
+        "img": "/static/media/cartItem.png",
+        "CropOrdered": "Lettuce",
+        "QuantityOrdered": "6 Bunches",
+        "DateOrdered": "21ST AUGUST 2024",
+        "OrderStatus": "Delivered",
+        "OrderAmount": "KSH 7120"
+    },
+     {
+        "id": "5",
+        "img": "/static/media/cloves.png",
+        "CropOrdered": "Cloves",
+        "QuantityOrdered": "8 Bunches",
+        "DateOrdered": "30TH SEPTMBER 2024",
+        "OrderStatus": "Packaging",
+        "OrderAmount": "KSH 180"
+    },
+     {
+        "id": "6",
+        "img": "/static/media/cartItem.png",
+        "CropOrdered": "Lettuce",
+        "QuantityOrdered": "12 Bunches",
+        "DateOrdered": "30TH SEPTMBER 2024",
+        "OrderStatus": "Processing",
+        "OrderAmount": "KSH 430"
+    },
+     {
+        "id": "7",
+        "img": "/static/media/garlic.png",
+        "CropOrdered": "Garlic",
+        "QuantityOrdered": "20 Bunches",
+        "DateOrdered": "30TH SEPTMBER 2024",
+        "OrderStatus": "Delivered",
+        "OrderAmount": "KSH 500"
+    },
+     {
+        "id": "8",
+        "img": "/static/media/cartItem.png",
+        "CropOrdered": "Lettuce",
+        "QuantityOrdered": "14 Bunches",
+        "DateOrdered": "30TH SEPTMBER 2024",
+        "OrderStatus": "Delivered",
+        "OrderAmount": "KSH 1120"
+    },
+     {
+        "id": "9",
+        "img": "/static/media/c-1.png",
+        "CropOrdered": "Friuts",
+        "QuantityOrdered": "5 Types",
+        "DateOrdered": "27TH SEPTMBER 2024",
+        "OrderStatus": "Packaging",
+        "OrderAmount": "KSH 1200"
+    },
+     {
+        "id": "10",
+        "img": "/static/media/cartItem.png",
+        "CropOrdered": "Lettuce",
+        "QuantityOrdered": "30 Bunches",
+        "DateOrdered": "10TH SEPTMBER 2024",
+        "OrderStatus": "Processing",
+        "OrderAmount": "KSH 320"
+    }
+]
