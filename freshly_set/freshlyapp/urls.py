@@ -13,18 +13,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-
-
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from django.urls import path
 from .views import OrderListCreateView, OrderDetailView
 
-#faq
+# faq
 from .views import FAQListView
 from .views import FAQMainPageListView
-
-
 
 
 from rest_framework_simplejwt.views import (
@@ -160,30 +156,26 @@ urlpatterns = [
 
 
 
-<<<<<<< HEAD
+    # notification url
+    path('notifications/', NotificationListView.as_view(),
+         name='notification-list'),
 
-
-
-
-   #notification url
-    path('notifications/', NotificationListView.as_view(), name='notification-list'),
-    
-    #order
+    # true order
     path('orders/', OrderListCreateView.as_view(), name='OrderListCreateView'),
     path('orders/<uuid:order_id>/', OrderDetailView.as_view(), name='order-detail'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    
-    
-    #faq
+
+
+    # faq
     path('api/faqs/', FAQListView.as_view(), name='faq-list'),
-    path('api/faqsmainpage/', FAQMainPageListView.as_view(), name='faq-mainpage-list'),
-    
-    
-    
- 
-    
-=======
+    path('api/faqsmainpage/', FAQMainPageListView.as_view(),
+         name='faq-mainpage-list'),
+
+
+
+
+
     # order url
     path('orders/', views.my_orders, name='my_orders'),
     path('order/<str:tracking_no>/', views.view_order, name='view_order'),
@@ -205,6 +197,4 @@ urlpatterns = [
     # Verified Farmers
     path('verified-farmers/', FarmerListView.as_view(), name='verified-farmers'),
 
-
->>>>>>> main
 ]

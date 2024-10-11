@@ -53,8 +53,6 @@ from django.utils import timezone
 import json
 from django.views.decorators.http import require_http_methods
 
-<<<<<<< HEAD
-=======
 # imports for checkout
 
 from django.contrib.auth.decorators import login_required
@@ -62,9 +60,6 @@ from .models import Cart, Order, OrderItem, Product
 from .mpesa_utils import lipa_na_mpesa_online
 
 import random
->>>>>>> main
-
-
 
 
 # This is for typical django frontend html
@@ -548,9 +543,6 @@ class ProductListView(APIView):
         serializer = ProductSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
 
-<<<<<<< HEAD
-=======
-
 # code for checkout
 # views.py
 
@@ -741,7 +733,6 @@ def view_order(request, tracking_no):
     except Exception as e:
         print(f"Error viewing order: {str(e)}")
         return Response({"error": "Failed to fetch order details"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
->>>>>>> main
 
 
 # # Banner for Marketplace Page
@@ -917,7 +908,6 @@ class NotificationListView(APIView):
 
         return response
 
-<<<<<<< HEAD
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from .models import Order
@@ -962,7 +952,7 @@ class FAQMainPageListView(generics.ListAPIView):
     queryset = FAQMainPage.objects.all()
     serializer_class = FAQMainPageSerializer
     permission_classes = [AllowAny]
-=======
+
 # Payment views
 
 
@@ -1028,4 +1018,3 @@ class FarmerListView(APIView):
 
         serializer = FarmerSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
->>>>>>> main
