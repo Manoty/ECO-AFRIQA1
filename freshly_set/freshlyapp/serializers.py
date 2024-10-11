@@ -1,3 +1,4 @@
+from .models import Order, OrderItem
 from .models import FAQMainPage
 from .models import Profile
 import os
@@ -12,7 +13,6 @@ from django.contrib.auth.models import User
 from better_profanity import profanity
 
 from rest_framework import serializers
-from .models import Order, OrderItem
 
 
 UserModel = get_user_model()
@@ -331,30 +331,6 @@ class IDVerificationSerializer(serializers.ModelSerializer):
                 "Verification failed. ID number or photo is not correct.")
 
 
-# Serializer for the Order model
-
-
-class OrderItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = OrderItem
-        fields = ['product', 'price', 'quantity']
-
-
-class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Order
-        fields = ['id', 'user', 'fname', 'lname', 'email', 'phone', 'address', 'city', 'state', 'country',
-                  'pincode', 'total_price', 'payment_mode', 'status', 'tracking_no', 'created_at', 'items']
-
-        def validate(self, data):
-            if not self.context.get('is_verified'):  # Example of a condition
-                raise serializers.ValidationError(
-                    "Verification failed. ID number or photo is not correct.")
-
-            return data
-
 # Banner Serializer for Marketplace Page
 
 
@@ -426,6 +402,7 @@ class CartSerializer(serializers.ModelSerializer):
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
+
         fields = ['id', 'message', 'read', 'timestamp', 'user']
 
 
@@ -465,5 +442,3 @@ class FAQMainPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = FAQMainPage
         fields = ['id', 'question', 'answer']
-
-        fields = ['id', 'message', 'read', 'timestamp', 'user']

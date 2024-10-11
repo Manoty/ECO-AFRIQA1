@@ -1,3 +1,5 @@
+from .serializers import OrderSerializer
+from .models import Order
 from .serializers import FAQMainPageSerializer
 from .models import FAQMainPage
 from .serializers import FAQSerializer
@@ -56,6 +58,11 @@ from .validators import custom_validation, validate_email, validate_password
 from django.utils import timezone
 import json
 from django.views.decorators.http import require_http_methods
+
+# imports for checkout
+
+from django.contrib.auth.decorators import login_required
+from .models import Cart, Order, OrderItem, Product
 from .mpesa_utils import lipa_na_mpesa_online
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
@@ -540,7 +547,6 @@ class ProductListView(APIView):
         serializer = ProductSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
 
-
 # code for checkout
 # views.py
 
@@ -629,7 +635,6 @@ def calculate_cart_total(request):
     for item in cart:
         total_price += item.product.selling_price * item.product_qty
     return total_price
-
 
 
 @csrf_exempt
@@ -886,6 +891,8 @@ class NotificationListView(APIView):
 
 
 # List and Create Orders (No authentication required for creating orders)
+
+
 class OrderListCreateView(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
