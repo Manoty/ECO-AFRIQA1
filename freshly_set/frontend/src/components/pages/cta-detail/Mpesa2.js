@@ -130,20 +130,16 @@ const handleCheckout = async () => {
         </div>
 
         <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-            <input 
+         <p 
                 className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
-                placeholder="Last Name" 
-                value={'Location:     Wesatlands'} 
-            />
+            >Location:   {profile?.location}  </p>
             <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]"/>
         </div>
 
         <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-            <input 
+        <p 
                 className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
-                placeholder="Phone" 
-                value={'Phone:      +254899098678'} 
-            />
+            >Phone:   {profile?.phone}  </p>
             <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]"/>
         </div>
     </div>

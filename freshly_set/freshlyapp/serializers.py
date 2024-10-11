@@ -20,7 +20,8 @@ UserModel = get_user_model()
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel  # This is still the built-in User model
-        fields = ['username', 'email', 'password', 'first_name', 'last_name']
+        fields = ['username', 'email', 'password',
+                  'first_name', 'last_name', 'phone', 'location']
 
     def create(self, validated_data):
         user = UserModel.objects.create_user(
@@ -28,7 +29,11 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             password=validated_data['password'],
             first_name=validated_data.get('first_name', ''),
-            last_name=validated_data.get('last_name', '')
+            last_name=validated_data.get('last_name', ''),
+            phone=validated_data.get('phone', ''),
+            location=validated_data.get('location', '')
+
+
         )
 
         # Create the Profile instance

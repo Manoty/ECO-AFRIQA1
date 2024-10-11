@@ -49,11 +49,9 @@ const LoginSignUp = () => {
             password: formData.password,
             first_name: formData.firstName,
             last_name: formData.lastName,
-            profile: {
                 phone: formData.phone,
                 location: formData.location,
                 remember_me: formData.rememberMe,
-            },
         };
 
         try {
@@ -165,15 +163,11 @@ const LoginSignUp = () => {
 
                   {/*Location */}
                   <div className='Location block mt-[20px] rounded-[7px] bg-white overflow-hidden object-fill px-[20px] shadow-md shadow-[#00000040]'>
-                    <select name="location" className="bg-inherit font-[300] w-[100%]  text-[16px] py-[14px] text-black font-inter outline-none border-none"
+                  <input type="text" name="location" placeholder="Location" className="bg-inherit font-[300] w-[100%]  text-[16px] py-[14px] text-black font-inter outline-none border-none"
                       value={formData.location}
                       onChange={handleChange}
                       required
-                    >
-                      <option value="">Location</option>
-                      <option value="location1">Location 1</option>
-                      <option value="location2">Location 2</option>
-                    </select>
+                    />
                     {errors.location && <p className="error">{errors.location}</p>}
                   </div>
                   
