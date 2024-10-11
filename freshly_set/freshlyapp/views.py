@@ -631,28 +631,6 @@ def calculate_cart_total(request):
     return total_price
 
 
-# Create a new order after checkout
-# Temporary for testing
-@permission_classes([AllowAny])
-@api_view(['POST'])
-def create_order(request):
-    try:
-        # Extract cart items and other order data from request
-        data = request.data
-        serializer = OrderSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            notification_message = f'Hi {request.user.email} you placed your order successfully'
-            Notification.objects.create(
-                user=request.user, message=notification_message)
-
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    except Exception as e:
-        # Log and return an error message
-        print(f"Error creating order: {str(e)}")
-        return Response({"error": "Failed to create order"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 @csrf_exempt
 @api_view(['POST'])

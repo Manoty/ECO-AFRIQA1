@@ -14,8 +14,8 @@ function Mpesa2() {
  
   // Example order data to send (based on your app's structure)
   const orderData = {
-    customer_name: 'Jhon mungai',
-    customer_email: 'johndoe@example.com',
+    customer_name: profile?.first_name,
+    customer_email: profile?.email,
     customer_phone: '1234567890',
     items: cartItems.map(item => ({
       product_name: item.name,         // Changed from 'name' to 'product_name'
@@ -38,6 +38,8 @@ function Mpesa2() {
         },
         withCredentials: true,
       });
+
+      console.log("response", response)
       if (response.status === 201) {
         console.log('Order created:', response.data);
         alert(`Order placed successfully! Your Order ID is ${response.data.order_id}`);
@@ -47,7 +49,7 @@ function Mpesa2() {
         alert('Unexpected response from the server.');
       }
     } catch (error) {
-      console.log('Error response:', error.response?.data);  // Log detailed error response
+      console.log('Error response:', error.response);  // Log detailed error response
       alert('There was an issue placing the order. Check the console for more details.');
     }
   };
@@ -126,7 +128,7 @@ function Mpesa2() {
                       <input 
                         className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
                         placeholder="First Name" 
-                        value={'Owner: Maria Lisa'} 
+                        value={`Owner: ${profile?.first_name}  ${profile?.last_name}`} 
                         readOnly
                       />
                       <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]" />
@@ -136,7 +138,7 @@ function Mpesa2() {
                       <input 
                         className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
                         placeholder="Last Name" 
-                        value={'Location: Westlands'} 
+                        value={`Location: ${profile?.location}`} 
                         readOnly
                       />
                       <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]" />
@@ -146,7 +148,7 @@ function Mpesa2() {
                       <input 
                         className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
                         placeholder="Phone" 
-                        value={'Phone: +254899098678'} 
+                        value={`Phone: ${profile?.phone}`} 
                         readOnly
                       />
                       <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]" />
