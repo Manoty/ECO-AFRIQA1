@@ -25,7 +25,7 @@ function Team() {
       </div>
 
       {/*View All Button*/}
-      <Link to="/details" className='ViewAll block mt-[30px] lg:mt-[40px] bg-[#008000] w-fit mx-auto rounded-[10px] lg:rounded-[15px]'>
+      <Link to="/team-detailed" className='ViewAll block mt-[30px] lg:mt-[40px] bg-[#008000] w-fit mx-auto rounded-[10px] lg:rounded-[15px]'>
         <p className='text-center text-[12px] lg:text-[25px] text-[#FFFFFF] font-[700] font-inter my-0 py-[12px] px-[40px] '>View All</p>
       </Link>
        
