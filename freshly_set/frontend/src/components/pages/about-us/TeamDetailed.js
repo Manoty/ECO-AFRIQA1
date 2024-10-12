@@ -1,7 +1,7 @@
 import React from 'react';
 import Nav from '../../Nav/Navbar';
 
-function Details() {
+function TeamDetailed() {
   return (
     <div>
       <Nav />
@@ -232,4 +232,4 @@ function Details() {
   );
 }
 
-export default Details;
+export default TeamDetailed;
