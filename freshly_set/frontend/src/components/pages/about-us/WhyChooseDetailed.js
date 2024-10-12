@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Nav from '../../Nav/Navbar';
 import { Link } from 'react-router-dom';
 
-function Detail() {
+function WhyChooseDetailed() {
     const [selectedSection, setSelectedSection] = useState("technologyFarming")
   return (
     <div className="AllPageContent">
@@ -390,4 +390,4 @@ function Detail() {
   );
 }
 
-export default Detail;
+export default WhyChooseDetailed;
