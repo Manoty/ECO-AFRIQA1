@@ -19,14 +19,14 @@ function TeamCard({ name, img, role, LinkedIn }) {
       }; 
 
     return (
-        <div className="TeamCard mx-auto">
+        <div className="TeamCard lg:mx-auto">
             <div TeamCardWrapper> 
                 <div className={`ImageFrame ${isHovered[1]? "scale-x-105 scale-y-105": ""} transform origin-top-left transition-all duration-300 relative  `}
                     onMouseEnter={()=>toggleColor(1)}
                     onMouseLeave={()=>returnColor(1)}
                 >
                     {/*Member Image */}
-                    <div className={` MemberImage mx-auto ${isHovered[1]? "grayscale-0": "grayscale"} transform transition-all duration-300 w-[165px] lg:w-[286px] h-[220px] lg:h-[380px] `}>
+                    <div className={` MemberImage mx-auto ${isHovered[1]? "grayscale-0": "grayscale"} transform transition-all duration-300 w-[150px] lg:w-[286px] h-[200px] lg:h-[380px] `}>
                     <img src={img} alt={name} className="w-full h-full rounded-[12px]"/>
                     </div>
                     {/*LinkedIn Logo */}
@@ -44,7 +44,7 @@ function TeamCard({ name, img, role, LinkedIn }) {
 
                 {/*member Role */}
                 <div className="">
-                    <p className="text-center text-[#008000] text-[16px] lg:text-[20px] font-[700] font-inter my-0 ">{role} </p>
+                    <p className="text-center text-[#008000] text-[12px] lg:text-[20px] font-[700] font-inter my-0 ">{role} </p>
                 </div>
             </div> {/*TeamCardWrapper */}
         </div>  //TeamCard
