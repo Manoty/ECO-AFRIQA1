@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { IoEye } from "react-icons/io5";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { BiShow } from "react-icons/bi";
@@ -6,6 +6,7 @@ import Nav from '../../Nav/Navbar';
 import axios from 'axios';
 import { getCsrfToken } from '../../../utils/getCsrfToken';
 import { useNavigate } from 'react-router-dom';
+import { ProfileContext } from '../../context/ProfileContext';
 const LoginSignUp = () => {
   const [showForm, setShowForm] = useState(true);
   const [formData, setFormData] = useState({
@@ -26,6 +27,8 @@ const LoginSignUp = () => {
   const [backendErrors, setBackendErrors] = useState('');
   const navigate = useNavigate();
 
+  const {fetchProfile} = useContext(ProfileContext);
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -49,18 +52,14 @@ const LoginSignUp = () => {
             password: formData.password,
             first_name: formData.firstName,
             last_name: formData.lastName,
-              
-            profile:{
-              phone: formData.phone,
-              location: formData.location,
+            profile: {
+                phone: formData.phone,
+                location: formData.location,
             }
-            
-            
-               
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/register/', payload, {
+            const signupResponse = await axios.post('http://localhost:8000/register/', payload, {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCsrfToken(),
@@ -68,18 +67,38 @@ const LoginSignUp = () => {
                 withCredentials: true,
             });
 
-            if (response.status === 201) {
+            if (signupResponse.status === 201) {
                 // Clear backend error messages if the signup is successful
                 setBackendErrors('');
                 alert('Signup successful!');
-                console.log("Signup Successful");
-                navigate("/profile")
+
+                // Automatically login after successful signup
+                const loginPayload = {
+                    username: formData.email, 
+                    password: formData.password,
+                };
+
+                try {
+                    const loginResponse = await axios.post('http://localhost:8000/freshlyapp/token/', loginPayload);
+                    const { access, refresh } = loginResponse.data;
+
+                    // Save tokens in localStorage or cookies
+                    localStorage.setItem('accessToken', access);
+                    localStorage.setItem('refreshToken', refresh);
+
+                    // Fetch the profile and redirect to profile page
+                    fetchProfile();
+                    navigate('/profile');  // Redirect to profile page after login
+                } catch (loginError) {
+                    console.error('Automatic login failed:', loginError);
+                    setBackendErrors('An error occurred during automatic login. Please try to log in manually.');
+                }
             }
-        } catch (error) {
+        } catch (signupError) {
             // Handle different error messages
-            if (error.response && error.response.status === 400) {
-                if (error.response.error) {
-                    setBackendErrors(error.response.error); // Display the specific error from the backend
+            if (signupError.response && signupError.response.status === 400) {
+                if (signupError.response.error) {
+                    setBackendErrors(signupError.response.error); // Display the specific error from the backend
                 } else {
                     setBackendErrors('Signup failed. Please try again.');
                 }
@@ -90,6 +109,7 @@ const LoginSignUp = () => {
     }
 };
 
+  
   const validateForm = () => {
     const errors = {};
     if (!formData.firstName) errors.firstName = 'Required';
