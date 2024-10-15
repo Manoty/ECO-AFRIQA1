@@ -1,3 +1,9 @@
+from .serializers import OrderSerializer
+from .models import Order
+from .serializers import FAQMainPageSerializer
+from .models import FAQMainPage
+from .serializers import FAQSerializer
+from .models import FAQ  # Assuming your FAQ model is named FAQ
 from .models import *
 from .serializers import FarmerSerializer
 from .serializers import UserProfileSerializer
@@ -33,7 +39,7 @@ from rest_framework import generics, permissions
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.views import APIView
-from .models import Blog, Comment, Like, Share, Poll, Vote, IDVerification, Cart, Category, Notification
+from .models import Blog, Comment, Like, Share, Poll, Vote, IDVerification, Cart, Category, Notification, Order, OrderItem, Product
 from django.db.models import Q
 from rest_framework.generics import get_object_or_404
 from .serializers import BlogSerializer, ProductSerializer, GardenSerializer, CommentSerializer, LikeSerializer, ShareSerializer, PollSerializer, VoteSerializer, IDVerificationSerializer, CartSerializer, BannerSerializer, CategorySerializer, NotificationSerializer
@@ -44,7 +50,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions, status
 from django.contrib.auth import get_user_model, login, logout
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer, OrderSerializer
 from rest_framework.validators import UniqueValidator
 # Import your custom validation here
 from .validators import custom_validation, validate_email, validate_password
@@ -58,7 +64,8 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from .models import Cart, Order, OrderItem, Product
 from .mpesa_utils import lipa_na_mpesa_online
-
+from rest_framework import generics
+from rest_framework.permissions import AllowAny
 import random
 
 
@@ -237,32 +244,38 @@ class BlogListCreateView(generics.ListCreateAPIView):
 @api_view(['POST', 'GET'])
 @permission_classes([AllowAny])
 def Register(request):
-    # Validate the input data
+    # Use the serializer to validate the input data
     serializer = UserRegisterSerializer(data=request.data)
 
     if serializer.is_valid():
-        # Check if the user already exists
+        # Extract validated data
         username = serializer.validated_data.get('username')
         email = serializer.validated_data.get('email')
+
+        # Check if username or email already exists
         if User.objects.filter(username=username).exists():
             return Response({"error": "This username already exists."}, status=status.HTTP_400_BAD_REQUEST)
         if User.objects.filter(email=email).exists():
             return Response({"error": "An account with this email already exists."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Save the user if validation passes
+        # Save the user and profile (profile handled in serializer)
         user = serializer.save()
+
+        # Generate refresh and access tokens for the new user
         refresh = RefreshToken.for_user(user)
-        # Create notification
-        notification_message = f'Hi there {user.email}, welcome aboard you successfully created your account'
+
+        # Create a welcome notification
+        notification_message = f'Hi there {user.email}, welcome aboard! You have successfully created your account.'
         Notification.objects.create(user=user, message=notification_message)
 
+        # Return a successful response with the tokens
         return Response({
             "message": "Signup successful!",
             "refresh": str(refresh),
             "access": str(refresh.access_token),
         }, status=status.HTTP_201_CREATED)
 
-    # Return errors if validation fails
+    # Return validation errors if any
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -340,9 +353,6 @@ class BlogViewSet(viewsets.ModelViewSet):
         blog = get_object_or_404(queryset, slug=slug)
         serializer = BlogSerializer(blog)
         return Response(serializer.data)
-
-
-
 
 
 @api_view(['GET'])
@@ -633,29 +643,6 @@ def calculate_cart_total(request):
     return total_price
 
 
-# Create a new order after checkout
-# Temporary for testing
-@permission_classes([AllowAny])
-@api_view(['POST'])
-def create_order(request):
-    try:
-        # Extract cart items and other order data from request
-        data = request.data
-        serializer = OrderSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            notification_message = f'Hi {request.user.email} you placed your order successfully'
-            Notification.objects.create(
-                user=request.user, message=notification_message)
-
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    except Exception as e:
-        # Log and return an error message
-        print(f"Error creating order: {str(e)}")
-        return Response({"error": "Failed to create order"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
 @csrf_exempt
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -908,18 +895,18 @@ class NotificationListView(APIView):
 
         return response
 
-from rest_framework import generics
-from rest_framework.permissions import AllowAny
-from .models import Order
-from .serializers import OrderSerializer
 
 # List and Create Orders (No authentication required for creating orders)
+
+
 class OrderListCreateView(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [AllowAny]  # Allow anyone to create an order
 
 # Retrieve, Update, and Delete Order (Still requires authentication)
+
+
 class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'order_id'
     queryset = Order.objects.all()
@@ -927,15 +914,9 @@ class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
     # You can keep the default permission classes here (IsAuthenticated by default)
 
 
-
-from rest_framework.permissions import AllowAny
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .models import FAQ  # Assuming your FAQ model is named FAQ
-from .serializers import FAQSerializer
-
 class FAQListView(APIView):
-    permission_classes = [AllowAny]  # This line allows unrestricted access to this view
+    # This line allows unrestricted access to this view
+    permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
         faqs = FAQ.objects.all()
@@ -944,15 +925,12 @@ class FAQListView(APIView):
 
 
 # views.py
-from rest_framework import generics
-from .models import FAQMainPage
-from .serializers import FAQMainPageSerializer
+
 
 class FAQMainPageListView(generics.ListAPIView):
     queryset = FAQMainPage.objects.all()
     serializer_class = FAQMainPageSerializer
     permission_classes = [AllowAny]
-
 # Payment views
 
 

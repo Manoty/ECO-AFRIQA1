@@ -4,15 +4,17 @@ import Nav from '../../Nav/Navbar';
 import { CartContext } from "../../context/CartContext";
 import axios from "axios";
 import { getCsrfToken } from "../../../utils/getCsrfToken";
+import { ProfileContext } from "../../context/ProfileContext";
 
 function Mpesa2() {
 
   const { cartItems, totalPrice, delivery } = useContext(CartContext);
 
+  const { profile } = useContext(ProfileContext)
   // Example order data to send (based on your app's structure)
   const orderData = {
-    customer_name: 'Jhon mungai',
-    customer_email: 'johndoe@example.com',
+    customer_name: profile?.first_name,
+    customer_email: profile?.email,
     customer_phone: '1234567890',
     items: cartItems.map(item => ({
       product_name: item.name,         // Changed from 'name' to 'product_name'

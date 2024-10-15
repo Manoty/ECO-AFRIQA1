@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Nav from '../../Nav/Navbar';
 import ProfileSidebar from '../../Nav/ProfileSidebar';
 import AccountInformation from './AccountInformation';
@@ -11,9 +11,15 @@ import Help from './Help';
 import PrivacyPolicy from './PrivacyPolicy';
 import TermsConditions from './TermsConditions';
 import Logout from './Logout';
+import axios from 'axios';
+import { ProfileContext } from '../../context/ProfileContext';
 
 function Profile() {
   const [selectedSection, setSelectedSection] = useState('Account');
+  const { profile, loading, error } = useContext(ProfileContext);
+
+
+
 
   const renderSection = () => {
     switch (selectedSection) {

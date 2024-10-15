@@ -1,6 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function ProfileSidebar({ setSelectedSection }) {
+  const { isAuthenticated, logout } = useContext(AuthContext);
+  
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/")
+    
+  }
   return (
     <div className="SideNavbar hidden lg:flex top-0  h-[100%] pt-[13px] ">
       <ul className="fixed flex-col h-full justify-between  bg-gradient-to-r from-[#008000]  to-[#001A00] via-[#008000] w-[235.64px] pb-[42.7px]">
@@ -82,7 +93,7 @@ function ProfileSidebar({ setSelectedSection }) {
         {/*Log Out */}
           <div className='Logout mt-[14px]'>
             <li className="font-inter bg-gradient-to-b bg-clip-text text-transparent from-[#FFFFFF80] hover:from-[#FFFFFF] to-[#99999980] hover:to-[#999999] font-[900] transition-all duration-500 ease-in-out text-[20px] cursor-pointer"
-              onClick={() => setSelectedSection('Logout')}>LOGOUT
+              onClick={() => handleLogout()}>LOGOUT
             </li>
           </div>    
       </ul>
