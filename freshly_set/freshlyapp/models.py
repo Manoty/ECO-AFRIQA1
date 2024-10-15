@@ -92,14 +92,14 @@ from django.contrib.auth.models import User
 # Cart Model
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone = models.CharField(max_length=15, blank=True, null=True)
-    location = models.CharField(max_length=100, blank=True, null=True)
-    remember_me = models.BooleanField(default=False)
+# class Profile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     phone = models.CharField(max_length=15, blank=True, null=True)
+#     location = models.CharField(max_length=100, blank=True, null=True)
+#     remember_me = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.user.username
+#     def __str__(self):
+#         return self.user.username
 
 
 class Category(models.Model):
@@ -556,9 +556,6 @@ class Transaction(models.Model):
         return self.retry_count < 3 and self.status == 'failed'
 
 
-import uuid
-from django.utils import timezone
-
 class Order(models.Model):
     order_id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, null=True, blank=True)
@@ -611,8 +608,7 @@ class FAQMainPage(models.Model):
     def __str__(self):
         return self.question
 
- 
-    
+
 # payment transation model
 class Transaction(models.Model):
     STATUS_CHOICES = [
@@ -621,23 +617,25 @@ class Transaction(models.Model):
         ('failed', 'Failed'),
         ('retry', 'Retry')
     ]
-    
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=12)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    mpesa_receipt_number = models.CharField(max_length=100, blank=True, null=True)
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='pending')
+    mpesa_receipt_number = models.CharField(
+        max_length=100, blank=True, null=True)
+    status = models.CharField(
+        max_length=50, choices=STATUS_CHOICES, default='pending')
     transaction_date = models.DateTimeField(auto_now_add=True)
-    error_message = models.TextField(blank=True, null=True)  # Store error messages, if any
+    # Store error messages, if any
+    error_message = models.TextField(blank=True, null=True)
     retry_count = models.IntegerField(default=0)
 
     def __str__(self):
         return f'{self.user} - {self.amount}'
 
     def can_retry(self):
-        return self.retry_count < 3 and self.status == 'failed'  # Set retry limit to 3 attempts
-
-
+        # Set retry limit to 3 attempts
+        return self.retry_count < 3 and self.status == 'failed'
 
 
 class Profile(models.Model):

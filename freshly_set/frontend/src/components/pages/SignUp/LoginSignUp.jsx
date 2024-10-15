@@ -49,9 +49,14 @@ const LoginSignUp = () => {
             password: formData.password,
             first_name: formData.firstName,
             last_name: formData.lastName,
-                phone: formData.phone,
-                location: formData.location,
-                remember_me: formData.rememberMe,
+              
+            profile:{
+              phone: formData.phone,
+              location: formData.location,
+            }
+            
+            
+               
         };
 
         try {
@@ -263,6 +268,7 @@ const LoginSignUp = () => {
       </div> {/*Main Contents */}
     </div> //SignUp Page
   );
+
 };
 
 export default LoginSignUp;

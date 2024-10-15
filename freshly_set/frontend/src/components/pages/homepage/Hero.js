@@ -1,12 +1,18 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import useSectionObserver from '../../UseSectionObserver';
 import { AuthContext } from '../../context/AuthContext';
-
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // You can also use <link> for styles
 function Hero({ id }) {
     useSectionObserver(`#${id}`);
     console.log("hero id", id)
 
+
+    useEffect(() => {
+        AOS.init();
+    
+      },[])
 
     const { isAuthenticated  } = useContext(AuthContext); 
   return (
@@ -14,7 +20,7 @@ function Hero({ id }) {
         <div className="HeroInnerContents -mt-[50px] pb-[140px] lg:pb-[250px]  bg-hero-homepage bg-no-repeat bg-cover">
             <div className='HeroWrapper mt-[150px]  mx-[10px] lg:mx-[270px]'>
                 {/*Hero Title */}
-                <div className='HeroTittle pt-[130px] lg:pt-[170px] mx-[6px]'>
+                <div data-aos="fade-in" data-aos-duration="5000" data-aos-easing="" className='HeroTittle pt-[130px] lg:pt-[170px] mx-[6px]'>
                     <h1 className="text-start lg:text-center font-inter font-[700] text-[26px] lg:text-[60px] text-[#FFFFFF] my-0">Urbanization Farming and Vertical Farming</h1>
                 </div>
                 {/*Hero Details */}
@@ -35,7 +41,7 @@ function Hero({ id }) {
           
         {/*Hero Image */}
         <div className='-mt-[120px]  lg:-mt-[200px] h-[210px] lg:h-[372px] w-[320px] lg:w-[726px] mx-auto'>
-            <img src="static/media/heroImage.png" alt="Hero"  className="w-full h-full"/>
+            <img data-aos="fade-in" data-aos-duration="5000" src="static/media/heroImage.png" alt="Hero"  className="w-full h-full"/>
         </div>
        
     </div> // Hero Section

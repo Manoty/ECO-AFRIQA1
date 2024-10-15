@@ -1,3 +1,5 @@
+from django.db import IntegrityError
+from .models import Profile  # Ensure Profile model is imported
 from .models import Order, OrderItem
 from .models import FAQMainPage
 from .models import Profile
@@ -18,32 +20,42 @@ from rest_framework import serializers
 UserModel = get_user_model()
 
 
-class UserRegisterSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserModel  # This is still the built-in User model
+        model = Profile
+        fields = ['location', 'phone']
+
+
+class UserRegisterSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer()
+
+    class Meta:
+        model = User
         fields = ['username', 'email', 'password',
-                  'first_name', 'last_name', 'phone', 'location']
+                  'first_name', 'last_name', 'profile']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
     def create(self, validated_data):
-        user = UserModel.objects.create_user(
+        profile_data = validated_data.pop('profile')
+        user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
-            first_name=validated_data.get('first_name', ''),
-            last_name=validated_data.get('last_name', ''),
-            phone=validated_data.get('phone', ''),
-            location=validated_data.get('location', '')
-
-
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
         )
 
-        # Create the Profile instance
-        # Profile.objects.create(
-        #     user=user,
-        #     phone=phone,
-        #     location=location,
-        #     remember_me=remember_me
-        # )
+        # Ensure a profile is created if it doesn't already exist
+        profile, created = Profile.objects.get_or_create(
+            user=user, defaults=profile_data)
+
+        if not created:
+            # If the profile already exists, update it if needed
+            profile.phone = profile_data['phone']
+            profile.location = profile_data['location']
+            profile.save()
 
         return user
 
@@ -64,12 +76,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
-
-
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = ['location', 'phone']
 
 
 class UserProfileSerializer(serializers.ModelSerializer):

@@ -26,6 +26,7 @@ export const ProfileProvider = ({ children }) => {
             console.log("Profile Data", response.data)
         } catch (err) {
             setError(err.response ? err.response.data : 'An error occurred');
+            console.log("error", err.response.data)
         } finally {
             setLoading(false);
         }
