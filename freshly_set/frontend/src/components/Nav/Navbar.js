@@ -173,7 +173,7 @@ function Nav() {
               </Link>
             ): (
               <Link to="/login">
-                <p className="text-white cursor-pointer">Login</p>
+                <FaRegCircleUser className="text-[39px] text-white/[50%]" />
               </Link>
             )}
            
