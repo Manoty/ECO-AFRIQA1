@@ -93,8 +93,9 @@ function App() {
         <Route path="/notification" element={<Notifications />} />
         <Route path="/order-progress" element={<OrderProgress />}/>
         <Route path="/order-history" element={<OrderHistory />}/>
-        <Route path="/profile" element={<PrivateRoute component={Profile}/>}/>  
-        
+        {/* <Route path="/profile" element={<PrivateRoute component={Profile}/>}/>   */}
+        <Route path="/profile" element={<Profile />}/>
+
 
         {/* <Route path="/api/blogs" element={<Blogs />} /> */}
 
