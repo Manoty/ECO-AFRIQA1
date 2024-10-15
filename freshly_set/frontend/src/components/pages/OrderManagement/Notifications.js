@@ -14,30 +14,28 @@ function Notifications() {
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const fetchNotifications = async (page = 1) => {
-        const token = localStorage.getItem('accessToken');
-
-        try {
-            setLoading(true);
-            const response = await axios.get(`http://localhost:8000/notifications/?page=${page}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-            });
-            setNotifications(response.data.results); // The paginated results
-            console.log("Notifications fetched", response.data.results)
-        } catch (err) {
-            setError(err.response ? err.response.data : 'An error occurred');
-            console.log(err.response.data)
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
-        fetchNotifications(currentPage); // Fetch notifications on component load
-    }, [currentPage]);
+        const fetchNotifications = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/notifications/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    },
+                    withCredentials: true,
+                });
+                setNotifications(response.data.results); // Set the notifications from the response
+                console.log("Fetched", notifications)
+                setLoading(false);
+            } catch (error) {
+                setError('Failed to fetch notifications');
+                console.error('Error fetching notifications:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchNotifications();
+    }, []);
 
     const handleNextPage = () => {
         setCurrentPage((prevPage) => prevPage + 1);
