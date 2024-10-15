@@ -12,25 +12,23 @@ function PaymentInformation() {
   //Number of Orders made
   const OrdersMade = 6;
 
- 
-
   return (
-    <div className='PaymentInformation mb-[50px]'>
-      <div className='PaymentInformationWrapper mr-[60px]'>
+    <div className='PaymentInformation mb-[20px] lg:mb-[50px]'>
+      <div className='PaymentInformationWrapper mx-[10px] lg:mr-[60px]'>
         {/*Header */}
         <div className='PaymentsHeader'>
           <div className='PaymentHeading'>
-            <p className='text-start text-[22px] text-[#008000] font-inter font-[700] my-0 '>Payment Information</p>
+            <p className='text-start text-[18px] lg:text-[22px] text-[#008000] font-inter font-[700] my-0 '>Payment Information</p>
           </div>
-          <div className='PaymentSubHeading mt-[10px]'>
-            <p className='text-start text-[15px] text-[#00000080] font-inter font-[700] my-0 '>Manage Your Payment Information</p>
+          <div className='PaymentSubHeading mt-[6px] lg:mt-[10px]'>
+            <p className='text-start text-[13px] lg:text-[15px] text-[#00000080] font-inter font-[700] my-0 '>Manage Your Payment Information</p>
           </div>
         </div> {/*Payment Header */}
 
         {/*Payment Method */}
         <div className='PaymentMethod block mt-[36px]'>
           <div className='CardTitle'>
-            <p className='text-start text-[18px] text-[#000000] font-inter font-[700] my-0'>Your Preferred Payment Method</p>
+            <p className='text-start text-[16px] lg:text-[18px] text-[#000000] font-inter font-[700] my-0'>Your Preferred Payment Method</p>
           </div>
           <div className='PaymentMethodCard mt-[10px]'>
             {PaymentMethodData.slice(PaymentChoice, (PaymentChoice + 1)).map((PaymentMethodData) => (
@@ -43,26 +41,26 @@ function PaymentInformation() {
         {/*Payment History */}
         <div className='PaymentHistory mt-[36px]'>
           <div className='HistoryTittle'>
-            <p className='text-start text-[18px] text-[#000000] font-inter font-[700] my-0'>Your Payment History</p>
+            <p className='text-start text-[16px] lg:text-[18px] text-[#000000] font-inter font-[700] my-0'>Your Payment History</p>
           </div>
-          <div className='HistoryContainer mt-[10px] block rounded-[8px] bg-[#FFFFFF] border-solid border-[0.7px] border-[#0000004D] shadow-md shadow-[#00000040] '>
-            <div className='HistoryWrapper mx-[8px] my-[10px]'>
+          <div className='HistoryContainer mt-[10px] block rounded-[6px] lg:rounded-[8px] bg-[#FFFFFF] border-solid border-[0.7px] border-[#0000004D] shadow-md shadow-[#00000040] '>
+            <div className='HistoryWrapper mx-[12px] lg:mx-[8px] my-[18px] lg:my-[10px]'>
               <div className='ColumnsHeaders grid grid-cols-4'>
                 {/*OrderNumber */}
                 <div className="OrderNumber">
-                    <p className="text-center text-[16px] text-[#008000] font-inter font-[700] my-0">Order Number</p>
+                    <p className="text-center text-[14px] lg:text-[16px] text-[#008000] font-inter font-[700] my-0">Order Number</p>
                 </div>
                 {/*Order Amount */}
                 <div className="OrderAmount">
-                    <p className="text-center text-[16px] text-[#008000] font-inter font-[700] my-0">Amount</p>
+                    <p className="text-center text-[14px] lg:text-[16px] text-[#008000] font-inter font-[700] my-0">Amount</p>
                 </div>
                 {/*Order Date */}
                 <div className="OrderDate">
-                    <p className="text-center text-[16px] text-[#008000] font-inter font-[700] my-0">Date</p>
+                    <p className="text-center text-[14px] lg:text-[16px] text-[#008000] font-inter font-[700] my-0">Date</p>
                 </div>
                 {/*OrderStatus */}
                 <div className="OrderStatus">
-                    <p className="text-center text-[16px] text-[#008000] font-inter font-[700] my-0">Status</p>
+                    <p className="text-center text-[14px] lg:text-[16px] text-[#008000] font-inter font-[700] my-0">Status</p>
                 </div>
               </div> {/*Column Headers */}
 
