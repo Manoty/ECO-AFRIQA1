@@ -4,7 +4,6 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   // Check if the user is logged in
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -13,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     } else {
       setIsAuthenticated(false);
     }
-  }, []);
+  }, [isAuthenticated]);
 
   const login = (token) => {
     localStorage.setItem('accessToken', token);
@@ -27,7 +26,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     console.log("isAuthenticated", isAuthenticated)
-  },[isAuthenticated])
+  },[isAuthenticated ])
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>

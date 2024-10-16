@@ -1,13 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import NotificationCard from "./NotificationCard";
 import NotificationList from "./NotificationList.json";
 import Nav from "../../Nav/Navbar";
 import FreshlyFooter from "../../footer/FreshlyFooter";
+import axios from "axios";
 
 function Notifications() {
     //Number of Notifications to pull from the json file
     const NotificationsNumber = 5;
+    const [notifications, setNotifications] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    useEffect(() => {
+        const fetchNotifications = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/notifications/', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    },
+                    withCredentials: true,
+                });
+                setNotifications(response.data.results); // Set the notifications from the response
+                console.log("Fetched", notifications)
+                setLoading(false);
+            } catch (error) {
+                setError('Failed to fetch notifications');
+                console.error('Error fetching notifications:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchNotifications();
+    }, []);
+
+    const handleNextPage = () => {
+        setCurrentPage((prevPage) => prevPage + 1);
+    };
+
+    const handlePreviousPage = () => {
+        setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    };
 
     //Percentage Values for OrderProcessing
     const OrderConfirmation = 100;               //Order Confirmation Percentage
@@ -75,8 +111,12 @@ function Notifications() {
                     
                     {/*Notification Cards */}
                     <div className="NotificationCards">
+
+                        { notifications.map((notification) => (
+                                <NotificationCard header="New Message" details={notification.message}/> 
+                    ))}
                         {NotificationList.slice(0,NotificationsNumber).map((NotificationList) => (
-                        <NotificationCard header={NotificationList.header} details={NotificationList.details} />
+                        <NotificationCard key={NotificationList.id} header={NotificationList.header} details={NotificationList.details} />
                         ))
                     }  
                     </div>

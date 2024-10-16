@@ -1,12 +1,20 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; 
 function Mission() {
+  
+
+  useEffect(() => {
+    AOS.init();
+
+  },[])
+
   return (
     <section id="mission" className="Mission mt-[60px] lg:mt-[100px]">
       <div className='MissionWrapper mx-[12px] lg:mx-[50px]'>
         {/* Heading (Only Visible on Mobile Devices) */}
-        <div className='MobileHeading block lg:hidden'>
-            <h2 className="text-center font-inter text-[35px] text-[#008000] font-[700] my-0">Our Mission</h2>
+        <div  data-aos="fade-in"  data-aos-easing="ease-in-out" className='MobileHeading block lg:hidden'>
+            <h2  className="text-center font-inter text-[35px] text-[#008000] font-[700] my-0">Our Mission</h2>
         </div>
 
         {/*Left and Right Side */}
@@ -15,12 +23,12 @@ function Mission() {
           {/*Texts Wrapper */}
           <div className='TextsWrapper block scale-x-[-1] lg:scale-x-[1]'>
             {/*Heading (Only Visible on desktop Devices) */}
-          <div className='DesktopHeading hidden lg:block'>
+          <div  data-aos="fade-in"  data-aos-easing="ease-in-out" className='DesktopHeading hidden lg:block'>
             <h2 className="text-start font-inter text-[80px] text-[#008000] font-[700] my-0">Our Mission</h2>
           </div>
           {/*Descriptions */}
           <div className='Descriptions block mt-0 lg:mt-[20px]'>
-            <div className='block'>
+            <div  data-aos="fade-in"  data-aos-easing="ease-in-out" className='block'>
               <p className='text-start font-josefin text-[14px] lg:text-[20px] text-[#525560] font-[400] my-0'> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
             </div>
             {/*Only Visible on Desktop Version */}
