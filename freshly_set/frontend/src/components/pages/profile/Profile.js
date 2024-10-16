@@ -61,15 +61,15 @@ function Profile() {
   return (
     <div>
       <Nav />
-      <div className="flex mt-[120px]">
+      <div className="flex lg:mt-[120px]">
         {/* Sidebar */}
-        <div className="w-[240px]">
+        <div className="lg:w-[240px]">
             <ProfileSidebar setSelectedSection={setSelectedSection} />
 
         </div>
 
         {/* Main content area */}
-        <div className="flex-1 lg:ml-[69.36px] mt-[60px]">
+        <div className="flex-1 lg:ml-[69.36px] mt-[140px] lg:mt-[60px]">
           {renderSection()}
         </div>
       </div>
