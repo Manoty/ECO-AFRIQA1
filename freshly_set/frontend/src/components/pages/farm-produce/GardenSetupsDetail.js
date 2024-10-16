@@ -1,10 +1,12 @@
 import React, { useContext } from 'react'
 import NavAuthenticated from '../../Nav/NavAuthenticated'
 import FarmCard from './FarmCard'
-import ProductsSearchBar from './ProductsSearchBar'
+
 import GardenSetupsHero from './GardenSetupsHero'
 import { GardensContext } from '../../context/PageContext'
 import Nav from '../../Nav/Navbar'
+import FreshlyFooter from '../../footer/FreshlyFooter';
+
 
 function GardenSetupsDetail() {
     const [modalToggleContentsGardens, setModalToggleContentsGardens] = useContext(GardensContext);
@@ -12,8 +14,8 @@ function GardenSetupsDetail() {
   return (
     <div>
         <Nav />
-        <div className="mt-[88px]">
-         <ProductsSearchBar placeholder="Search for Garden Setups" />
+        <div className="mt">
+         {/* <ProductsSearchBar placeholder="Search for Garden Setups" /> */}
 
         </div>
 
@@ -39,7 +41,7 @@ function GardenSetupsDetail() {
             </div>
         </div>
        
-
+        <FreshlyFooter /> {/* Footer Section */}
     </div>
   )
 }
