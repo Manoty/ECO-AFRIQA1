@@ -1,11 +1,13 @@
 import React, { useContext } from 'react'
 import NavAuthenticated from '../../Nav/NavAuthenticated'
-import ProductsSearchBar from './ProductsSearchBar'
+
 import FarmCard from './FarmCard'
 import { ModalContext, ModalToggleContentsContext } from '../../context/PageContext'
 import FarmingSystemsHero from './FarmingSystemsHero'
 import CtaPopup from './CtaPopup'
 import Nav from '../../Nav/Navbar'
+import FreshlyFooter from '../../footer/FreshlyFooter';
+
 
 function FarmingSystemsDetail() {
   const [modalOpen, setModalOpen] = useContext(ModalContext);
@@ -14,8 +16,8 @@ function FarmingSystemsDetail() {
   return (
     <div>
         <Nav />
-        <div className="mt-[88px]">
-         <ProductsSearchBar placeholder="Search For Farming System"/>
+        <div className="mt">
+         {/* <ProductsSearchBar placeholder="Search For Farming System"/> */}
 
         </div>
         <FarmingSystemsHero />
@@ -24,6 +26,7 @@ function FarmingSystemsDetail() {
             <CtaPopup />
 
           )
+          
         }
        
 
@@ -37,7 +40,7 @@ function FarmingSystemsDetail() {
                     }
                   </div>
         </div>
-
+        <FreshlyFooter /> {/* Footer Section */}
     </div>
   )
 }
