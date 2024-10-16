@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { IoMdMenu } from "react-icons/io";
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,9 +10,10 @@ function ProfileSidebar({ setSelectedSection }) {
 
   const handleLogout = () => {
     logout();
-    navigate("/")
-    
-     const [clicked, setClicked] = useState({
+    navigate("/")  
+  }
+
+   const [clicked, setClicked] = useState({
     1: false,  // First the menu is closed by default
    
   });
@@ -26,9 +28,7 @@ function ProfileSidebar({ setSelectedSection }) {
   useEffect(() => {
       console.log("clicked", clicked)
   }, [clicked])
-  
-    
-  }
+
   return (
     <div className="SideNavbar mt-[120px] lg:mt-0">
       <IoMdMenu className='lg:hidden absolute right-0 mx-[20px] w-[30px] h-[30px] pt-[15px]'
