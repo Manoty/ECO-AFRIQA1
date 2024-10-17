@@ -21,40 +21,40 @@ function VerifiedFarmers() {
   const SalesQuantity = 4;
 
   return (
-    <div className='VerifiedFarmers pb-[80px]'>
-      <div className='VerifiedFarmersWrapper  mr-[140px]'>
+    <div className='VerifiedFarmers pb-[40px] lg:pb-[80px]'>
+      <div className='VerifiedFarmersWrapper mx-[10px] lg:mx-0  lg:mr-[140px]'>
         {/*Page Header */}
         <div className='PageHeader'>
           <div className='Greetigs'>
-              <p className='text-start font-[700] font-inter text-[#008000] text-[22px] my-0 '>Hello {Username}, Welcome To Your Dashboard</p>
+              <p className='text-start font-[700] font-inter text-[#008000] text-[18px] lg:text-[22px] my-0 '>Hello {Username}, Welcome To Your Dashboard</p>
           </div>
-          <div className='Descriptions mt-[30px]'>
-            <p className='text-start font-[800] font-inter text-[#00000080] text-[15px] my-0 '>View and manage your sales, products and income</p>
+          <div className='Descriptions mt-[10px] lg:mt-[30px] mr-[100px] lg:mr-0'>
+            <p className='text-start font-[800] font-inter text-[#00000080] text-[14px] lg:text-[15px] my-0 '>View and manage your sales, products and income</p>
           </div>
         </div>{/*Page Header */}
 
         {/*Total Sales and Income */}
-        <div className='SalesAndIncome mt-[40px]'>
+        <div className='SalesAndIncome mt-[20px] lg:mt-[40px]'>
           <div className='CntentsWrapper grid grid-cols-2'>
             {/*Total Income */}
             <div className='TotalIncome block border-y-[1px] border-black border-0 border-solid'>
-              <div className='IncomeWrapper my-[30px] flex justify-center'>
+              <div className='IncomeWrapper my-[16px] lg:my-[30px] flex justify-center'>
                 <div className='IcomeContents block'>
                   <div className='TextWrapper flex justify-start'>
-                    <p className='text-start font-[700] font-inter text-[#000000] text-[22px] my-0 mr-[20px] '>TOTAL INCOME:</p>
-                    <p className='IncomeFigure text-start font-[700] font-inter text-[#FF0C1A] text-[22px] my-0 '>{TotalIncome}</p>
+                    <p className='text-start font-[700] font-inter text-[#000000] text-[11px] lg:text-[22px] my-0 mr-[4px] lg:mr-[20px] '>TOTAL INCOME:</p>
+                    <p className='IncomeFigure text-start font-[700] font-inter text-[#FF0C1A] text-[11px] lg:text-[22px] my-0 '>{TotalIncome}</p>
                   </div>
                 </div>
               </div> {/*IncomeWrapper */}
             </div> {/*Total Income */}
           
-            {/*Total Income */}
-            <div className='TotalIncome block border-y-[1px] border-l-[1px] border-black border-0 border-solid '>
-              <div className='IncomeWrapper my-[30px] flex justify-center'>
-                <div className='IcomeContents block'>
+            {/*Total Sales */}
+            <div className='TotalSales block border-y-[1px] border-l-[1px] border-black border-0 border-solid '>
+              <div className='SalesWrapper my-[16px] lg:my-[30px] flex justify-center'>
+                <div className='SalesContents block'>
                   <div className='TextWrapper flex justify-start'>
-                    <p className='text-start font-[700] font-inter text-[#000000] text-[22px] my-0 mr-[20px] '>TOTAL SALES:</p>
-                    <p className='IncomeFigure text-start font-[700] font-inter text-[#FF0C1A] text-[22px] my-0 '>{TotalSales}</p>
+                    <p className='text-start font-[700] font-inter text-[#000000] text-[11px] lg:text-[22px] my-0 mr-[4px] lg:mr-[20px] '>TOTAL SALES:</p>
+                    <p className='IncomeFigure text-start font-[700] font-inter text-[#FF0C1A] text-[11px] lg:text-[22px] my-0 '>{TotalSales}</p>
                   </div>
                 </div>
               </div> {/*SalesWrapper */}
@@ -63,9 +63,9 @@ function VerifiedFarmers() {
         </div> {/*Total Sales and Income */}
           
         {/*Progress Graph */}
-        <div className='ProgressGraph mt-[30px]'>
+        <div className='ProgressGraph mt-[20px] lg:mt-[30px]'>
           <div className='GraphTitle'>
-            <p className='text-start font-[700] font-inter text-[#000000] text-[20px] my-0 '>Your Performance</p>
+            <p className='text-start font-[700] font-inter text-[#000000] text-[16px] lg:text-[20px] my-0 '>Your Performance</p>
           </div>
           {/*Graph Body */}
           <div className='GraphBody mt-[20px] '>
@@ -74,24 +74,24 @@ function VerifiedFarmers() {
         </div> {/*Progress Graph */}
 
         {/*Farm Produce */}
-        <div className='FarmProduce mt-[40px]'>
+        <div className='FarmProduce mt-[28px] lg:mt-[40px]'>
           <div className='FarmProduceWrapper'>
             {/*Heading and Add item Buttom */}
             <div className='HeadingAndButton block'>
               <div className='ContentsWrapper flex justify-between'>
                 {/*Heading */}
-                <div className='FarmProduce'>
-                  <p className='text-start font-inter font-[700] text-[#000000] text-[26px] my-0'>Your Farm Produce</p>
+                <div className='FarmProduce ml-[14px] lg:ml-0'>
+                  <p className='text-start font-inter font-[700] text-[#000000] text-[16px] lg:text-[22px] my-0'>Your Farm Produce</p>
                 </div>
                 {/*Add Button */}
                 <div className='AddButton block'>
                   <div className='flex justify-start'>
                     <div className='PlusButton mr-[10px]'>
                       <Link className=''>
-                        <FaPlusCircle className='text-[#008000]  text-[26px] my-0' />
+                        <FaPlusCircle className='text-[#008000] text-[14px] lg:text-[26px] my-0' />
                       </Link>
                     </div>
-                    <div className='block pt-[4px]'>
+                    <div className='block lg:pt-[4px]'>
                       <p className='text-start font-inter font-[700] text-[#008000] text-[14px] my-0'>Add Crop</p>
                     </div>
                   </div>
@@ -99,29 +99,29 @@ function VerifiedFarmers() {
               </div> {/*ContentsWrapper */}
             </div> {/*Heading and Add item Buttom */}
             {/*Farm Produce List Wrapper */}
-            <div className='ProduceList Wrapper mt-[20px]'>
+            <div className='ProduceList Wrapper mt-[16px] lg:mt-[20px]'>
               {/*Produce List Headers */}
-              <div className='ProduceListHeaders gap-[50px] grid grid-cols-4'>
+              <div className='ProduceListHeaders gap-x-[12px] lg:gap-x-[50px] grid grid-cols-4'>
                 {/*Crop */}
-                <div className='Crop ml-[40px]'>
-                  <p className='text-center font-inter font-[700] text-[#008000] text-[16px] my-0'>Crop</p>
+                <div className='Crop lg:ml-[40px]'>
+                  <p className='text-center font-inter font-[700] text-[#008000] text-[11px] lg:text-[16px] my-0'>Crop</p>
                 </div>
                 {/*Produced By */}
                 <div className='ProducedBy'>
-                  <p className='text-start font-inter font-[700] text-[#008000] text-[16px] my-0'>Product Used To Grow</p>
+                  <p className='text-start font-inter font-[700] text-[#008000] text-[11px] lg:text-[16px] my-0'>Product Used To Grow</p>
                 </div>
                 {/*Bags Harvested */}
                 <div className='BagsHarvested'>
-                  <p className='text-center font-inter font-[700] text-[#008000] text-[16px] my-0'>Bags Harvested</p>
+                  <p className='text-center font-inter font-[700] text-[#008000] text-[11px] lg:text-[16px] my-0'>Bags Harvested</p>
                 </div>
                 {/*Bags Sold */}
-                <div className=' BagsSold ml-[70px]'>
-                  <p className='text-start font-inter font-[700] text-[#008000] text-[16px] my-0'>Bags Sold</p>
+                <div className=' BagsSold lg:ml-[70px]'>
+                  <p className='text-center lg:text-start font-inter font-[700] text-[#008000] text-[11px] lg:text-[16px] my-0'>Bags Sold</p>
                 </div>
               </div>  {/*Produce List Headers */}
 
               {/*Produce List Items */}
-              <div className='ProduceListItems mt-[24px]'>
+              <div className='ProduceListItems mt-[8px] lg:mt-[24px]'>
                 {FarmProduceList.slice(0, ProduceQuantity).map((FarmProduceList) =>
                  <FarmProduceListCard Crop={FarmProduceList.Crop} GrownBy={FarmProduceList.GrownBy} BagsHarvested={FarmProduceList.BagsHarvested} BagsSold={FarmProduceList.BagsSold}/>
                 )}
@@ -131,37 +131,37 @@ function VerifiedFarmers() {
         </div>  {/*Farm Produce */}
 
         {/*Sales History */}
-        <div className='SalesHistory mt-[60px]'>
+        <div className='SalesHistory mt-[30px] lg:mt-[60px]'>
           <div className='SalesHistoryWrapper'>
             {/*Heading */}
-            <div className='SalesHistory'>
-              <p className='text-start font-inter font-[700] text-[#000000] text-[26px] my-0'>Your Sales History</p>
+            <div className='SalesHistory ml-[14px] lg:ml-0'>
+              <p className='text-start font-inter font-[700] text-[#000000] text-[16px] lg:text-[22px] my-0'>Your Sales History</p>
             </div>
             
             {/*Sales History List Wrapper */}
             <div className='SalesList Wrapper mt-[20px]'>
               {/*Produce List Headers */}
-              <div className='SalesListHeaders gap-[50px] grid grid-cols-4'>
+              <div className='SalesListHeaders gap-x-[20px] lg:gap-x-[50px] grid grid-cols-4'>
                 {/*Produce */}
                 <div className='Produce'>
-                  <p className='text-center font-inter font-[700] text-[#008000] text-[16px] my-0'>Produce</p>
+                  <p className='text-center font-inter font-[700] text-[#008000] text-[11px] lg:text-[16px] my-0'>Produce</p>
                 </div>
                 {/*Bags Sold */}
                 <div className='BagsSold'>
-                  <p className='text-center font-inter font-[700] text-[#008000] text-[16px] my-0'>Bags Sold</p>
+                  <p className='text-center font-inter font-[700] text-[#008000] text-[11px] lg:text-[16px] my-0'>Bags Sold</p>
                 </div>
                 {/*Amount */}
                 <div className='Amount'>
-                  <p className='text-center font-inter font-[700] text-[#008000] text-[16px] my-0'>Amount</p>
+                  <p className='text-center font-inter font-[700] text-[#008000] text-[11px] lg:text-[16px] my-0'>Amount</p>
                 </div>
                 {/*Date */}
                 <div className='Date'>
-                  <p className='text-center font-inter font-[700] text-[#008000] text-[16px] my-0'>Date</p>
+                  <p className='text-center font-inter font-[700] text-[#008000] text-[11px] lg:text-[16px] my-0'>Date</p>
                 </div>
               </div>  {/*Sales List Headers */}
 
               {/*Sales List Items */}
-              <div className='SalesListItems mt-[24px]'>
+              <div className='SalesListItems mt-[8px] lg:mt-[24px]'>
                 {FarmSalesList.slice(0, SalesQuantity).map((FarmSalesList) =>
                  <FarmSalesListCard Produce={FarmSalesList.Produce} BagsSold={FarmSalesList.BagsSold} Amount={FarmSalesList.Amount} Date={FarmSalesList.Date}/>
                 )}
