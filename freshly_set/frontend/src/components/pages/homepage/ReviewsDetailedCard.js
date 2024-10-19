@@ -20,7 +20,7 @@ function ReviewsDetailedCard({img, name, role, reviews, ratings}) {
                             </div>
                             {/*Reviwer Descriptions */}
                             <div className="ReviewerDescriptions mt-[12px] lg:mt-[20px]">
-                                <p className="text-start text-[10px] lg:text-[22px] text-[#000000] font-josefin font-[600] my-0">{reviews}</p>
+                                <p className="text-start text-[8px] lg:text-[22px] text-[#000000] font-josefin font-[600] my-0">{reviews}</p>
                             </div>
                             {/*Reviwer Role */}
                             <div className="ReviewerRole mt-[8px] lg:mt-[20px]">
