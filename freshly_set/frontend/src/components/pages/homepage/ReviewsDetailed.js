@@ -1,7 +1,7 @@
 import React from 'react';
 import Nav from '../../Nav/Navbar';
 
-function Detailed() {
+function ReviewsDetailed() {
   return (
     <div className="min-h-screen bg-[#F5FAF9] overflow-x-hidden">
       <Nav />
@@ -289,4 +289,4 @@ function Detailed() {
   );
 }
 
-export default Detailed;
+export default ReviewsDetailed;
