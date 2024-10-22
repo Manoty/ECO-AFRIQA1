@@ -14,28 +14,54 @@ function Notifications() {
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
 
-    useEffect(() => {
-        const fetchNotifications = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/notifications/', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                    },
-                    withCredentials: true,
-                });
-                setNotifications(response.data.results); // Set the notifications from the response
-                console.log("Fetched", notifications)
-                setLoading(false);
-            } catch (error) {
-                setError('Failed to fetch notifications');
-                console.error('Error fetching notifications:', error);
-                setLoading(false);
-            }
-        };
+    const getNotifications = async (page = 1) => {
+        try {
+            // Fetch the notifications using Axios
+            const response = await axios.get(`http://localhost:8000/notifications/?page=${page}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
+            });
+    
+            // Extract notification data and pagination info
+            // const notifications = response.data.results; // assuming paginated results
+            const nextPage = response.data.next; // URL of the next page, if any
+            const previousPage = response.data.previous; // URL of the previous page, if any
+            // Return notification data and pagination details
+            // return {
+            //     nextPage,
+            //     previousPage,
+            //     count: response.data.count, // Total number of notifications
+            // };
 
-        fetchNotifications();
+            setNotifications(response.data.results)
+
+        } catch (error) {
+            console.error('Error fetching notifications:', error.response);
+            return null;
+        }
+    };
+
+    const fetchAndDisplayNotifications = async () => {
+        const notificationData = await getNotifications();
+    
+        if (notificationData) {
+            console.log('Notifications:', notificationData.notifications);
+            console.log('Next page:', notificationData.nextPage);
+            console.log('Previous page:', notificationData.previousPage);
+            console.log('Total notifications:', notificationData.count);
+        } else {
+            console.log('Failed to fetch notifications.');
+        }
+    };
+    
+    // Call the function when needed, e.g., on page load or button click
+    useEffect(() => {
+        fetchAndDisplayNotifications();
     }, []);
+
 
     const handleNextPage = () => {
         setCurrentPage((prevPage) => prevPage + 1);
@@ -113,12 +139,12 @@ function Notifications() {
                     <div className="NotificationCards">
 
                         { notifications.map((notification) => (
-                                <NotificationCard header="New Message" details={notification.message}/> 
+                                <NotificationCard key={notification.id} header="New Message" details={notification.message}/> 
                     ))}
-                        {NotificationList.slice(0,NotificationsNumber).map((NotificationList) => (
-                        <NotificationCard key={NotificationList.id} header={NotificationList.header} details={NotificationList.details} />
-                        ))
-                    }  
+                        {/* {NotificationList.slice(0,NotificationsNumber).map((NotificationList) => ( */}
+                        {/* <NotificationCard key={NotificationList.id} header={NotificationList.header} details={NotificationList.details} /> */}
+                        {/* )) */}
+                    {/* }   */}
                     </div>
                 </div> {/*Order and Notifications Ends Here */}
                 </div> {/*Inner Wrapper Ends Here*/}

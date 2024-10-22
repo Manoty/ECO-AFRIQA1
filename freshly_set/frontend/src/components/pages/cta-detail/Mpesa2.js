@@ -5,32 +5,49 @@ import { CartContext } from "../../context/CartContext";
 import axios from "axios";
 import { getCsrfToken } from "../../../utils/getCsrfToken";
 import { ProfileContext } from "../../context/ProfileContext";
+import { AuthContext } from "../../context/AuthContext";
+import OrderSummary from "./OrderSummary";
 
 function Mpesa2() {
-
   const { cartItems, totalPrice, delivery } = useContext(CartContext);
+  const { isAuthenticated } = useContext(AuthContext);
+  const { profile } = useContext(ProfileContext);
 
-  const { profile } = useContext(ProfileContext)
-  // Example order data to send (based on your app's structure)
+  // State for form fields, used when not authenticated
+  const [orderName, setOrderName] = useState("");
+  const [orderEmail, setOrderEmail] = useState("");
+  const [orderPhone, setOrderPhone] = useState("");
+  const [orderLocation, setOrderLocation] = useState("");
+
+  const { clearCart } = useContext(CartContext);
+  // Populate the form with profile data when authenticated
+  useEffect(() => {
+    if (isAuthenticated && profile) {
+      setOrderName(`${profile.first_name} ${profile.last_name}`);
+      setOrderEmail(profile.email);
+      setOrderPhone(profile.phone); // Assuming you have phone data in the profile
+      setOrderLocation(profile.location);
+    }
+  }, [isAuthenticated, profile]);
+
   const orderData = {
-    customer_name: profile?.first_name,
-    customer_email: profile?.email,
-    customer_phone: '1234567890',
+    customer_name: orderName,
+    customer_email: orderEmail,
+    customer_phone: orderPhone,
     items: cartItems.map(item => ({
-      product_name: item.name,         // Changed from 'name' to 'product_name'
-      product_price: item.price,       // Changed from 'price' to 'product_price'
-      product_quantity: item.qtty  // Changed from 'quantity' to 'product_quantity'
+      product_name: item.name,
+      product_price: item.price,
+      product_quantity: item.qtty,
     })),
     total_price: cartItems.reduce((sum, item) => sum + item.price * item.qtty, 0),
-    delivery_fee: delivery,             // Changed from 'delivery' to 'delivery_fee'
+    delivery_fee: delivery,
     payment_method: 'mpesa',
   };
-  
 
   const handleCheckout = async () => {
     const csrfToken = getCsrfToken();
     try {
-      const response = await axios.post('http://localhost:8000/orders/', orderData, { 
+      const response = await axios.post('http://localhost:8000/orders/', orderData, {
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': csrfToken,
@@ -39,25 +56,18 @@ function Mpesa2() {
       });
       if (response.status === 201) {
         console.log('Order created:', response.data);
+        clearCart();
         alert(`Order placed successfully! Your Order ID is ${response.data.order_id}`);
-
       } else {
         console.error('Unexpected response:', response);
         alert('Unexpected response from the server.');
       }
     } catch (error) {
-      console.log('Error response:', error.response?.data);  // Log detailed error response
+      console.log('Error response:', error.response?.data);
       alert('There was an issue placing the order. Check the console for more details.');
     }
   };
-   
-  
 
-  useEffect(() => {
-    console.log("Cart items total price:", totalPrice);
-  }, [totalPrice]);
-  console.log(orderData);
-  console.log(cartItems); 
   return (
     <div className="min-h-screen bg-[#F5FAF9] overflow-x-hidden">
       <Nav /> {/* The Upper NavBar */}
@@ -120,37 +130,7 @@ function Mpesa2() {
                   <h2 className="text-[30px] font-bold text-green-700 text-center mb-0 font-inter">ORDER SUMMARY</h2> {/* No margin-bottom */}
 
                   {/* Container for Input Boxes */}
-                  <div className="flex flex-col space-y-0 mt-2">
-                    <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-                      <input 
-                        className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
-                        placeholder="First Name" 
-                        value={'Owner: Maria Lisa'} 
-                        readOnly
-                      />
-                      <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]" />
-                    </div>
-
-                    <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-                      <input 
-                        className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
-                        placeholder="Last Name" 
-                        value={'Location: Westlands'} 
-                        readOnly
-                      />
-                      <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]" />
-                    </div>
-
-                    <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-                      <input 
-                        className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
-                        placeholder="Phone" 
-                        value={'Phone: +254899098678'} 
-                        readOnly
-                      />
-                      <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]" />
-                    </div>
-                  </div>
+                 <OrderSummary />
                   
                   {/* Order Summary Details */}
                   <div className="Metrics mx-[30px] lg:mt-12 lg:mx-[40px]">
