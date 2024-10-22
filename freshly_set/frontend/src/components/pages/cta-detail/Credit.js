@@ -4,6 +4,7 @@ import Nav from '../../Nav/Navbar';
 import { CartContext } from "../../context/CartContext"; // Ensure you have CartContext defined
 import axios from "axios";
 import { getCsrfToken } from "../../../utils/getCsrfToken"; // Make sure this utility is available
+import OrderSummary from "./OrderSummary";
 
 function Credit() {
   const { cartItems, totalPrice, delivery } = useContext(CartContext);
@@ -188,50 +189,23 @@ function Credit() {
     <h2 className="text-[30px] font-bold text-green-700 text-center mb-0  font-inter">ORDER SUMMARY</h2> {/* No margin-bottom */}
 
     {/* Container for Input Boxes */}
-    <div className="flex flex-col space-y-0 mt-2">
-        <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-            <input 
-                className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
-                placeholder="First Name" 
-                value={'Owner:           Maria Lisa'} 
-            />
-            <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]"/>
-        </div>
-
-        <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-            <input 
-                className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
-                placeholder="Last Name" 
-                value={'Location:     Wesatlands'} 
-            />
-            <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]"/>
-        </div>
-
-        <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-            <input 
-                className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
-                placeholder="Phone" 
-                value={'Phone:      +254899098678'} 
-            />
-            <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]"/>
-        </div>
-    </div>
+    <OrderSummary />
     {/* Order Summary Details */}
     
     <div className="Metrics mx-[30px] lg:mt-12 lg:mx-[40px]">
               <div className="flex justify-between mt-[14px] lg:mt-[8px]">
                 <p className="text-start font-[900] my-0 font-inter text-[#000000B2] text-[16px] lg:text-[18px] ">SUB TOTAL</p>
-                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">{totalPrice}</p>
+                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">Ksh {totalPrice} </p>
               </div>
 
               <div className="flex justify-between mt-[14px] lg:mt-[20px]">
                 <p className="text-start font-[900] my-0 font-inter text-[#000000B2] text-[16px] lg:text-[18px]">DELIVERY</p>
-                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">{delivery}</p>
+                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">Ksh {delivery} </p>
               </div>
 
               <div className="flex justify-between mt-[14px] lg:mt-[20px]">
                 <p className="text-start font-[900] my-0 font-inter text-[#000000B2] text-[16px] lg:text-[18px]">Total</p>
-                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">{totalPrice + delivery}</p>
+                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">Ksh {totalPrice + delivery} </p>
               </div>
 
              {/* Terms and Complete Payment Button */}
