@@ -43,6 +43,10 @@ import OrderProgress from './components/pages/OrderManagement/OrderProgress';
 import OrderHistory from './components/pages/profile/OrderHistory';
 import Profile from './components/pages/profile/Profile';
 import PrivateRoute from './utils/PrivateRoute';
+import FarmingSystemSearch from './components/pages/farm-produce/FarmingSystemSearch';
+import GardenSetupSearch from './components/pages/farm-produce/GardenSetupSearch';
+import FarmingQuotationMethod from './components/pages/farm-produce/FarmingQuotationMethod';
+import GardenQuotationMethod from './components/pages/farm-produce/GardenQuotationMethod';
 
 
 
@@ -66,8 +70,12 @@ function App() {
         <Route path="/reviews2-detailed" element={<ReviewsDetailed />} />
         <Route path="/team-detailed" element={<TeamDetailed />} />
 
-        <Route path="/products/farmingSystems" element={<FarmingSystemsDetail />}/>
+        <Route path="/products/farmingSystems" element={<FarmingSystemsDetail />} />
+        <Route path="/products/farmingSystems/search" element={<FarmingSystemSearch />}/>
         <Route path="/products/gardenSetups" element={<GardenSetupsDetail />} />
+        <Route path="/products/gardenSetups/search" element={<GardenSetupSearch />} />
+        <Route path="/products/farmingSystems/method" element={<FarmingQuotationMethod />} />
+        <Route path="/products/gardenSetups/method" element={<GardenQuotationMethod />} />
         <Route path="/cta-detail/" element={<FaqDetails />} />
         <Route path="/Hero-Detail/" element={<HeroDetail />} />
 
