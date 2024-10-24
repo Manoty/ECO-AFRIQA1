@@ -45,6 +45,8 @@ import Profile from './components/pages/profile/Profile';
 import PrivateRoute from './utils/PrivateRoute';
 import FarmingSystemSearch from './components/pages/farm-produce/FarmingSystemSearch';
 import GardenSetupSearch from './components/pages/farm-produce/GardenSetupSearch';
+import FarmingQuotationMethod from './components/pages/farm-produce/FarmingQuotationMethod';
+import GardenQuotationMethod from './components/pages/farm-produce/GardenQuotationMethod';
 
 
 
@@ -72,6 +74,8 @@ function App() {
         <Route path="/products/farmingSystems/search" element={<FarmingSystemSearch />}/>
         <Route path="/products/gardenSetups" element={<GardenSetupsDetail />} />
         <Route path="/products/gardenSetups/search" element={<GardenSetupSearch />} />
+        <Route path="/products/farmingSystems/method" element={<FarmingQuotationMethod />} />
+        <Route path="/products/gardenSetups/method" element={<GardenQuotationMethod />} />
         <Route path="/cta-detail/" element={<FaqDetails />} />
         <Route path="/Hero-Detail/" element={<HeroDetail />} />
 

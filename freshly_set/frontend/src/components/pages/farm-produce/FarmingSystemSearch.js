@@ -31,7 +31,7 @@ function FarmingSystemSearch() {
                         </div>
                     </div>
 
-                    <div className="CardsWrapper mt-[20px] mx-[100px]">
+                    <div className="CardsWrapper mt-[40px] mx-[100px]">
                         {/*FilterHeaders (Reusable Filter FilterHeaders) */}
                         <div className="FilterHeaders flex justify-start">
                             <FilterHeader />
@@ -49,7 +49,7 @@ function FarmingSystemSearch() {
                         {/*Next Button */}
                         <div className="BottonWrapper flex justify-end">
                             <div className="NextButton  bg-[#008000] rounded-[12px] my-[20px] active:scale-90 transition-all duration-100 ease-out">   
-                                <Link to="/">
+                                <Link to="/products/farmingSystems/method">
                                     <p className="text-center text-[25px] text-white font-inter font-[800] my-0 py-[12px] px-[40px]">NEXT</p>
                                 </Link>
                             </div>
@@ -86,7 +86,7 @@ function FilterHeader() {
 function FilterField({Entry}) {
     return (
         <div className="FilterHeader mx-auto border-solid border-[#008000] border-[3.6px] rounded-[12px]">
-            <p className="text-center text-[#008000] text-[20px] font-inter font-[800] my-0 px-[40px] py-[18px] ">{Entry}</p>
+            <p className="text-center text-[#008000] text-[20px] font-inter font-[800] my-0 px-[40px] py-[10px] ">{Entry}</p>
         </div>
     )
 }
