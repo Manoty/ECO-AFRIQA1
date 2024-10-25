@@ -13,18 +13,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-
-
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from django.urls import path
 from .views import OrderListCreateView, OrderDetailView
 
-#faq
+# faq
 from .views import FAQListView
 from .views import FAQMainPageListView
-
-
 
 
 from rest_framework_simplejwt.views import (
@@ -140,7 +136,16 @@ urlpatterns = [
 
     path('freshlyapp/banners/', BannerListView.as_view(), name='banner-list'),
 
+    path('orders/', OrderListCreateView.as_view(), name='OrderListCreateView'),
+    path('orders/<uuid:order_id>/', OrderDetailView.as_view(), name='order-detail'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
+
+    # faq
+    path('api/faqs/', FAQListView.as_view(), name='faq-list'),
+    path('api/faqsmainpage/', FAQMainPageListView.as_view(),
+         name='faq-mainpage-list'),
 
     # Category URL
 
@@ -160,29 +165,26 @@ urlpatterns = [
 
 
 
+    # notification url
+    path('notifications/', NotificationListView.as_view(),
+         name='notification-list'),
 
-
-
-
-   #notification url
-    path('notifications/', NotificationListView.as_view(), name='notification-list'),
-    
-    #true order
+    # true order
     path('orders/', OrderListCreateView.as_view(), name='OrderListCreateView'),
     path('orders/<uuid:order_id>/', OrderDetailView.as_view(), name='order-detail'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    
-    
-    #faq
+
+
+    # faq
     path('api/faqs/', FAQListView.as_view(), name='faq-list'),
-    path('api/faqsmainpage/', FAQMainPageListView.as_view(), name='faq-mainpage-list'),
-    
-    
-    
- 
-    
-   
+    path('api/faqsmainpage/', FAQMainPageListView.as_view(),
+         name='faq-mainpage-list'),
+
+
+
+
+
 
 
     # notification url
@@ -200,6 +202,5 @@ urlpatterns = [
     
     #consoltation
     path('api/consultants/', views.consultant_list, name='consultant-list'),
-
 
 ]

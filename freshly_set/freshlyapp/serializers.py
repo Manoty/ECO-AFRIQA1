@@ -1,10 +1,14 @@
+from django.db import IntegrityError
+from .models import Profile  # Ensure Profile model is imported
+from .models import Order, OrderItem
+from .models import FAQMainPage
 from .models import Profile
 import os
 from PIL import Image
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from .models import Blog, Product, Garden, Comment, Like, Share, Poll, Vote, IDVerification, Review, Farmer, Cart, CartItem, Banner, Category, Notification
+from .models import Blog, Product, Garden, Comment, Like, Share, Poll, Vote, IDVerification, Review, Farmer, Cart, CartItem, Banner, Category, Notification, FAQMainPage, FAQ
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework.validators import ValidationError
 from django.contrib.auth.models import User
@@ -13,31 +17,45 @@ from better_profanity import profanity
 from rest_framework import serializers
 
 
-
 UserModel = get_user_model()
 
 
-class UserRegisterSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserModel  # This is still the built-in User model
-        fields = ['username', 'email', 'password', 'first_name', 'last_name']
+        model = Profile
+        fields = ['location', 'phone']
+
+
+class UserRegisterSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer()
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password',
+                  'first_name', 'last_name', 'profile']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
     def create(self, validated_data):
-        user = UserModel.objects.create_user(
+        profile_data = validated_data.pop('profile')
+        user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
-            first_name=validated_data.get('first_name', ''),
-            last_name=validated_data.get('last_name', '')
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
         )
 
-        # Create the Profile instance
-        # Profile.objects.create(
-        #     user=user,
-        #     phone=phone,
-        #     location=location,
-        #     remember_me=remember_me
-        # )
+        # Ensure a profile is created if it doesn't already exist
+        profile, created = Profile.objects.get_or_create(
+            user=user, defaults=profile_data)
+
+        if not created:
+            # If the profile already exists, update it if needed
+            profile.phone = profile_data['phone']
+            profile.location = profile_data['location']
+            profile.save()
 
         return user
 
@@ -58,12 +76,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
-
-
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = ['location', 'phone']
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -325,8 +337,6 @@ class IDVerificationSerializer(serializers.ModelSerializer):
                 "Verification failed. ID number or photo is not correct.")
 
 
-
-
 # Banner Serializer for Marketplace Page
 
 
@@ -398,22 +408,23 @@ class CartSerializer(serializers.ModelSerializer):
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
-        fields = ['id', 'message', 'read', 'timestamp','user']
-    
-from rest_framework import serializers
-from .models import Order, OrderItem
+
+        fields = ['id', 'message', 'read', 'timestamp', 'user']
+
 
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
         fields = ['product_name', 'product_price', 'product_quantity']
 
+
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True)
-    
+
     class Meta:
         model = Order
-        fields = ['order_id', 'customer_name', 'customer_email', 'customer_phone', 'delivery_fee', 'total_price', 'payment_method', 'items', 'created_at', 'updated_at']
+        fields = ['order_id', 'customer_name', 'customer_email', 'customer_phone',
+                  'delivery_fee', 'total_price', 'payment_method', 'items', 'created_at', 'updated_at']
         read_only_fields = ['order_id', 'created_at', 'updated_at']
 
     def create(self, validated_data):
@@ -422,19 +433,16 @@ class OrderSerializer(serializers.ModelSerializer):
         for item_data in items_data:
             OrderItem.objects.create(order=order, **item_data)
         return order
-    
-    
-from rest_framework import serializers
-from .models import FAQ
+
 
 class FAQSerializer(serializers.ModelSerializer):
     class Meta:
         model = FAQ
         fields = ['id', 'question', 'description']
 
+
 # serializers.py
-from rest_framework import serializers
-from .models import FAQMainPage
+
 
 class FAQMainPageSerializer(serializers.ModelSerializer):
     class Meta:

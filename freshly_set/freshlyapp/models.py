@@ -15,7 +15,8 @@ from django.conf import settings
 import boto3
 import re
 
-
+import uuid
+from django.utils import timezone
 
 """
 class AppUserManager(BaseUserManager):
@@ -91,15 +92,14 @@ from django.contrib.auth.models import User
 # Cart Model
 
 
-    
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone = models.CharField(max_length=15, blank=True, null=True)
-    location = models.CharField(max_length=100, blank=True, null=True)
-    remember_me = models.BooleanField(default=False)
+# class Profile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     phone = models.CharField(max_length=15, blank=True, null=True)
+#     location = models.CharField(max_length=100, blank=True, null=True)
+#     remember_me = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.user.username
+#     def __str__(self):
+#         return self.user.username
 
 
 class Category(models.Model):
@@ -200,7 +200,8 @@ class Review(models.Model):
 
 
 class Farmer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.user.username  # Use the username field from the User model
@@ -415,9 +416,8 @@ class IDVerification(models.Model):
             self.verified_at = timezone.now()
             self.save()
             return True
-        
+
         return False
-    
 
 
 # Banners for Updated Marketplace Page
@@ -516,7 +516,6 @@ class CartItem(models.Model):
         return f'CartItem: {self.product.name} (Quantity: {self.quantity})'
 
 
-
 class Notification(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, blank=True)
@@ -526,38 +525,71 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification for {self.user.username} at {self.timestamp}"
-    
 
 
-import uuid
-from django.utils import timezone
+# payment transation model
+class Transaction(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+        ('retry', 'Retry')
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=12)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    mpesa_receipt_number = models.CharField(
+        max_length=100, blank=True, null=True)
+    status = models.CharField(
+        max_length=50, choices=STATUS_CHOICES, default='pending')
+    transaction_date = models.DateTimeField(auto_now_add=True)
+    # Store error messages, if any
+    error_message = models.TextField(blank=True, null=True)
+    retry_count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.user} - {self.amount}'
+
+    def can_retry(self):
+        # Set retry limit to 3 attempts
+        return self.retry_count < 3 and self.status == 'failed'
+
 
 class Order(models.Model):
-    order_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, null=True, blank=True)
-    customer_name = models.CharField(max_length=100, null=True, blank=True)  # Allows null and blank values
-    customer_email = models.EmailField(null=True, blank=True)                # Allows null and blank values
-    customer_phone = models.CharField(max_length=15, null=True, blank=True)  # Allows null and blank values
-    delivery_fee = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Nullable
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)   # Nullable
-    payment_method = models.CharField(max_length=20, null=True, blank=True)  # Nullable
+    order_id = models.UUIDField(
+        default=uuid.uuid4, editable=False, unique=True, null=True, blank=True)
+    # Allows null and blank values
+    customer_name = models.CharField(max_length=100, null=True, blank=True)
+    # Allows null and blank values
+    customer_email = models.EmailField(null=True, blank=True)
+    customer_phone = models.CharField(
+        max_length=15, null=True, blank=True)  # Allows null and blank values
+    delivery_fee = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True)  # Nullable
+    total_price = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True)   # Nullable
+    payment_method = models.CharField(
+        max_length=20, null=True, blank=True)  # Nullable
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Order {self.order_id}"
 
+
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
-    product_name = models.CharField(max_length=100, default="Unknown Product")  # Default value
-    product_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Default value
+    order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, related_name='items')
+    product_name = models.CharField(
+        max_length=100, default="Unknown Product")  # Default value
+    product_price = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0.00)  # Default value
     product_quantity = models.PositiveIntegerField(default=1)  # Default value
 
     def __str__(self):
         return f"{self.product_name} - {self.product_quantity} pcs"
-    
-    
-    
-from django.db import models
+
 
 class FAQ(models.Model):
     question = models.CharField(max_length=255)
@@ -567,7 +599,7 @@ class FAQ(models.Model):
         return self.question
 
 # models.py
-from django.db import models
+
 
 class FAQMainPage(models.Model):
     question = models.CharField(max_length=255)
@@ -576,8 +608,7 @@ class FAQMainPage(models.Model):
     def __str__(self):
         return self.question
 
- 
-    
+
 # payment transation model
 class Transaction(models.Model):
     STATUS_CHOICES = [
@@ -586,27 +617,25 @@ class Transaction(models.Model):
         ('failed', 'Failed'),
         ('retry', 'Retry')
     ]
-    
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=12)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    mpesa_receipt_number = models.CharField(max_length=100, blank=True, null=True)
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='pending')
+    mpesa_receipt_number = models.CharField(
+        max_length=100, blank=True, null=True)
+    status = models.CharField(
+        max_length=50, choices=STATUS_CHOICES, default='pending')
     transaction_date = models.DateTimeField(auto_now_add=True)
-    error_message = models.TextField(blank=True, null=True)  # Store error messages, if any
+    # Store error messages, if any
+    error_message = models.TextField(blank=True, null=True)
     retry_count = models.IntegerField(default=0)
 
     def __str__(self):
         return f'{self.user} - {self.amount}'
 
     def can_retry(self):
-        return self.retry_count < 3 and self.status == 'failed'  # Set retry limit to 3 attempts
-
-
-
-
-
-
+        # Set retry limit to 3 attempts
+        return self.retry_count < 3 and self.status == 'failed'
 
 
 class Profile(models.Model):

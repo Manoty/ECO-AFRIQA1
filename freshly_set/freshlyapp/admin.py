@@ -1,3 +1,4 @@
+from .models import FAQ
 from datetime import timezone
 from django.contrib import admin
 from .models import *
@@ -5,7 +6,7 @@ from .models import IDVerification
 
 # Register your models here.
 
-from .models import Product, Garden, Service, Blog, Banner, Vote, Notification
+from .models import Product, Garden, Service, Blog, Banner, Vote, Notification, Order, OrderItem, FAQ, FAQMainPage
 # admin.site.register(AppUser)
 admin.site.register(Product)
 
@@ -43,6 +44,7 @@ class BlogModelAdmin(admin.ModelAdmin):
 admin.site.register(Poll)
 admin.site.register(Vote)
 
+
 class PollModelAdmin(admin.ModelAdmin):
     fields = ['id', 'title', 'description', 'votes']
 
@@ -74,7 +76,6 @@ class IDVerificationAdmin(admin.ModelAdmin):
         return False
 
 
-
 # Banner for Marketplace
 
 @admin.register(Banner)
@@ -82,35 +83,36 @@ class BannerAdmin(admin.ModelAdmin):
     list_display = ('title', 'active', 'created_at')
     list_filter = ('active', 'created_at')
     search_fields = ('title',)
-    
+
+
 admin.site.register(Cart)
 admin.site.register(CartItem)
 admin.site.register(Notification)
 
 
-
-from django.contrib import admin
-from .models import Order, OrderItem
-
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 1  # Allows you to add one extra item by default when creating an Order
 
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('order_id', 'customer_name', 'customer_email', 'total_price', 'payment_method', 'created_at')
+    list_display = ('order_id', 'customer_name', 'customer_email',
+                    'total_price', 'payment_method', 'created_at')
     search_fields = ('order_id', 'customer_name', 'customer_email')
     list_filter = ('payment_method', 'created_at')
-    inlines = [OrderItemInline]  # Allows adding/editing order items directly in the order admin page
-    readonly_fields = ('order_id', 'created_at', 'updated_at')  # Make these fields read-only
+    # Allows adding/editing order items directly in the order admin page
+    inlines = [OrderItemInline]
+    # Make these fields read-only
+    readonly_fields = ('order_id', 'created_at', 'updated_at')
+
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ('product_name', 'product_price', 'product_quantity', 'order')
+    list_display = ('product_name', 'product_price',
+                    'product_quantity', 'order')
     search_fields = ('product_name',)
-    
-from django.contrib import admin
-from .models import FAQ
+
 
 @admin.register(FAQ)
 class FAQAdmin(admin.ModelAdmin):
@@ -118,13 +120,11 @@ class FAQAdmin(admin.ModelAdmin):
 
 
 # admin.py
-from .models import FAQMainPage
 
 @admin.register(FAQMainPage)
 class FAQMainPageAdmin(admin.ModelAdmin):
     list_display = ['question']
     search_fields = ['question']
-admin.site.register(Profile)
 
 
 #consultant
@@ -137,3 +137,4 @@ class ConsultantAdmin(admin.ModelAdmin):
 
 # Register the model with the custom admin class
 admin.site.register(Consultant, ConsultantAdmin)
+admin.site.register(Profile)

@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BiSolidEdit } from "react-icons/bi";
 import { CiCircleCheck } from "react-icons/ci";
+import { ProfileContext } from '../../context/ProfileContext';
 
 function AccountInformation() {
-    // Single state object for all fields
+    const { profile, loading, error } = useContext(ProfileContext);
+
     const [fields, setFields] = useState({
-        firstName: 'John',
-        lastName: 'Doe',
-        email:"sosahlawe@gmail.com",
-        phone:"+123 456 789",
-        location:"Heights Apartments, Ruiru"
+        firstName: profile?.first_name,
+        lastName: profile?.last_name,
+        email:profile?.email,
+        phone:profile?.profile.phone,
+        location:profile?.profile.location
     });
 
     // State to track which field is being edited
@@ -33,6 +35,10 @@ function AccountInformation() {
         });
     };
 
+    useEffect(() => {
+        console.log("profile", profile)
+    },[loading, profile])
+
     return (
         <div className="flex">
             <div className="block">
@@ -47,7 +53,7 @@ function AccountInformation() {
                         <EditableField
                             label="First Name"
                             field="firstName"
-                            value={fields.firstName}
+                            value={profile?.first_name}
                             editingField={editingField}
                             onEditClick={handleEditClick}
                             onSaveClick={handleSaveClick}
@@ -57,7 +63,7 @@ function AccountInformation() {
                         <EditableField
                             label="Last Name"
                             field="lastName"
-                            value={fields.lastName}
+                            value={profile?.last_name}
                             editingField={editingField}
                             onEditClick={handleEditClick}
                             onSaveClick={handleSaveClick}
@@ -67,7 +73,7 @@ function AccountInformation() {
                         <EditableField
                             label="Email"
                             field="email"
-                            value={fields.email}
+                            value={profile?.email}
                             type="email"
                             editingField={editingField}
                             onEditClick={handleEditClick}

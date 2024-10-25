@@ -16,9 +16,9 @@ import Categories from './components/pages/farm-produce/Categories';
 
 import FaqDetails from './components/pages/cta-detail/FaqDetails';
 import HeroDetail from './components/pages/cta-detail/HeroDetail';
-import Detailed from './components/pages/homepage/Detailed';
-import Detail from './components/pages/about-us/Detail';
-import Details from './components/pages/about-us/Details';
+import ReviewsDetailed from './components/pages/homepage/ReviewsDetailed';
+import TeamDetailed from './components/pages/about-us/TeamDetailed';
+import WhyChooseDetailed from './components/pages/about-us/WhyChooseDetailed';
 import TestimonialsDetails from './components/pages/cta-detail/TestimonialsDetails';
 import BlogsAllUpdates from "./components/pages/cta-detail/BlogsAllUpdates"
 import Transporters from './components/pages/cta-detail/Transporters';
@@ -42,6 +42,11 @@ import Notifications from './components/pages/OrderManagement/Notifications';
 import OrderProgress from './components/pages/OrderManagement/OrderProgress';
 import OrderHistory from './components/pages/profile/OrderHistory';
 import Profile from './components/pages/profile/Profile';
+import PrivateRoute from './utils/PrivateRoute';
+import FarmingSystemSearch from './components/pages/farm-produce/FarmingSystemSearch';
+import GardenSetupSearch from './components/pages/farm-produce/GardenSetupSearch';
+import FarmingQuotationMethod from './components/pages/farm-produce/FarmingQuotationMethod';
+import GardenQuotationMethod from './components/pages/farm-produce/GardenQuotationMethod';
 
 
 
@@ -61,13 +66,16 @@ function App() {
         <Route path="/marketplace" element={<Products />} />
         <Route path="/products/categories" element={<Categories />} />
         <Route path="/about-us" element={<About />} />
-        <Route path="/whychoose-detail" element={<Detail />} />
-        <Route path="/reviews2-detailed" element={<Detailed />} />
-        <Route path="/team-detail" element={<Detailed />} />
-        <Route path="/details" element={<Details />} />
+        <Route path="/whychoose-detail" element={<WhyChooseDetailed />} />
+        <Route path="/reviews2-detailed" element={<ReviewsDetailed />} />
+        <Route path="/team-detailed" element={<TeamDetailed />} />
 
-        <Route path="/products/farmingSystems" element={<FarmingSystemsDetail />}/>
+        <Route path="/products/farmingSystems" element={<FarmingSystemsDetail />} />
+        <Route path="/products/farmingSystems/search" element={<FarmingSystemSearch />}/>
         <Route path="/products/gardenSetups" element={<GardenSetupsDetail />} />
+        <Route path="/products/gardenSetups/search" element={<GardenSetupSearch />} />
+        <Route path="/products/farmingSystems/method" element={<FarmingQuotationMethod />} />
+        <Route path="/products/gardenSetups/method" element={<GardenQuotationMethod />} />
         <Route path="/cta-detail/" element={<FaqDetails />} />
         <Route path="/Hero-Detail/" element={<HeroDetail />} />
 
@@ -92,8 +100,9 @@ function App() {
         <Route path="/notification" element={<Notifications />} />
         <Route path="/order-progress" element={<OrderProgress />}/>
         <Route path="/order-history" element={<OrderHistory />}/>
-        <Route path="/profile" element={<Profile />}/>
-        
+        <Route path="/profile" element={<PrivateRoute component={Profile}/>}/>  
+        {/* <Route path="/profile" element={<Profile />}/> */}
+
 
         {/* <Route path="/api/blogs" element={<Blogs />} /> */}
 

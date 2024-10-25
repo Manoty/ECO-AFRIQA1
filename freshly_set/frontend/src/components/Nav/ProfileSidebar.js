@@ -1,8 +1,42 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { IoMdMenu } from "react-icons/io";
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function ProfileSidebar({ setSelectedSection }) {
+  const { isAuthenticated, logout } = useContext(AuthContext);
+  
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/")  
+  }
+
+   const [clicked, setClicked] = useState({
+    1: false,  // First the menu is closed by default
+   
+  });
+    
+  const showMenu = (id) => {
+    setClicked((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
+  }; 
+      
+  useEffect(() => {
+      console.log("clicked", clicked)
+  }, [clicked])
+
   return (
-    <div className="SideNavbar hidden lg:flex top-0  h-[100%] pt-[13px] ">
+    <div className="SideNavbar mt-[120px] lg:mt-0">
+      <IoMdMenu className='lg:hidden absolute right-0 mx-[20px] w-[30px] h-[30px] pt-[15px]'
+        onClick={()=> showMenu(1)}
+      />
+      <div className={`SidebarBody ${clicked[1] ? "block" : "hidden lg:flex "} float lg:flex  top-0  h-[100%] pt-[13px]`}
+      onClick={()=> showMenu(1)}
+      >
       <ul className="fixed flex-col h-full justify-between  bg-gradient-to-r from-[#008000]  to-[#001A00] via-[#008000] w-[235.64px] pb-[42.7px]">
         {/*General Sections */}
         <div className='GeneralSections mt-[20px]'>
@@ -82,11 +116,12 @@ function ProfileSidebar({ setSelectedSection }) {
         {/*Log Out */}
           <div className='Logout mt-[14px]'>
             <li className="font-inter bg-gradient-to-b bg-clip-text text-transparent from-[#FFFFFF80] hover:from-[#FFFFFF] to-[#99999980] hover:to-[#999999] font-[900] transition-all duration-500 ease-in-out text-[20px] cursor-pointer"
-              onClick={() => setSelectedSection('Logout')}>LOGOUT
+              onClick={() => handleLogout()}>LOGOUT
             </li>
           </div>    
       </ul>
-    </div>
+      </div> {/*SideBar Body */}
+      </div> //
   );
 }
 
