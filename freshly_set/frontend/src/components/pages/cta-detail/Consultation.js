@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import FreshlyFooter from "../../footer/FreshlyFooter";
-import Consultants from "./Consultants.json";
 import ConsultantCard from "./ConsultantCard";
 import Nav from "../../Nav/Navbar";
 
 function Consultation() {
+
+const [consultants, setConsultants] = useState([]);
+
+//Fetch consaltations from the django API
+
+useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/consultants/")
+    .then((response) => response.json())
+    .then((data) => setConsultants(data))
+    .catch((error) => console.error("Error fetching consultants:", error));
+},[]);
+
     return (
         <div className="Consultations">
             <Nav /> {/*The Navbar */}
@@ -36,13 +47,23 @@ function Consultation() {
                     </div> {/*Page Hero contents Ends Here */}
 
                 </div> {/*Top Contents Ends Here */}
-                {/*Bottom Part */}
-                <div className="AllCards grid grid-cols-2 md:grid-cols-3  gap-[14px] lg:gap-[60px] mt-[40px] lg:mt-[100px] mx-[18px] lg:mx-[20px]">
-                    {Consultants.slice(0,9).map((Consultants) => (
-                        <ConsultantCard img={Consultants.img} name={Consultants.name} field={Consultants.field} description={Consultants.description} rate={Consultants.rate} />
-                        ))
-                    }  
-                </div> {/*All cards Ends Here */}
+
+
+
+                {/*Display consultants dynamically */}
+<div className="AllCards grid grid-cols-2 md:grid-cols-3 gap-[14px] lg:gap-[60px] mt-[40px] lg:mt-[100px] mx-[18px] lg:mx-[20px]">
+    {consultants.slice(0, 9).map((consultant) => (
+        <ConsultantCard 
+            key={consultant.id} 
+            img={consultant.img} 
+            name={consultant.name} 
+            field={consultant.field} 
+            description={consultant.description} 
+            rate={consultant.rate} 
+        />
+    ))}
+</div>
+{/*All cards Ends Here */}
             </div> {/*InnerContents Ends Here */}
 
             {/*Main Footer */}

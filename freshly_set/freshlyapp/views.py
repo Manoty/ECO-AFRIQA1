@@ -829,3 +829,17 @@ class FarmerListView(APIView):
 
         serializer = FarmerSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
+
+
+
+#consaltations
+from .models import Consultant
+from .serializers import ConsultantSerializer
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def consultant_list(request):
+    consultants = Consultant.objects.all()
+    serializer = ConsultantSerializer(consultants, many=True)
+    return Response(serializer.data)
+

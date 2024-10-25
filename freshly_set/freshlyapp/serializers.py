@@ -440,4 +440,15 @@ class FAQMainPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = FAQMainPage
         fields = ['id', 'question', 'answer']
+        
+        
+        
+#consoltation
+from .models import Consultant
+
+class ConsultantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Consultant
+        fields = ['id', 'name', 'field', 'description', 'rate', 'img']
+
 

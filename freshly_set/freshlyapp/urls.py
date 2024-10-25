@@ -196,6 +196,10 @@ urlpatterns = [
 
     # Verified Farmers
     path('verified-farmers/', FarmerListView.as_view(), name='verified-farmers'),
+    
+    
+    #consoltation
+    path('api/consultants/', views.consultant_list, name='consultant-list'),
 
 
 ]

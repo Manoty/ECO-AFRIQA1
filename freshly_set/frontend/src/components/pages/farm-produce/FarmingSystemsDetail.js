@@ -31,7 +31,7 @@ function FarmingSystemsDetail() {
                   <div className="grid grid-cols-2 gap-x-[36.14px]  gap-y-[20px] lg:grid lg:grid-cols-3 ">
                   {
                       modalToggleContents.map((card, index) => (
-                        <FarmCard key={index} index={index} number={1} img={card.img} title={card.title} body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut."/>
+                        <FarmCard key={index} index={index} number={1} img={card.img} title={card.title} body="t is impossible to overestimate the significance of preserving both physical and mental wellbeing in the fast-paced, highly stressed world of today. Although these two facets of health are frequently seen as distinct, they are really intricately linked and have a significant impact on one another. In this piece, we'll examine the complex interrelationship between mental and physical wellbeing and how addressing one may have a beneficial effect on the other. The story of Sarah: A tale of physical and mental transformation Let's look at Sarah's narrative to see how physical and mental wellbeing are related. Sarah was a busy "/>
 
                       ))
                     }

@@ -68,7 +68,11 @@ function FarmCard({  index, img, title, body, rating, number}) {
                   <FaLongArrowAltRight className="freshlyGreenText cursor-pointer mt-[12px] lg:mt-[0px]" />
               </div>
 
-             <img className="h-[20px]  lg:h-[40px] w-[20px] lg:w-[40px] cursor-pointer mr-[16.86px] lg:mr-[0px]" src="/static/media/docLogo.png" alt="DocLogo"/>
+              <img
+  className="w-[168px] lg:w-[373.07px] h-[83.48px] lg:h-[200px] object-cover rounded-t-[24px]"
+  src={`http://localhost:8000${img}`}
+/>
+
            </div>
        </div>
 
