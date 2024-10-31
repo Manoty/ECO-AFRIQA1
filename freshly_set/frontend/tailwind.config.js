@@ -8,6 +8,7 @@ module.exports = {
     fontFamily: {
       josefin: ['Josefin Sans', 'sans-serif'],
       inter: ['Inter', 'sans-serif'],
+      suez: ['Suez One', 'sans-serif'],
     },
     extend: { 
       backgroundImage: theme => ({

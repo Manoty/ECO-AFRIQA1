@@ -25,7 +25,7 @@ function HeroDetail() {
           <div className='DetailsPart w-[50%]'>
             {/*Heading */}
             <div className='Heading '>
-              <h1 className="text-start text-[#008000] text-[20px] lg:text-[45px] font-[400]  font-['Suez_One'] leading-[60px]">WHY WE ARE COMMITTED ENVIRONMENTALISTS</h1>
+              <h1 className="text-start text-[#008000] text-[20px] lg:text-[45px] font-[400]  font-suez leading-[60px]">WHY WE ARE COMMITTED ENVIRONMENTALISTS</h1>
             </div>
             {/* Sub Details */}
             <div className="SubDetails mt-[30px] mr-[80px]">    
