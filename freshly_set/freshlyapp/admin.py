@@ -128,3 +128,5 @@ class FAQMainPageAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Profile)
+
+admin.site.register(FarmingSystems)
