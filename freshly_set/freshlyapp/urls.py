@@ -199,4 +199,9 @@ urlpatterns = [
     # Verified Farmers
     path('verified-farmers/', FarmerListView.as_view(), name='verified-farmers'),
 
+
+    #farming systems
+    path('farming-systems/',GetFarmingSystems.as_view(),name='farming systems'),
+    path('addingfarming-systems/',WriteFarmingSystems.as_view(),name='adding farming systems')
+
 ]
