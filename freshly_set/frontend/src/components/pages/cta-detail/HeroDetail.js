@@ -53,7 +53,7 @@ function HeroDetail() {
 
         {/* The Globe */}
         <div className="TheGlobe flex justify-center mt-[24px] lg:mt-[60px]">
-          <img src="/static/media/image 189.png" alt="Environmental Image" className="w-[100px] h-[72px] lg:w-[298px] lg:h-[214px] mx-auto" />
+          <img src="/static/media/green_globe.png" alt="Environmental Image" className="w-[100px] h-[72px] lg:w-[298px] lg:h-[214px] mx-auto" />
         </div>
 
         {/* Detailed Part */}
