@@ -996,14 +996,16 @@ class FarmerListView(APIView):
         serializer = FarmerSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
 
-class FarmingSystems(APIView):
-    permission_classes = [IsAuthenticated]  
+@permission_classes([IsAuthenticated])
+class GetFarmingSystems(APIView):
 
     def get(self, request):
         farmingsystems = FarmingSystems.objects.all()  # Retrieve all farming systems
         serializer = FarmingSystemSerializer(farmingsystems, many=True)  # Serialize the data
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+@permission_classes([IsAuthenticated])
+class WriteFarmingSystems(APIView):
     def post(self, request):#one can input the farming systems
         serializer = FarmingSystemSerializer(data=request.data)  
         if serializer.is_valid():  
