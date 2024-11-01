@@ -4,12 +4,12 @@ import os
 from pathlib import Path
 from decouple import config
 from dotenv import load_dotenv
+import environ
 
 # Load environment variables from .env file
 load_dotenv()
 
 
-import environ
 from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -192,7 +192,8 @@ MPESA_API_URL = os.environ.get('MPESA_API_URL')
 
 if not MPESA_API_URL:
     raise ImproperlyConfigured("Set the MPESA_API_URL environment variable")
-MPESA_API_URL = env('MPESA_API_URL')
+MPESA_API_URL = env('MPESA_API_URL')  # This already raises an error if the variable is not found
+
 MPESA_SHORTCODE = env('MPESA_SHORTCODE')
 MPESA_PASSKEY = env('MPESA_PASSKEY')
 MPESA_CONSUMER_KEY = env('MPESA_CONSUMER_KEY')

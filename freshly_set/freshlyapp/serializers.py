@@ -8,7 +8,7 @@ from PIL import Image
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from .models import Blog, Product, Garden, Comment, Like, Share, Poll, Vote, IDVerification, Review, Farmer, Cart, CartItem, Banner, Category, Notification, FAQMainPage, FAQ
+from .models import Blog, Product, Garden, Comment, Like, Share, Poll, Vote, IDVerification, Review, Farmer, Cart, CartItem, Banner, Category, Notification, FAQMainPage, FAQ,FarmingSystems
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework.validators import ValidationError
 from django.contrib.auth.models import User
@@ -448,3 +448,8 @@ class FAQMainPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = FAQMainPage
         fields = ['id', 'question', 'answer']
+
+class FarmingSystemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =FarmingSystems
+        fields=['name','description']
