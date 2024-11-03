@@ -130,3 +130,4 @@ class FAQMainPageAdmin(admin.ModelAdmin):
 admin.site.register(Profile)
 
 admin.site.register(FarmingSystems)
+admin.site.register(Quotation)
