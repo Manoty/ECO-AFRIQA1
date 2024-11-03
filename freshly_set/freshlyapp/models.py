@@ -647,3 +647,61 @@ class Profile(models.Model):
 class FarmingSystems(models.Model):
     name=models.CharField(max_length=50, blank=False)
     description=models.TextField(max_length=255, blank=False)
+
+
+
+
+class Quotation(models.Model):
+    quotation_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    cart = models.OneToOneField('Cart', on_delete=models.CASCADE, related_name="quotation")
+    buyer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="buyer_quotations")
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="seller_quotations")
+    customer_name = models.CharField(max_length=100, null=True, blank=True)
+    customer_email = models.EmailField(null=True, blank=True)
+    customer_phone = models.CharField(max_length=15, null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    discount_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    final_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    valid_until = models.DateField(null=True, blank=True)
+    status = models.CharField(max_length=20, choices=[
+        ('Pending', 'Pending'),
+        ('Accepted', 'Accepted'),
+        ('Rejected', 'Rejected'),
+        ('Expired', 'Expired')
+    ], default='Pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Quotation {self.quotation_id} for Cart {self.cart.id}"
+
+    def calculate_final_amount(self):
+        """Calculate the final amount after applying any discount."""
+        if self.discount_amount:
+            self.final_amount = max(self.total_amount - self.discount_amount, 0)
+        else:
+            self.final_amount = self.total_amount
+
+    def save(self, *args, **kwargs):
+        # Calculate the total amount from the cart's total cost
+        self.total_amount = self.cart.total_cost
+
+        # Calculate final amount based on discount
+        self.calculate_final_amount()
+
+        # Automatically set valid_until date if not provided (e.g., 30 days from creation)
+        if not self.valid_until:
+            self.valid_until = timezone.now().date() + timezone.timedelta(days=30)
+
+        # Ensure status is set to "Expired" if validity has passed
+        if self.valid_until and timezone.now().date() > self.valid_until:
+            self.status = 'Expired'
+
+        super(Quotation, self).save(*args, **kwargs)
+
+
+
+
+
+
+

@@ -58,6 +58,7 @@ from .validators import custom_validation, validate_email, validate_password
 from django.utils import timezone
 import json
 from django.views.decorators.http import require_http_methods
+from .serializers import *
 
 # imports for checkout
 
@@ -1012,6 +1013,64 @@ class WriteFarmingSystems(APIView):
             serializer.save()  
             return Response(serializer.data, status=status.HTTP_201_CREATED)  
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
+
+
+
+
+
+
+
+
+
+class OrderListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        orders = Order.objects.filter(customer_email=request.user.email).order_by('-created_at')
+
+        paginator = PageNumberPagination()
+        paginator.page_size = 10  
+        result_page = paginator.paginate_queryset(orders, request)
+
+        serializer = OrderSerializer(result_page, many=True)
+        response = paginator.get_paginated_response(serializer.data)
+
+        return response
+
+
+
+
+
+
+
+
+
+
+
+
+
+class QuotationListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # Use Q objects to filter quotations where the user is either the buyer or the seller
+        quotations = Quotation.objects.filter(
+            Q(buyer=request.user) | Q(seller=request.user)
+        ).order_by('-created_at')
+
+        # Paginate the results
+        paginator = PageNumberPagination()
+        paginator.page_size = 3  # Set your desired page size here
+        result_page = paginator.paginate_queryset(quotations, request)
+
+        # Serialize the quotations
+        serializer = QuotationSerializer(result_page, many=True)
+
+        # Return the paginated response
+        return paginator.get_paginated_response(serializer.data)
+
+
+
 
 
 
