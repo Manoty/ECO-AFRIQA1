@@ -43,7 +43,7 @@ urlpatterns = [
          TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
-    # Catch-all route to serve React app for all frontend routes
+    # Catch-all routes to serve React app for all frontend routes
     path('', TemplateView.as_view(template_name='index.html')),
 
     path('about-us/', TemplateView.as_view(template_name='index.html')),
@@ -53,6 +53,8 @@ urlpatterns = [
     path("checkout/", TemplateView.as_view(template_name="index.html")),
     path("checkoutMpesa/", TemplateView.as_view(template_name="index.html")),
     path("checkoutCard/", TemplateView.as_view(template_name="index.html")),
+    path("login/", TemplateView.as_view(template_name="index.html")),
+
 
 
     # path('blogs/', views.blogs, name='blogs'),
@@ -184,7 +186,8 @@ urlpatterns = [
 
     # farming systems
     path('farming-systems/', GetFarmingSystems.as_view(), name='farming systems'),
-    path('addingfarming-systems/', WriteFarmingSystems.as_view(), name='adding farming systems'),
+    path('addingfarming-systems/', WriteFarmingSystems.as_view(),
+         name='adding farming systems'),
 
     # quotations
     path('quotations/', QuotationListView.as_view(), name='my-quotations'),

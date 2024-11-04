@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
+import { AuthContext } from '../components/context/AuthContext';
  const PrivateRoute = ({ component: Component, ...rest }) => {
-  const isAuthenticated = localStorage.getItem('accessToken') !== null;
 
+  const { isAuthenticated } = useContext(AuthContext);
   return isAuthenticated ? (
     <Component {...rest} />
   ) : (
