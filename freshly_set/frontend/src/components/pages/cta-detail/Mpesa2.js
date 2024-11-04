@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Nav from '../../Nav/Navbar';
 import { CartContext } from "../../context/CartContext";
 import axios from "axios";
@@ -20,6 +20,7 @@ function Mpesa2() {
   const [orderLocation, setOrderLocation] = useState("");
 
   const { clearCart } = useContext(CartContext);
+  const navigate = useNavigate();
   // Populate the form with profile data when authenticated
   useEffect(() => {
     if (isAuthenticated && profile) {
@@ -58,6 +59,12 @@ function Mpesa2() {
         console.log('Order created:', response.data);
         clearCart();
         alert(`Order placed successfully! Your Order ID is ${response.data.order_id}`);
+
+        if(isAuthenticated){
+          navigate("/profile")
+        }else{
+          navigate("/")
+        }
       } else {
         console.error('Unexpected response:', response);
         alert('Unexpected response from the server.');
@@ -67,6 +74,10 @@ function Mpesa2() {
       alert('There was an issue placing the order. Check the console for more details.');
     }
   };
+
+  useEffect(() => {
+    isAuthenticated
+  },[isAuthenticated])
 
   return (
     <div className="min-h-screen bg-[#F5FAF9] overflow-x-hidden">

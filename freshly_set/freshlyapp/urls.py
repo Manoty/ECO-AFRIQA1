@@ -55,6 +55,11 @@ urlpatterns = [
     path("marketplace/", TemplateView.as_view(template_name="index.html")),
     path("signup/", TemplateView.as_view(template_name="index.html")),
 
+    path("checkout/", TemplateView.as_view(template_name="index.html")),
+    path("checkoutMpesa/", TemplateView.as_view(template_name="index.html")),
+    path("checkoutCard/", TemplateView.as_view(template_name="index.html")),
+
+
     # path('blogs/', views.blogs, name='blogs'),
     path('freshlyapp/blogs/', BlogListView.as_view(), name='blog-list'),
     path('freshlyapp/create/', BlogListCreateView.as_view(),
