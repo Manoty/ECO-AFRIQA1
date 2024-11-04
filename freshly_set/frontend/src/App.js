@@ -84,10 +84,9 @@ function App() {
         <Route path="/transporter-success" element={<TransporterSuccess />} />
 
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/mpesa2" element={<Mpesa2/>} />
+        <Route path="/checkoutMpesa" element={<Mpesa2/>} />
 
-        <Route path="/mpesa" element={<Mpesa />} />
-         <Route path="/credit" element={<Credit />} />
+         <Route path="/checkoutCard" element={<Credit />} />
          <Route path="/resultssearch" element={<ResultsSearch />} />       
         <Route path="/consultation" element={<Consultation />} />
 
