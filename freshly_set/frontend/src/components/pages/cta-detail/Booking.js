@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom";
+import CustomDatePicker from '../../CustomDatePicker';
+import ScrollableTimePicker from '../../CustomtimePicker';
 
 function Booking() {
     //State to manage the clicked Consultation type
@@ -88,16 +90,17 @@ function Booking() {
                     {/*Booking Date */}
                     <div className="BookingDate mt-[30px]">
                         <p className="text-start my-0  font-[700] font-inter text-[#008000] text-[20px]"> Date</p>
-                        <div className="Date mt-[20px] border-solid border-[1px] border-[#00000080] shadow-md shadow-[#00000040] h-[322px] rounded-[12px]">
-                            <p className="text-center font-[700] py-[100px] font-inter text-[#008000] text-[16px] lg:text-[24px]">Library for the Scrollable Date</p>
+                        <div className="Date mt-[20px] border-solid border-[1px] border-[#00000080] shadow-md shadow-[#00000040] py-[32px] rounded-[12px]">
+                            <CustomDatePicker />
+
                         </div>
                     </div> {/*Booking date ends here */}
 
                     {/*Booking Time */}
                     <div className="BookingTime mt-[30px]">
                         <p className="text-start my-0  font-[700] font-inter text-[#008000] text-[20px]"> Time</p>
-                        <div className="Time mt-[20px] border-solid border-[1px] border-[#00000080] shadow-md shadow-[#00000040] h-[190px] rounded-[12px]">
-                            <p className="text-center font-[700] py-[50px] font-inter text-[#008000] text-[16px] lg:text-[24px]">Library for the Scrollable time</p>
+                        <div className="flex justify-center mt-[20px] border-solid border-[1px] border-[#00000080] shadow-md shadow-[#00000040] py-[32px] rounded-[12px]">
+                            <ScrollableTimePicker />
                         </div>
                     </div> {/*Booking time ends here */}
 
