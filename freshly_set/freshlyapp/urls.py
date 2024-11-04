@@ -191,4 +191,9 @@ urlpatterns = [
 
     # quotations
     path('quotations/', QuotationListView.as_view(), name='my-quotations'),
+
+
+   #Farmer Registration
+    path('register-farmer/', RegisterFarmerView.as_view(), name='register-farmer'),
+    path('unregister-farmer/', UnregisterFarmerView.as_view(), name='unregister-farmer'),
 ]
