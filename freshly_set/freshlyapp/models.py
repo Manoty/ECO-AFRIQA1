@@ -203,6 +203,18 @@ class Farmer(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, blank=True, null=True)
 
+
+# models.py
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # Other profile fields
+
+    @property
+    def is_farmer(self):
+        # Check if a Farmer object is associated with this user
+        return hasattr(self.user, 'farmer')
+
     def __str__(self):
         return self.user.username  # Use the username field from the User model
 
@@ -645,23 +657,28 @@ class Profile(models.Model):
 
 
 class FarmingSystems(models.Model):
-    name=models.CharField(max_length=50, blank=False)
-    description=models.TextField(max_length=255, blank=False)
-
-
+    name = models.CharField(max_length=50, blank=False)
+    description = models.TextField(max_length=255, blank=False)
 
 
 class Quotation(models.Model):
-    quotation_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    cart = models.OneToOneField('Cart', on_delete=models.CASCADE, related_name="quotation")
-    buyer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="buyer_quotations")
-    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="seller_quotations")
+    quotation_id = models.UUIDField(
+        default=uuid.uuid4, editable=False, unique=True)
+    cart = models.OneToOneField(
+        'Cart', on_delete=models.CASCADE, related_name="quotation")
+    buyer = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="buyer_quotations")
+    seller = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="seller_quotations")
     customer_name = models.CharField(max_length=100, null=True, blank=True)
     customer_email = models.EmailField(null=True, blank=True)
     customer_phone = models.CharField(max_length=15, null=True, blank=True)
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    discount_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    final_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    total_amount = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True)
+    discount_amount = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True)
+    final_amount = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True)
     valid_until = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=[
         ('Pending', 'Pending'),
@@ -678,7 +695,8 @@ class Quotation(models.Model):
     def calculate_final_amount(self):
         """Calculate the final amount after applying any discount."""
         if self.discount_amount:
-            self.final_amount = max(self.total_amount - self.discount_amount, 0)
+            self.final_amount = max(
+                self.total_amount - self.discount_amount, 0)
         else:
             self.final_amount = self.total_amount
 
@@ -698,10 +716,3 @@ class Quotation(models.Model):
             self.status = 'Expired'
 
         super(Quotation, self).save(*args, **kwargs)
-
-
-
-
-
-
-

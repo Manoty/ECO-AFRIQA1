@@ -10,6 +10,8 @@ export const ProfileProvider = ({ children }) => {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isFarmer, setIsFarmer] = useState(false);
+    const [selectedSection, setSelectedSection] = useState('Account');
 
     const fetchProfile = async () => {
         const token = localStorage.getItem('accessToken');
@@ -24,6 +26,12 @@ export const ProfileProvider = ({ children }) => {
             });
             setProfile(response.data);
             console.log("Profile Data", response.data)
+
+            if(response.data.is_farmer === true){
+                setIsFarmer(true)
+            }else{
+                console.log("No Farmer profile exists")
+            }
         } catch (err) {
             setError(err.response ? err.response.data : 'An error occurred');
             console.log("error", err.response.data)
@@ -37,7 +45,7 @@ export const ProfileProvider = ({ children }) => {
     }, []);
 
     return (
-        <ProfileContext.Provider value={{ profile, loading, error, fetchProfile }}>
+        <ProfileContext.Provider value={{ profile, loading, error, fetchProfile, isFarmer, selectedSection, setSelectedSection }}>
             {children}
         </ProfileContext.Provider>
     );

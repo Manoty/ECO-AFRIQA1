@@ -5,7 +5,7 @@ from .models import FAQMainPage
 from .serializers import FAQSerializer
 from .models import FAQ  # Assuming your FAQ model is named FAQ
 from .models import *
-from .serializers import FarmerSerializer,OrderItemSerializer
+from .serializers import FarmerSerializer, OrderItemSerializer
 from .serializers import UserProfileSerializer
 import json
 from .models import CartItem
@@ -39,7 +39,7 @@ from rest_framework import generics, permissions
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.views import APIView
-from .models import Blog, Comment, Like, Share, Poll, Vote, IDVerification, Cart, Category, Notification, Order, OrderItem, Product,FarmingSystems
+from .models import Blog, Comment, Like, Share, Poll, Vote, IDVerification, Cart, Category, Notification, Order, OrderItem, Product, FarmingSystems
 from django.db.models import Q
 from rest_framework.generics import get_object_or_404
 from .serializers import BlogSerializer, ProductSerializer, GardenSerializer, CommentSerializer, LikeSerializer, ShareSerializer, PollSerializer, VoteSerializer, IDVerificationSerializer, CartSerializer, BannerSerializer, CategorySerializer, NotificationSerializer
@@ -50,7 +50,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions, status
 from django.contrib.auth import get_user_model, login, logout
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer, OrderSerializer,FarmingSystemSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer, OrderSerializer, FarmingSystemSerializer
 from rest_framework.validators import UniqueValidator
 # Import your custom validation here
 from .validators import custom_validation, validate_email, validate_password
@@ -962,13 +962,29 @@ def mpesa_callback(request):
 
 # Fetch user profile
 
-@permission_classes([IsAuthenticated])
-class GetUserProfile(APIView):
+# @permission_classes([IsAuthenticated])
+# class GetUserProfile(APIView):
 
+#     def get(self, request):
+#         user = request.user
+#         serializer = UserProfileSerializer(user, many=False)
+#         return Response(serializer.data)
+
+
+class GetUserProfile(APIView):
     def get(self, request):
         user = request.user
         serializer = UserProfileSerializer(user, many=False)
-        return Response(serializer.data)
+
+        # Check if the user has an associated Farmer instance
+        # Check if the 'farmer' attribute exists
+        is_farmer = hasattr(user, 'farmer')
+
+        # Include 'is_farmer' in the response data
+        profile_data = serializer.data
+        profile_data['is_farmer'] = is_farmer
+        print("fetched profile data", profile_data)
+        return Response(profile_data)
 
 
 @permission_classes([IsAuthenticated])
@@ -997,56 +1013,42 @@ class FarmerListView(APIView):
         serializer = FarmerSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
 
+
 @permission_classes([IsAuthenticated])
 class GetFarmingSystems(APIView):
 
     def get(self, request):
         farmingsystems = FarmingSystems.objects.all()  # Retrieve all farming systems
-        serializer = FarmingSystemSerializer(farmingsystems, many=True)  # Serialize the data
+        serializer = FarmingSystemSerializer(
+            farmingsystems, many=True)  # Serialize the data
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 @permission_classes([IsAuthenticated])
 class WriteFarmingSystems(APIView):
-    def post(self, request):#one can input the farming systems
-        serializer = FarmingSystemSerializer(data=request.data)  
-        if serializer.is_valid():  
-            serializer.save()  
-            return Response(serializer.data, status=status.HTTP_201_CREATED)  
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
-
-
-
-
-
-
-
+    def post(self, request):  # one can input the farming systems
+        serializer = FarmingSystemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class OrderListView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        orders = Order.objects.filter(customer_email=request.user.email).order_by('-created_at')
+        orders = Order.objects.filter(
+            customer_email=request.user.email).order_by('-created_at')
 
         paginator = PageNumberPagination()
-        paginator.page_size = 10  
+        paginator.page_size = 10
         result_page = paginator.paginate_queryset(orders, request)
 
         serializer = OrderSerializer(result_page, many=True)
         response = paginator.get_paginated_response(serializer.data)
 
         return response
-
-
-
-
-
-
-
-
-
-
-
 
 
 class QuotationListView(APIView):
@@ -1068,9 +1070,3 @@ class QuotationListView(APIView):
 
         # Return the paginated response
         return paginator.get_paginated_response(serializer.data)
-
-
-
-
-
-

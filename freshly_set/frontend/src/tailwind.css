@@ -31,15 +31,15 @@
 }
 
 .react-calendar__tile--now {
-    @apply bg-green-300 rounded-full;
+    @apply bg-[#008000] rounded-full;
 }
 
 .react-calendar__tile--active {
-    @apply bg-green-600 text-white rounded-full;
+    @apply bg-[#008000] text-white rounded-full;
 }
 
 .highlight {
-    @apply bg-green-500 text-white rounded-full;
+    @apply bg-[#008000] text-white rounded-full;
 }
 
 
