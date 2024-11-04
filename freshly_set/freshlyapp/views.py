@@ -1070,3 +1070,56 @@ class QuotationListView(APIView):
 
         # Return the paginated response
         return paginator.get_paginated_response(serializer.data)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class RegisterFarmerView(APIView):
+    def post(self, request):
+        user = request.user
+
+        # Check if the user is already registered as a Farmer
+        if Farmer.objects.filter(user=user).exists():
+            return Response(
+                {"detail": "User is already registered as a farmer."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Create a Farmer object linked to the current user
+        farmer = Farmer.objects.create(user=user)
+        serializer = FarmerSerializer(farmer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class UnregisterFarmerView(APIView):
+    def delete(self, request):
+        user = request.user
+
+        # Check if the user has a Farmer object
+        try:
+            farmer = Farmer.objects.get(user=user)
+            farmer.delete()
+            return Response(
+                {"detail": "Farmer unregistered successfully."},
+                status=status.HTTP_204_NO_CONTENT
+            )
+        except Farmer.DoesNotExist:
+            return Response(
+                {"detail": "User is not registered as a farmer."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
