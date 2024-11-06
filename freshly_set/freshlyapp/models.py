@@ -585,6 +585,7 @@ class Order(models.Model):
         max_length=20, null=True, blank=True)  # Nullable
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
+    paid = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Order {self.order_id}"
@@ -716,3 +717,34 @@ class Quotation(models.Model):
             self.status = 'Expired'
 
         super(Quotation, self).save(*args, **kwargs)
+
+
+
+
+
+
+class PaymentMethod(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='payment_method')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s Payment Method"
+
+class CreditCardDetails(models.Model):
+    payment_method = models.OneToOneField(PaymentMethod, on_delete=models.CASCADE, related_name='credit_card_details')
+    card_number = models.CharField(max_length=16)
+    expiry_date = models.DateField()
+    card_holder_name = models.CharField(max_length=100)
+    cvv = models.CharField(max_length=4)
+
+    def __str__(self):
+        return f"Credit Card ending in {self.card_number[-4:]}"
+
+class MpesaDetails(models.Model):
+    payment_method = models.OneToOneField(PaymentMethod, on_delete=models.CASCADE, related_name='mpesa_details')
+    phone_number = models.CharField(max_length=15)
+    account_name = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return f"Mpesa Account - {self.phone_number}"

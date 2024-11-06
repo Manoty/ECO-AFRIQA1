@@ -162,7 +162,6 @@ urlpatterns = [
 
     # true order
     path('orders/', OrderListCreateView.as_view(), name='OrderListCreateView'),
-    path('myorders/', OrderListView.as_view(), name='My-orders'),
 
     path('orders/<uuid:order_id>/', OrderDetailView.as_view(), name='order-detail'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -189,6 +188,12 @@ urlpatterns = [
     path('addingfarming-systems/', WriteFarmingSystems.as_view(),
          name='adding farming systems'),
 
+
+
+
+
+
+
     # quotations
     path('quotations/', QuotationListView.as_view(), name='my-quotations'),
 
@@ -196,4 +201,18 @@ urlpatterns = [
    #Farmer Registration
     path('register-farmer/', RegisterFarmerView.as_view(), name='register-farmer'),
     path('unregister-farmer/', UnregisterFarmerView.as_view(), name='unregister-farmer'),
+
+  #handling payment methods
+    path('payment-method/create/', CreatePaymentMethodView.as_view(), name='create-payment-method'),
+    path('payment-method/update/', UpdatePaymentMethodView.as_view(), name='update-payment-method'),
+    path('payment-methods/', UserPaymentMethodsView.as_view(), name='user-payment-methods'),
+    path('payment-method/delete/', DeletePaymentMethodView.as_view(), name='delete-payment-method'),
+
+
+
+   
+    path('myorders/', OrderListView.as_view(), name='My-orders'),
+
+
+
 ]
