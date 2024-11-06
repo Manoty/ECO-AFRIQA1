@@ -425,7 +425,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['order_id', 'customer_name', 'customer_email', 'customer_phone',
-                  'delivery_fee', 'total_price', 'payment_method', 'items', 'created_at', 'updated_at']
+                  'delivery_fee', 'total_price', 'payment_method', 'items', 'created_at', 'updated_at' , 'paid']
         read_only_fields = ['order_id', 'created_at', 'updated_at']
 
     def create(self, validated_data):
@@ -485,4 +485,112 @@ class QuotationSerializer(serializers.ModelSerializer):
 
 
 
+
+class CreditCardDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CreditCardDetails
+        fields = ['card_number', 'expiry_date', 'card_holder_name', 'cvv']
+        extra_kwargs = {
+            'cvv': {'write_only': True},  # Ensure CVV is write-only for security
+            'card_number': {'write_only': True},  
+        }
+
+    def validate_card_number(self, value):
+        if not value.isdigit() or len(value) not in [13, 15, 16]:
+            raise serializers.ValidationError("Invalid card number.")
+        return value
+
+    def validate_cvv(self, value):
+        if not value.isdigit() or len(value) not in [3, 4]:
+            raise serializers.ValidationError("Invalid CVV.")
+        return value
+
+class MpesaDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MpesaDetails
+        fields = ['phone_number', 'account_name']
+
+    def validate_phone_number(self, value):
+        if not value.startswith('+') or not value[1:].isdigit():
+            raise serializers.ValidationError("Invalid phone number format.")
+        return value
+
+
+
+class PaymentMethodSerializer(serializers.ModelSerializer):
+    credit_card_details = CreditCardDetailsSerializer(required=False)
+    mpesa_details = MpesaDetailsSerializer(required=False)
+
+    class Meta:
+        model = PaymentMethod
+        fields = ['id', 'credit_card_details', 'mpesa_details', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
+    def validate(self, data):
+        payment_type = self.context['request'].data.get('payment_type')
+        if payment_type == 'credit_card':
+            if not data.get('credit_card_details'):
+                raise serializers.ValidationError({
+                    'credit_card_details': "This field is required for credit card payment method."
+                })
+        elif payment_type == 'mpesa':
+            if not data.get('mpesa_details'):
+                raise serializers.ValidationError({
+                    'mpesa_details': "This field is required for Mpesa payment method."
+                })
+        else:
+            raise serializers.ValidationError({
+                'payment_type': "Invalid payment method selected."
+            })
+        return data
+
+    def create(self, validated_data):
+        credit_card_data = validated_data.pop('credit_card_details', None)
+        mpesa_data = validated_data.pop('mpesa_details', None)
+
+        payment_method = PaymentMethod.objects.create(**validated_data)
+
+        payment_type = self.context['request'].data.get('payment_type')
+        if payment_type == 'credit_card' and credit_card_data:
+            CreditCardDetails.objects.create(payment_method=payment_method, **credit_card_data)
+        elif payment_type == 'mpesa' and mpesa_data:
+            MpesaDetails.objects.create(payment_method=payment_method, **mpesa_data)
+
+        return payment_method
+
+    def update(self, instance, validated_data):
+        credit_card_data = validated_data.pop('credit_card_details', None)
+        mpesa_data = validated_data.pop('mpesa_details', None)
+
+        payment_type = self.context['request'].data.get('payment_type')
+        if payment_type == 'credit_card':
+            if credit_card_data:
+                if hasattr(instance, 'credit_card_details'):
+                    # Update existing credit card details
+                    serializer = CreditCardDetailsSerializer(instance.credit_card_details, data=credit_card_data, partial=True)
+                    serializer.is_valid(raise_exception=True)
+                    serializer.save()
+                else:
+                    # Create new credit card details
+                    CreditCardDetails.objects.create(payment_method=instance, **credit_card_data)
+            # Optionally, delete Mpesa details if switching from Mpesa to Credit Card
+            if hasattr(instance, 'mpesa_details'):
+                instance.mpesa_details.delete()
+
+        elif payment_type == 'mpesa':
+            if mpesa_data:
+                if hasattr(instance, 'mpesa_details'):
+                    # Update existing Mpesa details
+                    serializer = MpesaDetailsSerializer(instance.mpesa_details, data=mpesa_data, partial=True)
+                    serializer.is_valid(raise_exception=True)
+                    serializer.save()
+                else:
+                    # Create new Mpesa details
+                    MpesaDetails.objects.create(payment_method=instance, **mpesa_data)
+            # Optionally, delete Credit Card details if switching from Credit Card to Mpesa
+            if hasattr(instance, 'credit_card_details'):
+                instance.credit_card_details.delete()
+
+        return instance
+    
 

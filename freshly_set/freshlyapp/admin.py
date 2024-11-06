@@ -131,3 +131,6 @@ admin.site.register(Profile)
 
 admin.site.register(FarmingSystems)
 admin.site.register(Quotation)
+admin.site.register(PaymentMethod)
+admin.site.register(CreditCardDetails)
+admin.site.register(MpesaDetails)

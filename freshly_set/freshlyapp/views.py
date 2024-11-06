@@ -59,6 +59,7 @@ from django.utils import timezone
 import json
 from django.views.decorators.http import require_http_methods
 from .serializers import *
+from rest_framework.generics import UpdateAPIView
 
 # imports for checkout
 
@@ -1123,3 +1124,259 @@ class UnregisterFarmerView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+
+
+
+class CreatePaymentMethodView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        payment_type = request.data.get("payment_type")  # 'credit_card' or 'mpesa'
+
+        # Get or create the PaymentMethod object for the user
+        payment_method, created = PaymentMethod.objects.get_or_create(user=user)
+
+        # Process based on the payment type
+        if payment_type == "credit_card":
+            serializer = CreditCardDetailsSerializer(data=request.data)
+            if serializer.is_valid():
+                # Save CreditCardDetails with the created PaymentMethod
+                credit_card = serializer.save(payment_method=payment_method)
+                return Response(
+                    {
+                        "status": "success",
+                        "message": "Credit card payment method created successfully.",
+                        "data": PaymentMethodSerializer(payment_method).data
+                    },
+                    status=status.HTTP_201_CREATED
+                )
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        elif payment_type == "mpesa":
+            serializer = MpesaDetailsSerializer(data=request.data)
+            if serializer.is_valid():
+                # Save MpesaDetails with the created PaymentMethod
+                mpesa_details = serializer.save(payment_method=payment_method)
+                return Response(
+                    {
+                        "status": "success",
+                        "message": "M-Pesa payment method created successfully.",
+                        "data": PaymentMethodSerializer(payment_method).data
+                    },
+                    status=status.HTTP_201_CREATED
+                )
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Invalid payment method type."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+
+class UpdatePaymentMethodView(UpdateAPIView):
+    """
+    API View to update a user's payment method.
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = PaymentMethodSerializer
+
+    def get_queryset(self):
+        # Only allow users to access their own payment methods
+        return PaymentMethod.objects.filter(user=self.request.user)
+
+    def get_object(self):
+        # Get the user's payment method
+        return self.get_queryset().first()
+
+    def update(self, request, *args, **kwargs):
+        # Get the payment method to update
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+
+        if not instance:
+            return Response(
+                {
+                    "status": "error",
+                    "message": "No payment method found for this user."
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        payment_type = request.data.get("payment_type")  # 'credit_card' or 'mpesa'
+
+        if payment_type == "credit_card":
+            if not hasattr(instance, 'credit_card_details'):
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "No credit card details found for this payment method."
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            serializer = CreditCardDetailsSerializer(instance.credit_card_details, data=request.data, partial=partial)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(
+                    {
+                        "status": "success",
+                        "message": "Credit card payment method updated successfully.",
+                        "data": PaymentMethodSerializer(instance).data
+                    },
+                    status=status.HTTP_200_OK
+                )
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Invalid data",
+                    "errors": serializer.errors
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        elif payment_type == "mpesa":
+            if not hasattr(instance, 'mpesa_details'):
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "No M-Pesa details found for this payment method."
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            serializer = MpesaDetailsSerializer(instance.mpesa_details, data=request.data, partial=partial)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(
+                    {
+                        "status": "success",
+                        "message": "M-Pesa payment method updated successfully.",
+                        "data": PaymentMethodSerializer(instance).data
+                    },
+                    status=status.HTTP_200_OK
+                )
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Invalid data",
+                    "errors": serializer.errors
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        else:
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Invalid payment method type."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class UserPaymentMethodsView(APIView):
+    """
+    API View to retrieve all payment methods for the authenticated user.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        payment_methods = PaymentMethod.objects.filter(user=user)
+        serializer = PaymentMethodSerializer(payment_methods, many=True)
+        
+        return Response(
+            {
+                "status": "success",
+                "message": "User payment methods retrieved successfully",
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
+    
+
+
+
+
+
+
+class DeletePaymentMethodView(APIView):
+    """
+    API View to delete a user's payment method details (M-Pesa or Credit Card).
+    """
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+        payment_type = request.data.get("payment_type")  # 'credit_card' or 'mpesa'
+
+        if not payment_type:
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Payment type is required."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            payment_method = PaymentMethod.objects.get(user=user)
+        except PaymentMethod.DoesNotExist:
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Payment method not found for this user."
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if payment_type == "credit_card":
+            if hasattr(payment_method, 'credit_card_details'):
+                payment_method.credit_card_details.delete()
+                return Response(
+                    {
+                        "status": "success",
+                        "message": "Credit card payment method details deleted successfully."
+                    },
+                    status=status.HTTP_204_NO_CONTENT
+                )
+            else:
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "No credit card details found for this payment method."
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+        elif payment_type == "mpesa":
+            if hasattr(payment_method, 'mpesa_details'):
+                payment_method.mpesa_details.delete()
+                return Response(
+                    {
+                        "status": "success",
+                        "message": "M-Pesa payment method details deleted successfully."
+                    },
+                    status=status.HTTP_204_NO_CONTENT
+                )
+            else:
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "No M-Pesa details found for this payment method."
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+        else:
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Invalid payment method type."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
