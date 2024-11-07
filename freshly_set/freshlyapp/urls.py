@@ -213,6 +213,8 @@ urlpatterns = [
    
     path('myorders/', OrderListView.as_view(), name='My-orders'),
 
-
+ #team memebers
+    path('teammembers/',TeamMembers.as_view(),name='Team'),
+    path('addteammember/',AddingNewTeamMembers.as_view,name='New team members')
 
 ]

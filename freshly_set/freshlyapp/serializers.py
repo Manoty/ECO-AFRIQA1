@@ -456,6 +456,11 @@ class FarmingSystemSerializer(serializers.ModelSerializer):
         fields=['name','description']
 
 
+class TeamMembersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= TeamMember
+        fields = '__all__' 
+
 
 
 
