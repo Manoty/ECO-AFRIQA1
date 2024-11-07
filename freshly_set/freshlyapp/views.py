@@ -1034,6 +1034,24 @@ class WriteFarmingSystems(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class TeamMembers(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def get(self,request):
+        teammembers=TeamMember.objects.all()#get all the team members
+        serializer=TeamMembersSerializer(teammembers,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+class AddingNewTeamMembers(APIView):
+        permission_classes=[IsAuthenticated]
+        #adding new members
+        def post(self,request):
+            serializer=TeamMembersSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data,status=status.HTTP_201_CREATED)
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
 
 class OrderListView(APIView):
     permission_classes = [IsAuthenticated]

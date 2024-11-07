@@ -748,3 +748,10 @@ class MpesaDetails(models.Model):
 
     def __str__(self):
         return f"Mpesa Account - {self.phone_number}"
+
+
+class TeamMember(models.Model):
+    name=models.CharField(max_length=255)
+    position=models.CharField(max_length=255)
+    image=models.ImageField(null=True,blank=False)
+    department=models.CharField(max_length=255)
