@@ -88,9 +88,7 @@ export  const PageContextProvider = ({ children }) => {
 
     const [modalToggleContentsGardens, setModalToggleContentsGardens]  = useState([
 
-        // <FarmCard number={1} img="/static/media/gardens1.png" title="Raised Bed Gardens" body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut."/>
-        // <FarmCard number={2} img="/static/media/gardens2.png" title="Container Gardens" body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut."/>
-        // <FarmCard number={3} img="/static/media/gardens3.png" title="Square Root Gardens" body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut."/>
+      
         {
             number:1,
             img:"/static/media/gardens1.png",

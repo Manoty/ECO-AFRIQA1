@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { FaCaretDown, FaLongArrowAltRight, FaStar } from 'react-icons/fa'
-import { CurrentIndexContext, ModalContentsContext, ModalContext } from '../../context/PageContext';
+import { CurrentIndexContext, ModalContentsContext, ModalContext, SectionTypeContext } from '../../context/PageContext';
 
-function FarmCard({  index, img, title, body, rating, number}) {
+function FarmCard({  index, img, title, body, rating, number, type}) {
     const [clicked, setClicked] = useState({
         1: true,  // Question 1 is open by default
         2: true, // Question 2 is closed by default
@@ -12,10 +12,12 @@ function FarmCard({  index, img, title, body, rating, number}) {
       const [modalOpen, setModalOpen] = useContext(ModalContext);
       const [modalContents, setModalContents] = useContext(ModalContentsContext);
       const [currentIndex, setCurrentIndex] = useContext(CurrentIndexContext);
+      const [sectionType, setSectionType] = useContext(SectionTypeContext);
 
     const passInfo = () => {
       setModalOpen(true)
       setCurrentIndex(index)
+      setSectionType(type)
       // setModalContents({
       //   img, title, body
       // })
