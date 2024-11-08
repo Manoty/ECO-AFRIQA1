@@ -3,7 +3,10 @@ import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../components/context/AuthContext';
  const PrivateRoute = ({ component: Component, ...rest }) => {
 
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  if(localStorage.accessToken){
+    setIsAuthenticated(true)
+  }
   return isAuthenticated ? (
     <Component {...rest} />
   ) : (

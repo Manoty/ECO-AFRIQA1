@@ -73,7 +73,7 @@ function CtaPopup() {
                         {/* Right side */}
 
                         <div className="lg:ml-[33px] block">
-                            <h3 className="text-[20px] lg:text-[45px] font-[900] font-inter text-black">{sectionType === "farmingSystems" ? modalToggleContents[currentIndex]?.img : modalToggleContentsGardens[currentIndex].title}</h3>
+                            <h3 className="text-[20px] lg:text-[45px] font-[900] font-inter text-black">{sectionType === "farmingSystems" ? modalToggleContents[currentIndex]?.title : modalToggleContentsGardens[currentIndex].title}</h3>
                             <div className="flex justify-center items-center lg:hidden">
                                 <p className="freshlyGreenText font-[900] text-[15px]">In Stock</p>
 

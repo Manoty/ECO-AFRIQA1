@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { BiSolidEdit } from "react-icons/bi";
 import { CiCircleCheck } from "react-icons/ci";
 import { ProfileContext } from '../../context/ProfileContext';
-
+import axios from "axios";
 function AccountInformation() {
     const { profile, loading, error } = useContext(ProfileContext);
 
@@ -22,8 +22,43 @@ function AccountInformation() {
         setEditingField(field); // Set the field currently being edited
     };
 
+
+    const updateProfile = async () => {
+        try {
+            const accessToken = localStorage.getItem('accessToken');
+            const response = await axios.put(
+                'http://localhost:8000/profile/update/',
+                {
+                    first_name: fields.firstName,
+                    last_name: fields.lastName,
+                    email: fields.email,
+                    profile: {
+                        phone: fields.phone,
+                        location: fields.location,
+                    },
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`, // Add the JWT token to the headers
+                    },
+                }
+            );
+            // Log or update the context with the updated profile data
+            console.log('Profile updated:', response.data);
+            // Optionally, update the ProfileContext here if needed
+            handleSaveClick(); // Exit edit mode on successful save
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            if (error.response && error.response.status === 403) {
+                // Handle unauthorized access, like refreshing the token or redirecting to login
+            }
+        }
+    };
+
     // General handler for saving a field
     const handleSaveClick = () => {
+        updateProfile(); // Call the PUT request function
+
         setEditingField(null); // Exit edit mode
     };
 
@@ -34,6 +69,7 @@ function AccountInformation() {
             [field]: value, // Update the specific field dynamically
         });
     };
+
 
     useEffect(() => {
         console.log("profile", profile)
@@ -51,15 +87,14 @@ function AccountInformation() {
                 <div className="lg:grid lg:grid-cols-2 gap-x-[106.6px] gap-y-[34.36px]">
                         {/* Reusable Component for Editing */}
                         <EditableField
-                            label="First Name"
-                            field="firstName"
-                            value={profile?.first_name}
-                            editingField={editingField}
-                            onEditClick={handleEditClick}
-                            onSaveClick={handleSaveClick}
-                            onChange={handleFieldChange}
-                        />
-
+    label="First Name"
+    field="firstName"
+    value={fields.firstName} // Use `fields` instead of `profile`
+    editingField={editingField}
+    onEditClick={handleEditClick}
+    onSaveClick={handleSaveClick}
+    onChange={(e) => handleFieldChange("firstName", e.target.value)}
+/>
                         <EditableField
                             label="Last Name"
                             field="lastName"

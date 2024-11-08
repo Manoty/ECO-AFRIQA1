@@ -11,6 +11,12 @@ function Verified() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState();
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("Loridge Apartments, Karen, Nairobi, Kenya");
+  const [farmSize, setFarmSize] = useState("Acres/Hectares")
     // State to manage color changes on hovering options
     const [isHovered, setIsHovered] = useState({
         1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false
@@ -78,7 +84,7 @@ function Verified() {
                   <div className="Firstname mt-[12px]">
                       <p className="text-start font-inter font-[700] text-[18px] my-0 text-[#008000] ">First Name</p>
                       <div className="InputBox flex justify-between border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mt-[2px]">
-                          <input className="border-none outline-none font-inter font-[700] text-[16px]" value={'Christopher'} />
+                          <input className="border-none outline-none font-inter font-[700] text-[16px]" value={firstName} onChange={(e) => setFirstName(e.target.value) } />
                           <img src="/static/media/edit.png" alt="" className=""/>
                       </div>
                   </div>
@@ -86,7 +92,7 @@ function Verified() {
                   <div className="Lastname mt-[12px]">
                       <p className="text-start font-inter font-[700] text-[18px] my-0 text-[#008000]">Last Name</p>
                       <div className="InputBox flex justify-between border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mt-[2px]">
-                          <input className="border-none outline-none font-inter font-[700] text-[16px]" value={'Joseph'}/>
+                          <input className="border-none outline-none font-inter font-[700] text-[16px]" value={lastName} onChange={(e) => setLastName(e.target.value) } />
                           <img src="/static/media/edit.png" alt="" className="mx-[4px]"/>
                       </div>
                   </div>
@@ -97,7 +103,7 @@ function Verified() {
                   <div className="PhoneNumber mt-[12px]">
                       <p className="text-start font-inter font-[700] text-[18px] my-0 text-[#008000] ">Phone</p>
                       <div className="InputBox flex justify-between border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mt-[2px]">
-                          <input className="border-none outline-none font-inter font-[700] text-[16px]" value={'Christopher'} />
+                          <input className="border-none outline-none font-inter font-[700] text-[16px]" value={phone} onChange={(e) => setPhone(e.target.value)} />
                           <img src="/static/media/edit.png" alt="" className=""/>
                       </div>
                   </div>
@@ -105,7 +111,7 @@ function Verified() {
                   <div className="EmailAddress mt-[12px]">
                       <p className="text-start font-inter font-[700] text-[18px] my-0 text-[#008000]">Email</p>
                       <div className="InputBox flex justify-between border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[2px] ">
-                          <input className="border-none outline-none font-inter font-[700] text-[16px]" value={'Joseph'}/>
+                          <input className="border-none outline-none font-inter font-[700] text-[16px]" value={email}  onChange={(e) => setEmail(e.target.value) }/>
                           <img src="/static/media/edit.png" alt="" className="mx-[4px]"/>
                       </div>
                   </div>
@@ -114,7 +120,7 @@ function Verified() {
               <div className="PhysicalAddress mt-[12px]">
                       <p className="text-start font-inter font-[700] text-[18px] my-0 text-[#008000] ">Address</p>
                       <div className="InputBox flex justify-between border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mt-[2px]">
-                          <input className="border-none outline-none font-inter font-[700] text-[12px] lg:text-[16px] w-[92%]  h-[40px]" value={"Loridge Apartments, Karen, Nairobi, Kenya"} />
+                          <input className="border-none outline-none font-inter font-[700] text-[12px] lg:text-[16px] w-[92%]  h-[40px]" value={address} onChange={(e) => setAddress(e.target.value)} />
                           <img src="/static/media/edit.png" alt="" className="mx-[4px] my-auto"/>
                       </div>
               </div>
