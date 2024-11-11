@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios'; // Ensure axios is imported
 import { Link, useNavigate } from 'react-router-dom';
 import { AiFillEyeInvisible } from "react-icons/ai";
@@ -33,9 +33,10 @@ const Login = () => {
   
       // Update authentication state
       login(access); // Trigger AuthContext login to set isAuthenticated to true
-      fetchProfile()
       console.log('Login successful');
       navigate('/profile');  
+      fetchProfile()
+
   
     } catch (error) {
       console.error('Login failed:', error.response);
@@ -107,6 +108,10 @@ const Login = () => {
     setFormData({ ...formData, [name]: value });
 };
 
+
+useEffect(() => {
+  fetchProfile()
+},[login])
   return (  
     <div className="LoginPage relative">
       {/*Navbar */}

@@ -89,7 +89,7 @@ function AccountInformation() {
 
     useEffect(() => {
         fetchProfile()
-    },[])
+    },[loading])
     return (
         <div className="flex">
             <div className="block">
