@@ -89,11 +89,11 @@ function AccountInformation() {
                         <EditableField
     label="First Name"
     field="firstName"
-    value={fields.firstName} // Use `fields` instead of `profile`
+    value={fields?.firstName} // Use `fields` instead of `profile`
     editingField={editingField}
     onEditClick={handleEditClick}
     onSaveClick={handleSaveClick}
-    onChange={(e) => handleFieldChange("firstName", e.target.value)}
+    onChange={handleFieldChange}
 />
                         <EditableField
                             label="Last Name"
