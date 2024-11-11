@@ -3,9 +3,12 @@ import { BiSolidEdit } from "react-icons/bi";
 import { CiCircleCheck } from "react-icons/ci";
 import { ProfileContext } from '../../context/ProfileContext';
 import axios from "axios";
+import { debounce } from "lodash";
+
 function AccountInformation() {
     const { profile, loading, error } = useContext(ProfileContext);
-
+    const [isUpdating, setIsUpdating] = useState(false);
+    const { fetchProfile } = useContext(ProfileContext);
     const [fields, setFields] = useState({
         firstName: profile?.first_name,
         lastName: profile?.last_name,
@@ -14,6 +17,7 @@ function AccountInformation() {
         location:profile?.profile.location
     });
 
+    
     // State to track which field is being edited
     const [editingField, setEditingField] = useState(null); // 'firstName' or 'lastName' or null
 
@@ -24,36 +28,43 @@ function AccountInformation() {
 
 
     const updateProfile = async () => {
+        if (isUpdating) return;  // Prevents multiple calls if already updating
+        setIsUpdating(true);  // Sets flag to indicate the update is in progress
+      
         try {
-            const accessToken = localStorage.getItem('accessToken');
-            const response = await axios.put(
-                'http://localhost:8000/profile/update/',
-                {
-                    first_name: fields.firstName,
-                    last_name: fields.lastName,
-                    email: fields.email,
-                    profile: {
-                        phone: fields.phone,
-                        location: fields.location,
-                    },
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`, // Add the JWT token to the headers
-                    },
-                }
-            );
-            // Log or update the context with the updated profile data
-            console.log('Profile updated:', response.data);
-            // Optionally, update the ProfileContext here if needed
-            handleSaveClick(); // Exit edit mode on successful save
-        } catch (error) {
-            console.error('Error updating profile:', error);
-            if (error.response && error.response.status === 403) {
-                // Handle unauthorized access, like refreshing the token or redirecting to login
+          const accessToken = localStorage.getItem('accessToken');
+          const response = await axios.put(
+            'http://localhost:8000/profile/update/',
+            {
+              first_name: fields.firstName,
+              last_name: fields.lastName,
+              email: fields.email,
+              profile: {
+                phone: fields.phone,
+                location: fields.location,
+              },
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
             }
+          );
+          console.log('Profile updated:', response.data);
+          handleSaveClick();
+        } catch (error) {
+          console.error('Error updating profile:', error);
+          // Additional error handling if rate limit exceeded
+          if (error.response && error.response.status === 429) {
+            console.warn('Rate limit exceeded, please wait and try again');
+          }
+        } finally {
+          setIsUpdating(false);  // Reset flag after update attempt
         }
-    };
+      };
+
+      const debouncedUpdateProfile = debounce(updateProfile, 2000); // Delay by 1 second
+
 
     // General handler for saving a field
     const handleSaveClick = () => {
@@ -72,9 +83,13 @@ function AccountInformation() {
 
 
     useEffect(() => {
+
         console.log("profile", profile)
     },[loading, profile])
 
+    useEffect(() => {
+        fetchProfile()
+    },[])
     return (
         <div className="flex">
             <div className="block">
@@ -87,33 +102,37 @@ function AccountInformation() {
                 <div className="lg:grid lg:grid-cols-2 gap-x-[106.6px] gap-y-[34.36px]">
                         {/* Reusable Component for Editing */}
                         <EditableField
-    label="First Name"
-    field="firstName"
-    value={fields?.firstName} // Use `fields` instead of `profile`
-    editingField={editingField}
-    onEditClick={handleEditClick}
-    onSaveClick={handleSaveClick}
-    onChange={handleFieldChange}
+  label="First Name"
+  field="firstName"
+  value={fields.firstName}
+  editingField={editingField}
+  onEditClick={handleEditClick}
+  onSaveClick={debouncedUpdateProfile}
+  onChange={handleFieldChange}
+  type="text"
 />
-                        <EditableField
-                            label="Last Name"
-                            field="lastName"
-                            value={profile?.last_name}
-                            editingField={editingField}
-                            onEditClick={handleEditClick}
-                            onSaveClick={handleSaveClick}
-                            onChange={handleFieldChange}
-                        />
+
+<EditableField
+  label="Last Name"
+  field="lastName"
+  value={fields.lastName}
+  editingField={editingField}
+  onEditClick={handleEditClick}
+  onSaveClick={debouncedUpdateProfile}
+  onChange={handleFieldChange}
+  type="text"
+/>
+                   
 
                         <EditableField
                             label="Email"
                             field="email"
-                            value={profile?.email}
+                            value={fields?.email}
                             type="email"
                             editingField={editingField}
-                            onEditClick={handleEditClick}
-                            onSaveClick={handleSaveClick}
-                            onChange={handleFieldChange}
+  onEditClick={handleEditClick}
+  onSaveClick={debouncedUpdateProfile}
+  onChange={handleFieldChange}
                         />
 
                         <EditableField
@@ -123,7 +142,7 @@ function AccountInformation() {
                             type="number"
                             editingField={editingField}
                             onEditClick={handleEditClick}
-                            onSaveClick={handleSaveClick}
+                            onSaveClick={debouncedUpdateProfile}
                             onChange={handleFieldChange}
                         />
 
@@ -134,7 +153,7 @@ function AccountInformation() {
                             type="text"
                             editingField={editingField}
                             onEditClick={handleEditClick}
-                            onSaveClick={handleSaveClick}
+                            onSaveClick={debouncedUpdateProfile}
                             onChange={handleFieldChange}
                         />
 
@@ -145,7 +164,7 @@ function AccountInformation() {
                             type="password"
                             editingField={editingField}
                             onEditClick={handleEditClick}
-                            onSaveClick={handleSaveClick}
+                            onSaveClick={debouncedUpdateProfile}
                             onChange={handleFieldChange}
                         />
                 </div>
