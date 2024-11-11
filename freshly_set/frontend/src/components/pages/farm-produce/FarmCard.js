@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { FaCaretDown, FaLongArrowAltRight, FaStar } from 'react-icons/fa'
 import { CurrentIndexContext, ModalContentsContext, ModalContext, SectionTypeContext } from '../../context/PageContext';
+import { Link } from 'react-router-dom';
 
 function FarmCard({  index, img, title, body, rating, number, type}) {
     const [clicked, setClicked] = useState({
@@ -70,7 +71,10 @@ function FarmCard({  index, img, title, body, rating, number, type}) {
                   <FaLongArrowAltRight className="freshlyGreenText cursor-pointer mt-[12px] lg:mt-[0px]" />
               </div>
 
-             <img className="h-[20px]  lg:h-[40px] w-[20px] lg:w-[40px] cursor-pointer mr-[16.86px] lg:mr-[0px]" src="/static/media/docLogo.png" alt="DocLogo"/>
+            <Link to="/products/farmingSystems/method">
+              <img  className="h-[20px]  lg:h-[40px] w-[20px] lg:w-[40px] cursor-pointer mr-[16.86px] lg:mr-[0px]" src="/static/media/docLogo.png" alt="DocLogo"/>
+
+            </Link>
            </div>
        </div>
 
