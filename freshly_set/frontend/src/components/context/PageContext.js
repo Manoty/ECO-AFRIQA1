@@ -21,6 +21,7 @@ export  const PageContextProvider = ({ children }) => {
     const [popUpOpen, setPopUpOpen] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
 
+    const [email, setEmail] = useState("");
     // Selected Sections Context
 
     const [selectedSection, setSelectedSection] = useState("blogs")

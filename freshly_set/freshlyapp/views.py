@@ -1015,7 +1015,7 @@ class FarmerListView(APIView):
         return paginator.get_paginated_response(serializer.data)
 
 
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 class GetFarmingSystems(APIView):
 
     def get(self, request):
@@ -1034,23 +1034,26 @@ class WriteFarmingSystems(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class TeamMembers(APIView):
-    permission_classes=[IsAuthenticated]
 
-    def get(self,request):
-        teammembers=TeamMember.objects.all()#get all the team members
-        serializer=TeamMembersSerializer(teammembers,many=True)
-        return Response(serializer.data,status=status.HTTP_200_OK)
+class TeamMembers(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        teammembers = TeamMember.objects.all()  # get all the team members
+        serializer = TeamMembersSerializer(teammembers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class AddingNewTeamMembers(APIView):
-        permission_classes=[IsAuthenticated]
-        #adding new members
-        def post(self,request):
-            serializer=TeamMembersSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data,status=status.HTTP_201_CREATED)
-            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    permission_classes = [IsAuthenticated]
+    # adding new members
+
+    def post(self, request):
+        serializer = TeamMembersSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class OrderListView(APIView):
@@ -1089,23 +1092,6 @@ class QuotationListView(APIView):
 
         # Return the paginated response
         return paginator.get_paginated_response(serializer.data)
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 class RegisterFarmerView(APIView):
@@ -1123,6 +1109,7 @@ class RegisterFarmerView(APIView):
         farmer = Farmer.objects.create(user=user)
         serializer = FarmerSerializer(farmer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 class UnregisterFarmerView(APIView):
     def delete(self, request):
@@ -1143,17 +1130,17 @@ class UnregisterFarmerView(APIView):
             )
 
 
-
-
 class CreatePaymentMethodView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         user = request.user
-        payment_type = request.data.get("payment_type")  # 'credit_card' or 'mpesa'
+        payment_type = request.data.get(
+            "payment_type")  # 'credit_card' or 'mpesa'
 
         # Get or create the PaymentMethod object for the user
-        payment_method, created = PaymentMethod.objects.get_or_create(user=user)
+        payment_method, created = PaymentMethod.objects.get_or_create(
+            user=user)
 
         # Process based on the payment type
         if payment_type == "credit_card":
@@ -1196,7 +1183,6 @@ class CreatePaymentMethodView(APIView):
             )
 
 
-
 class UpdatePaymentMethodView(UpdateAPIView):
     """
     API View to update a user's payment method.
@@ -1226,7 +1212,8 @@ class UpdatePaymentMethodView(UpdateAPIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        payment_type = request.data.get("payment_type")  # 'credit_card' or 'mpesa'
+        payment_type = request.data.get(
+            "payment_type")  # 'credit_card' or 'mpesa'
 
         if payment_type == "credit_card":
             if not hasattr(instance, 'credit_card_details'):
@@ -1237,7 +1224,8 @@ class UpdatePaymentMethodView(UpdateAPIView):
                     },
                     status=status.HTTP_404_NOT_FOUND
                 )
-            serializer = CreditCardDetailsSerializer(instance.credit_card_details, data=request.data, partial=partial)
+            serializer = CreditCardDetailsSerializer(
+                instance.credit_card_details, data=request.data, partial=partial)
             if serializer.is_valid():
                 serializer.save()
                 return Response(
@@ -1266,7 +1254,8 @@ class UpdatePaymentMethodView(UpdateAPIView):
                     },
                     status=status.HTTP_404_NOT_FOUND
                 )
-            serializer = MpesaDetailsSerializer(instance.mpesa_details, data=request.data, partial=partial)
+            serializer = MpesaDetailsSerializer(
+                instance.mpesa_details, data=request.data, partial=partial)
             if serializer.is_valid():
                 serializer.save()
                 return Response(
@@ -1306,7 +1295,7 @@ class UserPaymentMethodsView(APIView):
         user = request.user
         payment_methods = PaymentMethod.objects.filter(user=user)
         serializer = PaymentMethodSerializer(payment_methods, many=True)
-        
+
         return Response(
             {
                 "status": "success",
@@ -1315,11 +1304,6 @@ class UserPaymentMethodsView(APIView):
             },
             status=status.HTTP_200_OK
         )
-    
-
-
-
-
 
 
 class DeletePaymentMethodView(APIView):
@@ -1330,7 +1314,8 @@ class DeletePaymentMethodView(APIView):
 
     def delete(self, request):
         user = request.user
-        payment_type = request.data.get("payment_type")  # 'credit_card' or 'mpesa'
+        payment_type = request.data.get(
+            "payment_type")  # 'credit_card' or 'mpesa'
 
         if not payment_type:
             return Response(
