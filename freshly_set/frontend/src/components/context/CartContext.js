@@ -17,6 +17,8 @@ export const CartProvider = ({ children }) => {
   const [cartOpen, setCartOpen] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [delivery, setDelivery] = useState(200);
+  const [email, setEmail] = useState("redleather@gmail.com");
+  const [phone, setPhone] = useState(0);
   // Save cart to localStorage whenever cartItems state changes
   useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
@@ -93,6 +95,10 @@ export const CartProvider = ({ children }) => {
   return (
     <CartContext.Provider value={{ cartItems, addToCart, removeFromCart }}>
     <CartContext.Provider value={{
+      email,
+      setEmail,
+      phone, 
+      setPhone,
       cartItems,
       addToCart,
       increaseQuantity,

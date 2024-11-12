@@ -1,7 +1,15 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { CartContext } from "../../context/CartContext";
 
 function FarmingQuotationMethod() {
+    const [clicked, setClicked] = useState("");
+
+    const { email, setEmail, phone, setPhone } = useContext(CartContext)
+    const navigate = useNavigate()
+    const handleSubmit = () => {
+        navigate("/verified-success")
+    }
     return (
         <div className="FarmingQuotationMethod mt-[120px] lg:mt-[50px] mx-[16px] lg:mx-[250px] pt-[50px] pb-[40px] lg:pb-[100px] px-[10px] lg:px-[60px] rounded-[10px] lg:rounded-[24px] border-solid border-[1px] border-[#0000008F] shadow-md shadow-[#00000040] ">
             <div className="CardTitle mx-[16px] lg:mx-[80px]">
@@ -17,12 +25,30 @@ function FarmingQuotationMethod() {
 
             <div className="DeliveryOptions mt-[16px] lg:-mt-[50px] mx-auto w-fit pb-[40px]">
                 {/*Email Option */}
-                <div className="EmailOption mx-auto w-full rounded-[7px] lg:rounded-[16px] bg-[#008000] lg:border-solid border-[1px] border-[#0000008F] shadow-md shadow-[#00000040] cursor-pointer active:scale-90 transition-all duration-100 ease-out">
+                
+                {
+                    clicked === "email"  &&  (
+                        <input value={email} onChange={(e) => setEmail(e.target.value)} className="px-[10px] py-[8px] font-inter w-[230px] rounded-[8px]" type="email" placeholder="Enter Your Email Here"/>
+
+                    ) 
+                }
+
+                {
+                    clicked === "phone" && 
+                       (
+                        <input value={phone} onClick={(e) => setPhone(e.target.value)} className="px-[10px] py-[8px] font-inter w-[230px] rounded-[8px]" type="number" placeholder="Enter Your Phone Number Here"/>
+
+                    )
+                }
+
+            <button onClick={handleSubmit}className={clicked ? " bg-[#008000] text-gray-100 cursor-pointer rounded-[15px] h-full ml-[20px] mx-auto text-[20px] font-inter font-[500] ":"hidden"}>Submit</button>
+
+                <div onClick={() => setClicked("email")} className={clicked ? "hidden": "EmailOption mx-auto w-full rounded-[7px] lg:rounded-[16px] bg-[#008000] lg:border-solid border-[1px] border-[#0000008F] shadow-md shadow-[#00000040] cursor-pointer active:scale-90 transition-all duration-100 ease-out flex"}>
                     <p className="text-center text-[#FFFFFF] text-[16px] lg:text-[35px] font-[800] font-inter my-0 py-[16px] px-[40px] lg:px-[80px] ">EMAIL</p>
                 </div>
 
                 {/*Phone Option */}
-                <div className="PhoneOption mt-[40px] lg:mt-[30px] mx-auto w-full rounded-[7px] lg:rounded-[16px] bg-[#008000] lg:border-solid border-[1px] border-[#0000008F] shadow-md shadow-[#00000040] cursor-pointer active:scale-90 transition-all duration-100 ease-out">
+                <div onClick={() => setClicked("phone")} className={clicked ? "hidden": "EmailOption mx-auto w-full rounded-[7px] lg:rounded-[16px] bg-[#008000] lg:border-solid border-[1px] border-[#0000008F] shadow-md shadow-[#00000040] cursor-pointer active:scale-90 transition-all duration-100 ease-out flex"}>
                     <p className="text-center text-[#FFFFFF] text-[16px] lg:text-[35px] font-[800] font-inter my-0 py-[16px] px-[40px] lg:px-[80px] ">PHONE</p>
                 </div>
             </div>                        
