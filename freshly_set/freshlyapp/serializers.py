@@ -599,3 +599,62 @@ class PaymentMethodSerializer(serializers.ModelSerializer):
         return instance
     
 
+
+
+
+
+class TransporterSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+    email = serializers.EmailField(source='user.email', read_only=True)
+    first_name = serializers.CharField(source='user.first_name', read_only=True)
+    last_name = serializers.CharField(source='user.last_name', read_only=True)
+    phone = serializers.CharField(source='user.profile.phone', read_only=True)
+    location = serializers.CharField(source='user.profile.location', read_only=True)
+
+    transporter_name = serializers.CharField()
+    total_deliveries = serializers.IntegerField()
+    total_earnings = serializers.DecimalField(max_digits=10, decimal_places=2)
+    average_rating = serializers.DecimalField(max_digits=3, decimal_places=2)
+
+    class Meta:
+        model = Transporter
+        fields = [
+            'id', 'username', 'email', 'first_name', 'last_name', 'phone',
+            'location', 'transporter_name', 'total_deliveries', 'total_earnings',
+            'average_rating', 'user'
+        ]
+
+
+
+class ShippingSerializer(serializers.ModelSerializer):
+    order_number = serializers.UUIDField(source='order_id')
+    order_status = serializers.CharField(source='status')
+    expected_delivery_date = serializers.DateTimeField(source='expected_delivery')
+    client_contact = serializers.CharField(source='customer_phone')
+
+    # Custom fields
+    pick_up = serializers.SerializerMethodField()
+    drop_off = serializers.SerializerMethodField()
+    location = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Order
+        fields = [
+            'order_number', 'order_status', 'pick_up', 'drop_off',
+            'client_contact', 'expected_delivery_date', 'location'
+        ]
+
+    def get_pick_up(self, obj):
+        # Get the location of the transporter's profile
+        transporter_profile = Profile.objects.filter(user=obj.transporter.user).first()
+        return transporter_profile.location if transporter_profile else None
+
+    def get_drop_off(self, obj):
+        # Get the drop-off location based on the user with the customer_email in the order
+        user = User.objects.filter(email=obj.customer_email).first()
+        profile = Profile.objects.filter(user=user).first() if user else None
+        return profile.location if profile else None
+
+    def get_location(self, obj):
+        # Location is the same as drop_off
+        return self.get_drop_off(obj)

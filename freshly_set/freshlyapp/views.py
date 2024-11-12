@@ -1398,3 +1398,149 @@ class DeletePaymentMethodView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+class RegisterTransporterView(APIView):
+    def post(self, request):
+        user = request.user
+
+        if Transporter.objects.filter(user=user).exists():
+            return Response(
+                {"detail": "User is already registered as a Transporter."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        transporter = Transporter.objects.create(user=user)
+        serializer = TransporterSerializer(transporter)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class UnregisterTransporterView(APIView):
+    def delete(self, request):
+        user = request.user
+
+        # Check if the user has a Transporter object
+        try:
+            transporter = Transporter.objects.get(user=user)
+            transporter.delete()
+            return Response(
+                {"detail": "Transporter unregistered successfully."},
+                status=status.HTTP_204_NO_CONTENT
+            )
+        except Transporter.DoesNotExist:
+            return Response(
+                {"detail": "User is not registered as a Transporter."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+
+
+
+
+class PreviousDeliveriesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # Filter orders based on transporter and status
+        previous_deliveries = Order.objects.filter(
+            transporter__user=request.user,
+            status="Ready"
+        )
+
+        paginator = PageNumberPagination()
+        paginator.page_size = 10  # Set the number of items per page
+        result_page = paginator.paginate_queryset(previous_deliveries, request)
+        serializer = ShippingSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
+
+
+class UpcomingDeliveriesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # Filter orders based on transporter and status
+        upcoming_deliveries = Order.objects.filter(
+            transporter__user=request.user,
+            status="Transporting"
+        )
+
+        paginator = PageNumberPagination()
+        paginator.page_size = 10  # Set the number of items per page
+        result_page = paginator.paginate_queryset(upcoming_deliveries, request)
+        serializer = ShippingSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
+
+
+
+
+
+
+
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.utils import timezone
+from .models import Order, Transporter
+from .serializers import TransporterSerializer
+from rest_framework.permissions import IsAuthenticated
+
+class MarkAsDeliveredView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, order_id, *args, **kwargs):
+        try:
+            # Retrieve the order and check if the user is the assigned transporter
+            order = Order.objects.get(order_id=order_id, transporter__user=request.user)
+
+            # Update order status and set delivered_at timestamp
+            order.status = "Ready"
+            order.delivered_at = timezone.now()
+            order.save()
+
+            # Increment the total deliveries for the transporter
+            transporter = Transporter.objects.get(user=request.user)
+            transporter.total_deliveries += 1
+            transporter.save()
+
+            return Response({"message": "Order marked as delivered successfully."}, status=status.HTTP_200_OK)
+
+        except Order.DoesNotExist:
+            return Response(
+                {"error": "Order not found or you are not the assigned transporter."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class TransporterDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            # Retrieve the transporter information for the authenticated user
+            transporter = Transporter.objects.get(user=request.user)
+            serializer = TransporterSerializer(transporter)
+            transporter_data = {
+                "transporter_name": serializer.data.get("transporter_name"),
+                "total_deliveries": serializer.data.get("total_deliveries"),
+                "total_earnings": serializer.data.get("total_earnings"),
+                "average_rating": serializer.data.get("average_rating"),
+            }
+            return Response(transporter_data, status=status.HTTP_200_OK)
+
+        except Transporter.DoesNotExist:
+            return Response(
+                {"error": "Transporter profile not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )

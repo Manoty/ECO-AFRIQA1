@@ -215,6 +215,17 @@ urlpatterns = [
 
  #team memebers
     path('teammembers/',TeamMembers.as_view(),name='Team'),
-    path('addteammember/',AddingNewTeamMembers.as_view,name='New team members')
+    path('addteammember/',AddingNewTeamMembers.as_view,name='New team members'),
+
+
+# Transporters
+    path('mark/<uuid:order_id>/', MarkAsDeliveredView.as_view(), name='mark-as-delivered'),
+    path('register-transporter/', RegisterTransporterView.as_view(), name='register-transporter'),
+    path('unregister-transporter/', UnregisterTransporterView.as_view(), name='unregister-transporter'),
+    path('previous-deliveries/', PreviousDeliveriesView.as_view(), name='previous-deliveries'),
+    path('upcoming-deliveries/', UpcomingDeliveriesView.as_view(), name='upcoming-deliveries'),
+    path('transporter/profile/', TransporterDetailView.as_view(), name='transporter-profile'),
+
+
 
 ]
