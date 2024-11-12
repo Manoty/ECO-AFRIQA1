@@ -204,6 +204,23 @@ class Farmer(models.Model):
         User, on_delete=models.CASCADE, blank=True, null=True)
 
 
+
+class Transporter(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
+    transporter_name = models.CharField(max_length=100, blank=True, null=True)
+    total_deliveries = models.IntegerField(default=0)
+    total_earnings = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    average_rating = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        # Set default transporter name to the user's name if not provided
+        if not self.transporter_name and self.user:
+            self.transporter_name = self.user.get_full_name() or self.user.username
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.transporter_name or f"Transporter {self.user.username}"
+
 # models.py
 
 class Profile(models.Model):
@@ -566,26 +583,48 @@ class Transaction(models.Model):
     def can_retry(self):
         # Set retry limit to 3 attempts
         return self.retry_count < 3 and self.status == 'failed'
+    
 
 
+import uuid
+from django.db import models
+from django.utils import timezone
+from datetime import timedelta
 class Order(models.Model):
+    STATUS_CHOICES = [
+        ('Ready', 'Ready'),
+        ('Packaging', 'Packaging'),
+        ('Transporting', 'Transporting'),
+    ]
+
     order_id = models.UUIDField(
-        default=uuid.uuid4, editable=False, unique=True, null=True, blank=True)
-    # Allows null and blank values
+        default=uuid.uuid4, editable=False, unique=True, null=True, blank=True
+    )
     customer_name = models.CharField(max_length=100, null=True, blank=True)
-    # Allows null and blank values
     customer_email = models.EmailField(null=True, blank=True)
-    customer_phone = models.CharField(
-        max_length=15, null=True, blank=True)  # Allows null and blank values
-    delivery_fee = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True)  # Nullable
-    total_price = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True)   # Nullable
-    payment_method = models.CharField(
-        max_length=20, null=True, blank=True)  # Nullable
+    customer_phone = models.CharField(max_length=15, null=True, blank=True)
+    delivery_fee = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    payment_method = models.CharField(max_length=20, null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default='Packaging'
+    )
+    expected_delivery = models.DateTimeField(blank=True, null=True)
+    delivered_at = models.DateTimeField(null=True, blank=True)
+
+    # New field for the relationship with Transporter
+    transporter = models.ForeignKey(
+        Transporter, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='orders'
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.expected_delivery:
+            self.expected_delivery = self.created_at + timedelta(days=3)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Order {self.order_id}"
