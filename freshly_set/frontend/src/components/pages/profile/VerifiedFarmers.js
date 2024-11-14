@@ -176,7 +176,7 @@ function VerifiedFarmers() {
             </div>  {/*Farm Sales List Wrapper */}
           </div> {/*Farm Sales Wrapper */}
         </div>  {/*Farm Sales */} 
-        {showModal && <NotFarmerModal onClose={() => setShowModal(false)} />}
+        {showModal && <NotFarmerModal link="verified" role="farmer" onClose={() => setShowModal(false)} />}
 
       </div> {/*Verified Farmers Wrapper */}
       
