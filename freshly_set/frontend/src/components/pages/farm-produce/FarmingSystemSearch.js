@@ -12,10 +12,13 @@ function FarmingSystemSearch() {
 
     // const [selectedProducts, setSelectedProducts] = useContext(ProductsContext);
 
-    const [searchTerm, setSearchTerm] = useState("Hydroponic")
+    const [searchQuery, setSearchQuery] = useState('');
 
 
-    const [filteredProducts, setFilteredProducts] = useState([]);
+    const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
 
     const toggleProductSelection = (product) => {
         setSelectedProducts((prevSelected) => {
@@ -48,7 +51,10 @@ function FarmingSystemSearch() {
                     {/*Searchbar */}
                     <div className="SearchBar mt-[20px] px-[10px] lg:px-[40px] mx-[6px] lg:mx-[30px] flex justify-between border-solid border-[1.5px] lg:border-[5px] border-[#008000] bg-white rounded-[6px] lg:rounded-[20px]">
                         <div className="block w-full mr-[10px] lg:mr-[30px] overflow-hidden">
-                            <input className="w-full h-full text-start text-[#00000080] text-[16px] lg:text-[30px] font-inter font-[600] border-none outline-none"
+                            <input 
+                              onChange={(e) => setSearchQuery(e.target.value)}
+
+                            className="w-full h-full text-start text-[#00000080] text-[16px] lg:text-[30px] font-inter font-[600] border-none outline-none"
                                 type="text"
                                placeholder="Search For Farming System" 
                             />
@@ -68,7 +74,7 @@ function FarmingSystemSearch() {
 
 {/* Filter Field */}
 <div className="FilterFields mt-[14px] lg:mt-[20px] lg:-mx-[40px] grid grid-cols-4 gap-x-[10px] gap-y-[14px] lg:gap-y-[30px] pb-[20px]">
-    {products.slice(0, filterNumber).map((product) => (
+    {filteredProducts.slice(0, filterNumber).map((product) => (
     
 
         <div  
