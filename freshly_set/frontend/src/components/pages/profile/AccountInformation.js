@@ -89,9 +89,9 @@ function AccountInformation() {
         console.log("profile", profile)
     },[loading, profile])
 
-    useEffect(() => {
-        fetchProfile()
-    },[loading])
+    // useEffect(() => {
+    //     fetchProfile()
+    // },[loading])
     return (
         <div className="flex">
             <div className="block">

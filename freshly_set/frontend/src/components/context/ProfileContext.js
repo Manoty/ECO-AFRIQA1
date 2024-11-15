@@ -13,6 +13,8 @@ export const ProfileProvider = ({ children }) => {
     const [isFarmer, setIsFarmer] = useState(false);
     const [selectedSection, setSelectedSection] = useState('Account');
 
+    const [service, setService] = useState(false);
+
     const fetchProfile = async () => {
         const token = localStorage.getItem('accessToken');
 
@@ -45,7 +47,7 @@ export const ProfileProvider = ({ children }) => {
     }, []);
 
     return (
-        <ProfileContext.Provider value={{ profile, loading, error, fetchProfile, isFarmer, selectedSection, setSelectedSection }}>
+        <ProfileContext.Provider value={{ profile, loading, error, fetchProfile, isFarmer, selectedSection, setSelectedSection, service, setService }}>
             {children}
         </ProfileContext.Provider>
     );

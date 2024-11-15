@@ -1,4 +1,5 @@
 # from argon2 import hash_password
+from datetime import timedelta
 import os
 from PIL import Image
 from django.core.exceptions import ValidationError
@@ -204,13 +205,15 @@ class Farmer(models.Model):
         User, on_delete=models.CASCADE, blank=True, null=True)
 
 
-
 class Transporter(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, blank=True, null=True)
     transporter_name = models.CharField(max_length=100, blank=True, null=True)
     total_deliveries = models.IntegerField(default=0)
-    total_earnings = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    average_rating = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+    total_earnings = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0.00)
+    average_rating = models.DecimalField(
+        max_digits=3, decimal_places=2, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         # Set default transporter name to the user's name if not provided
@@ -222,6 +225,7 @@ class Transporter(models.Model):
         return self.transporter_name or f"Transporter {self.user.username}"
 
 # models.py
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -583,13 +587,8 @@ class Transaction(models.Model):
     def can_retry(self):
         # Set retry limit to 3 attempts
         return self.retry_count < 3 and self.status == 'failed'
-    
 
 
-import uuid
-from django.db import models
-from django.utils import timezone
-from datetime import timedelta
 class Order(models.Model):
     STATUS_CHOICES = [
         ('Ready', 'Ready'),
@@ -603,8 +602,10 @@ class Order(models.Model):
     customer_name = models.CharField(max_length=100, null=True, blank=True)
     customer_email = models.EmailField(null=True, blank=True)
     customer_phone = models.CharField(max_length=15, null=True, blank=True)
-    delivery_fee = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    delivery_fee = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True)
+    total_price = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True)
     payment_method = models.CharField(max_length=20, null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
@@ -699,6 +700,10 @@ class Profile(models.Model):
 class FarmingSystems(models.Model):
     name = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=255, blank=False)
+    rating = models.IntegerField(default=0)
+    image = models.ImageField(
+        upload_to='static/images/FarmingSystems', null=True, blank=True)
+    in_stock = models.BooleanField(default=True)
 
 
 class Quotation(models.Model):
@@ -758,20 +763,19 @@ class Quotation(models.Model):
         super(Quotation, self).save(*args, **kwargs)
 
 
-
-
-
-
 class PaymentMethod(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='payment_method')
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='payment_method')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.user.username}'s Payment Method"
 
+
 class CreditCardDetails(models.Model):
-    payment_method = models.OneToOneField(PaymentMethod, on_delete=models.CASCADE, related_name='credit_card_details')
+    payment_method = models.OneToOneField(
+        PaymentMethod, on_delete=models.CASCADE, related_name='credit_card_details')
     card_number = models.CharField(max_length=16)
     expiry_date = models.DateField()
     card_holder_name = models.CharField(max_length=100)
@@ -780,8 +784,10 @@ class CreditCardDetails(models.Model):
     def __str__(self):
         return f"Credit Card ending in {self.card_number[-4:]}"
 
+
 class MpesaDetails(models.Model):
-    payment_method = models.OneToOneField(PaymentMethod, on_delete=models.CASCADE, related_name='mpesa_details')
+    payment_method = models.OneToOneField(
+        PaymentMethod, on_delete=models.CASCADE, related_name='mpesa_details')
     phone_number = models.CharField(max_length=15)
     account_name = models.CharField(max_length=100, blank=True, null=True)
 
@@ -790,7 +796,7 @@ class MpesaDetails(models.Model):
 
 
 class TeamMember(models.Model):
-    name=models.CharField(max_length=255)
-    position=models.CharField(max_length=255)
-    image=models.ImageField(null=True,blank=False)
-    department=models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    position = models.CharField(max_length=255)
+    image = models.ImageField(null=True, blank=False)
+    department = models.CharField(max_length=255)

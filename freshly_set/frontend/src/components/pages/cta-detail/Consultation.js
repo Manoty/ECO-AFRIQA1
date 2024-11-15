@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import FreshlyFooter from "../../footer/FreshlyFooter";
 import Consultants from "./Consultants.json";
 import ConsultantCard from "./ConsultantCard";
 import Nav from "../../Nav/Navbar";
+import { ConsultationContext } from "../../context/ConsultationsContext";
 
 function Consultation() {
     return (
@@ -39,7 +40,7 @@ function Consultation() {
                 {/*Bottom Part */}
                 <div className="AllCards grid grid-cols-2 md:grid-cols-3  gap-[14px] lg:gap-[60px] mt-[40px] lg:mt-[100px] mx-[18px] lg:mx-[20px]">
                     {Consultants.slice(0,9).map((Consultants) => (
-                        <ConsultantCard img={Consultants.img} name={Consultants.name} field={Consultants.field} description={Consultants.description} rate={Consultants.rate} />
+                        <ConsultantCard selected={Consultants} img={Consultants.img} name={Consultants.name} field={Consultants.field} description={Consultants.description} rate={Consultants.rate} />
                         ))
                     }  
                 </div> {/*All cards Ends Here */}

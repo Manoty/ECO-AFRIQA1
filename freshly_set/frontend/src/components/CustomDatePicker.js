@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { GeneralContext } from './context/PageContext';
 
 const CustomDatePicker = () => {
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useContext(GeneralContext);
 
     const handleDateChange = (selectedDate) => {
         setDate(selectedDate);

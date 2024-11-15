@@ -38,7 +38,7 @@ const Login = () => {
       login(access); // Trigger AuthContext login to set isAuthenticated to true
       console.log('Login successful');
       navigate('/profile');  
-      fetchProfile()
+      // fetchProfile()
 
   
     } catch (error) {

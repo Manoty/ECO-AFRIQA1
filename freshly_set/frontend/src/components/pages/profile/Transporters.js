@@ -5,11 +5,13 @@ import { FaEdit } from "react-icons/fa";
 import UsersDeliveries from "./json/UsersDeliveries.json"
 
 import LineChart from './utils/LineChart';
+import NotFarmerModal from './NotFarmerModal';
 
 function Transporters() {
 
   // Replace the state with orders fetched from backend
   const [deliveryData, setDeliveryData] = useState(UsersDeliveries);
+  const [showModal, setShowModal] = useState(true);
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -132,6 +134,8 @@ function Transporters() {
           }
         </table>
       </div>
+      {showModal && <NotFarmerModal link="transporters" role="transporter" onClose={() => setShowModal(false)} />}
+
     </section>
   )
 }

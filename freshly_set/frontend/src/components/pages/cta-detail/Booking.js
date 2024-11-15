@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from "react-router-dom";
 import CustomDatePicker from '../../CustomDatePicker';
 import ScrollableTimePicker from '../../CustomtimePicker';
+import { ConsultationContext } from '../../context/ConsultationsContext';
+import { CartContext } from '../../context/CartContext';
+import { ProfileContext } from '../../context/ProfileContext';
 
 function Booking() {
     //State to manage the clicked Consultation type
@@ -9,6 +12,8 @@ function Booking() {
         1: false,
         2: false
     });
+
+    const { service, setService } = useContext(ProfileContext);
 
     // Function to toggle the color on click
     const toggleColor = (id) => {
@@ -24,6 +29,14 @@ function Booking() {
         
     }
 
+    const { name, setName, meetingType, setMeetingType, date, setDate, time, setTime, note, setNote} = useContext(ConsultationContext);
+    const { consultant, setConsultant} = useContext(ConsultationContext)
+
+    const { orderName, setOrderName, orderEmail, setOrderEmail, orderPhone, setOrderPhone, orderLocation, setOrderLocation } = useContext(CartContext)
+
+    useEffect(() => {
+        console.log("Consultant", consultant)
+    },[consultant])
     return (
         <div className="Bookingform">
             <div className="BookingWrapper mx-[12px] lg:mx-[72px] my-[42px] py-[10px] lg:py-[20px] px-[4px] lg:px-[30px] border-solid border-[1px] border-[#0000004D] shadow-md shadow-[#00000040] rounded-[14px] lg:rounded-[38px]">
@@ -43,7 +56,7 @@ function Booking() {
                             <p className="NameLabel text-start font-[700] my-0 font-inter text-[#008000] text-[15px] lg:text-[17px]">Your Name</p>
                         </div>
                         <div className="flex justify-between w-full mt-[6px] lg:mt-[16px] border-solid border-[1px] border-[#0000004D] shadow-md shadow-[#00000040] rounded-[9px]">
-                            <input type='name' name='name' className="border-none bg-white outline-none font-inter font-[700] my-[12px] px-[4px] mx-[10px] text-[14px] lg:text-[16px] w-[70%] lg:w-[100%]" />
+                            <input value={name} onChange={(e) => setName(e.target.value)} type='name' name='name' className="border-none bg-white outline-none font-inter font-[700] my-[12px] px-[4px] mx-[10px] text-[14px] lg:text-[16px] w-[70%] lg:w-[100%]" />
                             <img src="/static/media/edit.png" alt="" className="block  my-[10px] cursor-pointer  mr-[20px]"/>
                         </div>
                     </div>
@@ -53,7 +66,7 @@ function Booking() {
                             <p className="NameLabel text-start font-[700] my-0 font-inter text-[#008000] text-[15px] lg:text-[17px]">Consultant’s Name</p>
                         </div>
                         <div className="flex justify-between w-full mt-[6px] lg:mt-[16px] border-solid border-[1px] border-[#0000004D] shadow-md shadow-[#00000040] rounded-[9px]">
-                            <input type='name' name='name' className="border-none outline-none font-inter font-[700] my-[12px] px-[4px] mx-[10px] text-[14px] lg:text-[16px] w-[70%] lg:w-[100%]" />
+                            <input value={consultant.name} type='name' name='name' className="border-none outline-none font-inter font-[700] my-[12px] px-[4px] mx-[10px] text-[14px] lg:text-[16px] w-[70%] lg:w-[100%]" />
                             <img src="/static/media/edit.png" alt="" className="hidden  lg:block  my-[10px] cursor-pointer  mr-[20px]"/>
                         </div>
                     </div>
@@ -70,7 +83,7 @@ function Booking() {
                                 <div className="ImageAndText flex justify-between lg:justify-start my-[14px] mx-[40px] lg:m-[24px]">
                                     <p className={`Description block text-start my-0  font-[700] font-inter text-black text-[18px] lg:text-[27px] ${isClicked[1]? "text-white": ""} `}> ONSITE</p>
                                     <div className="OnsiteImage block h-[26px] w-[24px] lg:ml-[30px]">
-                                        <img src="/static/media/onsite.png" alt="Onsite" className="lg:pt-[4px] w-full h-full" />
+                                        <img onClick={() => setMeetingType("onsite")} src="/static/media/onsite.png" alt="Onsite" className="lg:pt-[4px] w-full h-full" />
                                     </div>
                                 </div>
                             </div> {/*Onsite Booking Ends Here */}
@@ -80,7 +93,7 @@ function Booking() {
                                 <div className="ImageAndText flex justify-between lg:justify-start my-[14px] mx-[40px] lg:m-[24px]">
                                     <p className={`Description block text-start my-0  font-[700] font-inter text-black text-[18px] lg:text-[27px]  ${isClicked[2]? "text-white": ""} `}> ONLINE</p>
                                     <div className="OnsiteImage block h-[26px] w-[24px] ml-[30px]">
-                                        <img src="/static/media/online.png" alt="Onsite" className="lg:pt-[4px] w-full h-full" />
+                                        <img onClick={() => setMeetingType("online")} src="/static/media/online.png" alt="Online" className="lg:pt-[4px] w-full h-full" />
                                     </div>
                                 </div>
                             </div> {/*Online Booking Ends Here */}
@@ -113,7 +126,7 @@ function Booking() {
                     </div>
 
                     {/*Next Button */}
-                    <Link to="/checkout" className="Next mt-[20px]">
+                    <Link onClick={() => setService(true)} to="/checkout" className="Next mt-[20px]">
                         <div className="bg-[#008000] w-full rounded-[10px] lg:rounded-[20px] cursor-pointer active:scale-90 transition-all duration-100 ease-out">
                             <p className="text-center my-0 py-[10px] lg:py-[16px]  font-[800] font-inter text-[#ffffff] text-[16px] lg:text-[30px]">NEXT</p>
                         </div>
