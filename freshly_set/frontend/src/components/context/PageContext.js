@@ -15,11 +15,13 @@ export const ProductsSideBarContext = createContext();
 export const ProductsContext = createContext();
 export const SearchContext = createContext();
 export const EmptyContext = createContext();
+export const GeneralContext = createContext();
 
 export  const PageContextProvider = ({ children }) => {
     const [activeTab, setActiveTab] = useState("home");
     const [popUpOpen, setPopUpOpen] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [date, setDate] = useState(new Date());
 
     const [email, setEmail] = useState("");
     // Selected Sections Context
@@ -194,7 +196,10 @@ export  const PageContextProvider = ({ children }) => {
                                                     <ProductsContext.Provider value={[products, setProducts]}>
                                                         <SearchContext.Provider value={{handleSearch}}>
                                                             <EmptyContext.Provider value={[empty, setEmpty]}>
-                                                                {children}
+                                                                <GeneralContext.Provider value={[date, setDate]}>
+                                                                    {children}
+
+                                                                </GeneralContext.Provider>
                                                             </EmptyContext.Provider>
                                                         </SearchContext.Provider>
                                                     </ProductsContext.Provider>

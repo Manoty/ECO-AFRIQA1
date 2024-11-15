@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { ConsultationContext } from "../../context/ConsultationsContext";
 
-function ConsultantCard({img,name, field,description,rate}) {
+function ConsultantCard({img,name, field,description,rate, selected}) {
+    const { consultant, setConsultant} = useContext(ConsultationContext)
+
+    useEffect(() => {
+        console.log("Consultant", consultant)
+    },[consultant])
     return (
         <div className="SingleCard border-[0.7px] border-solid border-[#00000066] shadow-lg shadow-[#00000040] rounded-[6px] lg:rounded-[14px]">
             <div className="CardWrapper m-[8px] lg:m-[14px]">
@@ -38,7 +44,7 @@ function ConsultantCard({img,name, field,description,rate}) {
 
                         {/*Consultant Booking */}
                         <div className="ConsultantBoking block">
-                            <Link to="/booking"> 
+                            <Link onClick={() => setConsultant(selected)} to="/booking"> 
                                 <div className="BookingButton bg-[#008000] rounded-[4px] lg:rounded-[10px] cursor-pointer active:scale-90 transition-all duration-100 ease-out">
                                     <p className="text-center font-inter text-[8px] lg:text-[20px] font-[900] my-0 text-white py-[4px] lg:py-[16px] px-[14px] lg:px-[60px]">BOOK</p>
                                 </div>
