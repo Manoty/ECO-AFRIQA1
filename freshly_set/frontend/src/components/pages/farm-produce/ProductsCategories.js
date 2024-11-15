@@ -8,6 +8,7 @@ import axios from 'axios';
 import Product from './Product';
 import Items from "./json/Categories.json";
 import { EmptyContext } from '../../context/PageContext';
+import config from '../../../config';
 // REPLACE **Products.json** FILE WITH FETCHED PRODUCTS FROM THE DATABASE
 const productImages = {
   fruits: '/static/media/c-1.png',
@@ -20,6 +21,7 @@ const ProductsCategories = () => {
   
   const [products, setProducts ] = useState([]);
   const [csrfToken, setCsrfToken] = useState('');
+  const apiUrl = config.API_URL;
 
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({})
@@ -84,7 +86,7 @@ useEffect(() => {
     setCsrfToken(token.getAttribute('content'));
   }
 
-  axios.get('http://localhost:8000/freshlyapp/products', {
+  axios.get(`${apiUrl}freshlyapp/products`, {
     headers: {
       'X-CSRFToken': csrfToken
     },
@@ -111,7 +113,7 @@ useEffect(() => {
     setCsrfToken(token.getAttribute('content'));
   }
 
-  axios.get('http://localhost:8000/freshlyapp/categories', {
+  axios.get(`${apiUrl}freshlyapp/categories`, {
     headers: {
       'X-CSRFToken': csrfToken
     },

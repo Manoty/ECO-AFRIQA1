@@ -5,6 +5,7 @@ import NotificationList from "./NotificationList.json";
 import Nav from "../../Nav/Navbar";
 import FreshlyFooter from "../../footer/FreshlyFooter";
 import axios from "axios";
+import config from "../../../config";
 
 function Notifications() {
     //Number of Notifications to pull from the json file
@@ -13,11 +14,12 @@ function Notifications() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const apiUrl = config.API_URL;
 
     const getNotifications = async (page = 1) => {
         try {
             // Fetch the notifications using Axios
-            const response = await axios.get(`http://localhost:8000/notifications/?page=${page}`, {
+            const response = await axios.get(`${apiUrl}notifications/?page=${page}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json',

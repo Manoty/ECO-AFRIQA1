@@ -7,11 +7,12 @@ import { getCsrfToken } from "../../../utils/getCsrfToken";
 import { ProfileContext } from "../../context/ProfileContext";
 import { AuthContext } from "../../context/AuthContext";
 import OrderSummary from "./OrderSummary";
-
+import config from "../../../config";
 function Mpesa2() {
   const { cartItems, totalPrice, delivery } = useContext(CartContext);
   const { isAuthenticated } = useContext(AuthContext);
   const { profile } = useContext(ProfileContext);
+  const apiUrl = config.API_URL;
 
   // State for form fields, used when not authenticated
   const [orderName, setOrderName] = useState("");
@@ -48,7 +49,7 @@ function Mpesa2() {
   const handleCheckout = async () => {
     const csrfToken = getCsrfToken();
     try {
-      const response = await axios.post('http://localhost:8000/orders/', orderData, {
+      const response = await axios.post(`${apiUrl}orders/`, orderData, {
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': csrfToken,

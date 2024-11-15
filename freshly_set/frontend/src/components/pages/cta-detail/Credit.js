@@ -5,7 +5,7 @@ import { CartContext } from "../../context/CartContext"; // Ensure you have Cart
 import axios from "axios";
 import { getCsrfToken } from "../../../utils/getCsrfToken"; // Make sure this utility is available
 import OrderSummary from "./OrderSummary";
-
+import config from "../../../config";
 function Credit() {
   const { cartItems, totalPrice, delivery } = useContext(CartContext);
 
@@ -15,6 +15,7 @@ function Credit() {
   const [cvc, setCvc] = useState(''); // State for CVC
 
 
+  const apiUrl = config.API_URL;
 
 
 
@@ -36,7 +37,7 @@ function Credit() {
   const handleCheckout = async () => {
     const csrfToken = getCsrfToken();
     try {
-      const response = await axios.post('http://localhost:8000/orders/', orderData, { 
+      const response = await axios.post(`${apiUrl}orders/`, orderData, { 
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': csrfToken,

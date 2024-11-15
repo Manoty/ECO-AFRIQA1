@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import config from '../../../config';
 function BlogSearch() {
   const [query, setQuery] = useState('');
   const [blogs, setBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const apiUrl = config.API_URL;
 
   useEffect(() => {
     fetchBlogs();
@@ -14,7 +15,7 @@ function BlogSearch() {
   const fetchBlogs = async (searchQuery = '') => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8000/freshlyapp/search/?q=${searchQuery}`, {
+      const response = await axios.get(`${apiUrl}freshlyapp/search/?q=${searchQuery}`, {
         withCredentials: true
       });
       setBlogs(response.data);

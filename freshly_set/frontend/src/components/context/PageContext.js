@@ -1,6 +1,6 @@
 import axios from "axios";
 import {  createContext, useEffect, useState } from "react";
-
+import config from "../../config";
 export const PageContext = createContext();
 export const PopupContext = createContext();
 export const ModalContext = createContext();
@@ -20,6 +20,7 @@ export  const PageContextProvider = ({ children }) => {
     const [activeTab, setActiveTab] = useState("home");
     const [popUpOpen, setPopUpOpen] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const apiUrl = config.API_URL;
 
     const [email, setEmail] = useState("");
     // Selected Sections Context
@@ -153,7 +154,7 @@ export  const PageContextProvider = ({ children }) => {
     setCsrfToken(token.getAttribute('content'));
   }
 
-  axios.get('http://localhost:8000/products/')
+  axios.get(`${apiUrl}products/`)
   .then(response => {
     setProducts(response.data.results);
 
