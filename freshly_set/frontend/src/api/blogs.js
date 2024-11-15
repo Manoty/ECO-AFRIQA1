@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import config from '../config';
 // Function to get CSRF token from meta tag
 function getCSRFToken() {
   const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
@@ -12,7 +12,7 @@ axios.defaults.xsrfHeaderName = 'x-csrftoken'
 
 // Create an axios instance
 const api = axios.create({
-  baseURL: 'http://localhost:8000/', // Ensure this points to your backend URL
+  baseURL: config.API_URL, // Ensure this points to your backend URL
   withCredentials: true, // Ensures cookies are sent with requests
   headers: {
     'Content-Type': 'application/json',

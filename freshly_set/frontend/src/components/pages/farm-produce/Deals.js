@@ -3,6 +3,7 @@ import { GoArrowRight } from "react-icons/go";
 import { ProductsSideBarContext } from '../../context/PageContext';
 import axios from 'axios';
 import CountdownTimer from './CountdownTimer';
+import config from '../../../config';
 
 export default function Deals() {
 
@@ -13,6 +14,8 @@ export default function Deals() {
     const [dealOfWeekBanner, setDealOfWeekBanner] = useState({});
     const [saleBanner, setSaleBanner] = useState({});
     const [saleBanner2, setSaleBanner2] = useState({});
+    const apiUrl = config.API_URL;
+
     function calculateTimeLeft() {
         const difference = new Date()
         let timeLeft = {}
@@ -59,7 +62,7 @@ export default function Deals() {
     setCsrfToken(token.getAttribute('content'));
   }
        
-        axios.get('http://localhost:8000/freshlyapp/banners')
+        axios.get(`${apiUrl}freshlyapp/banners`)
         .then(response => {
           setBanners(response.data);
           console.log("Banners Fetched", banners)

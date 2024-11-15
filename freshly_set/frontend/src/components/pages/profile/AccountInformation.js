@@ -4,6 +4,7 @@ import { CiCircleCheck } from "react-icons/ci";
 import { ProfileContext } from '../../context/ProfileContext';
 import axios from "axios";
 import { debounce } from "lodash";
+import config from '../../../config';
 
 function AccountInformation() {
     const { profile, loading, error } = useContext(ProfileContext);
@@ -16,6 +17,7 @@ function AccountInformation() {
         phone:profile?.profile.phone,
         location:profile?.profile.location
     });
+    const apiUrl = config.API_URL;
 
     
     // State to track which field is being edited
@@ -34,7 +36,7 @@ function AccountInformation() {
         try {
           const accessToken = localStorage.getItem('accessToken');
           const response = await axios.put(
-            'http://localhost:8000/profile/update/',
+            `${apiUrl}profile/update/`,
             {
               first_name: fields.firstName,
               last_name: fields.lastName,
