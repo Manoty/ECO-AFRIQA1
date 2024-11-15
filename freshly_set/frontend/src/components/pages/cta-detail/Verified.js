@@ -3,6 +3,7 @@ import { FaCaretUp } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { ProfileContext } from '../../context/ProfileContext';
+import config from '../../../config';
 
 function Verified() {
     //State to manage opening of options
@@ -12,6 +13,7 @@ function Verified() {
     // const [blogs, setBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const apiUrl = config.API_URL;
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -46,7 +48,7 @@ function Verified() {
   
     const handleSearch = () => {
       setIsLoading(true); // Set loading state to true
-      axios.get(`http://localhost:8000/freshlyapp/search?q=${query}`, {
+      axios.get(`${apiUrl}freshlyapp/search?q=${query}`, {
         headers: {
           'X-CSRFToken': csrfToken
         },

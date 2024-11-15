@@ -7,6 +7,7 @@ import axios from 'axios';
 import { getCsrfToken } from '../../../utils/getCsrfToken';
 import { useNavigate } from 'react-router-dom';
 import { ProfileContext } from '../../context/ProfileContext';
+import config from '../../../config';
 const LoginSignUp = () => {
   const [showForm, setShowForm] = useState(true);
   const [formData, setFormData] = useState({
@@ -19,6 +20,8 @@ const LoginSignUp = () => {
     confirmPassword: '',
     rememberMe: false,
   });
+
+  const apiUrl = config.API_URL;
 
   const [passwordToggle, setPasswordToggle] = useState(false);
   const [confirmPasswordToggle, setConfirmPasswordToggle] = useState(false);
@@ -59,7 +62,7 @@ const LoginSignUp = () => {
         };
 
         try {
-            const signupResponse = await axios.post('http://localhost:8000/register/', payload, {
+            const signupResponse = await axios.post(`${apiUrl}register/`, payload, {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCsrfToken(),
@@ -79,7 +82,7 @@ const LoginSignUp = () => {
                 };
 
                 try {
-                    const loginResponse = await axios.post('http://localhost:8000/freshlyapp/token/', loginPayload);
+                    const loginResponse = await axios.post(`${apiUrl}freshlyapp/token/`, loginPayload);
                     const { access, refresh } = loginResponse.data;
 
                     // Save tokens in localStorage or cookies

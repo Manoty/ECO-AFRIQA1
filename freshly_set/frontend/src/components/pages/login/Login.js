@@ -6,9 +6,12 @@ import { IoEye } from "react-icons/io5";
 import Nav from '../../Nav/Navbar';
 import { ProfileContext } from '../../context/ProfileContext';
 import { AuthContext } from '../../context/AuthContext';
+import config from '../../../config';
 
 const Login = () => {
   const navigate = useNavigate();
+  const apiUrl = config.API_URL;
+
   const { fetchProfile } = useContext(ProfileContext);
   const [formData, setFormData] = useState({
     username: '',  
@@ -24,7 +27,7 @@ const Login = () => {
     e.preventDefault();
     
     try {
-      const response = await axios.post('http://localhost:8000/freshlyapp/token/', formData);
+      const response = await axios.post(`${apiUrl}freshlyapp/token/`, formData);
       const { access, refresh } = response.data;
   
       // Save tokens
@@ -65,7 +68,7 @@ const Login = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/freshlyapp/login/', payload, {
+            const response = await axios.post(`${apiUrl}freshlyapp/login/`, payload, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

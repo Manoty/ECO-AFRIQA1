@@ -2,15 +2,18 @@ import React, { useEffect, useState } from 'react';
 import OrderHistoryCard from './OrderHistoryCard';
 import OrderHistoryList from './json/OrderHistoryList.json'
 import axios from "axios";
+import config from '../../../config';
 function OrderHistory() {
   //Number of Times a Client made Orders
 
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const apiUrl = config.API_URL;
+
   const fetchOrders = async () => {
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await axios.get('http://localhost:8000/myorders/', {
+      const response = await axios.get(`${apiUrl}myorders/`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

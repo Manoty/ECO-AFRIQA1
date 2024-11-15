@@ -8,6 +8,7 @@ import axios from 'axios';
 import Items from "./json/Categories.json";
 import { EmptyContext } from '../../context/PageContext';
 import Product from './Product';
+import config from '../../../config';
 
 const productImages = {
   fruits: '/static/media/c-1.png',
@@ -26,6 +27,7 @@ const Categories = () => {
   const [backup, setBackup] = useState([]);
   const [backupProducts, setBackupProducts] = useState([]);
   const scrollContainer = useRef(null);
+  const apiUrl = config.API_URL;
 
   // Set up category styles
   const categoryStyles = {
@@ -39,7 +41,7 @@ const Categories = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/freshlyapp/products', {
+        const response = await axios.get(`${apiUrl}freshlyapp/products`, {
           headers: { 'X-CSRFToken': csrfToken },
           withCredentials: true,
         });
@@ -63,7 +65,7 @@ const Categories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/freshlyapp/categories', {
+        const response = await axios.get(`${apiUrl}freshlyapp/categories`, {
           headers: { 'X-CSRFToken': csrfToken },
           withCredentials: true,
         });

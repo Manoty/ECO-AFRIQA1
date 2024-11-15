@@ -1,11 +1,12 @@
 import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
-
+import config from '../../config';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true); // Track loading state for initial auth check
+  const apiUrl = config.API_URL;
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -14,7 +15,7 @@ export const AuthProvider = ({ children }) => {
       if (accessToken) {
         try {
           // Verify token with a protected endpoint
-          const response = await axios.get('http://localhost:8000/profile/', {
+          const response = await axios.get(`${apiUrl}profile/`, {
             headers: { Authorization: `Bearer ${accessToken}` },
           });
 
