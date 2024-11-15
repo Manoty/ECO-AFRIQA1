@@ -33,13 +33,11 @@ gunicorn==22.0.0
 idna==3.7
 jmespath==1.0.1
 multidict==6.1.0
-mysqlclient==2.2.4
 ndg-httpsclient==0.5.1
 notification==0.2.1
 numpy==1.26.2
 packaging==24.1
 pillow==10.4.0
-psycopg2==2.9.10
 psycopg2-binary==2.9.9
 pusher==3.3.2
 pyasn1==0.6.0
