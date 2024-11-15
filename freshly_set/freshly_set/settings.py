@@ -125,7 +125,7 @@ WSGI_APPLICATION = 'freshly_set.wsgi.application'
 
 DATABASES = {
     'default': {
-         'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
@@ -187,7 +187,7 @@ env = environ.Env()
 environ.Env.read_env(env_file=str(BASE_DIR) + '/.env')  
 # MPESA Configuration
 
-MPESA_API_URL = os.environ.get('MPESA_API_URL')
+MPESA_API_URL = config('MPESA_API_URL')
 
 
 if not MPESA_API_URL:
@@ -254,6 +254,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:8000",
+    config('FRONTEND_URL')
+
     # Add other trusted origins here
 ]
 
@@ -263,25 +265,6 @@ REACT_APP_DIR = BASE_DIR / 'frontend/build'
 # Including React build static files in STATICFILES_DIRS
 STATICFILES_DIRS.append(REACT_APP_DIR / 'static/media')
 
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': 'errors.log',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    },
-}
 
 
  
