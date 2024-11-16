@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 function FarmingSystemsHero() {
   return (
     <div className="block overflow-x-hidden">
@@ -83,6 +84,7 @@ function FarmingSystemsHero() {
                 </div>
             </div>
         </div>
+        
     </div>
   
   )
