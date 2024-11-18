@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { FaCaretDown, FaLongArrowAltRight, FaStar } from 'react-icons/fa'
 import { CurrentIndexContext, ModalContentsContext, ModalContext, SectionTypeContext } from '../../context/PageContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { ProductsContext } from '../../context/ProductsContext';
 
-function FarmCard({  index, img, title, body, rating, number, type}) {
+function FarmCard({  index, img, title, body, rating, number, type, product}) {
     const [clicked, setClicked] = useState({
         1: true,  // Question 1 is open by default
         2: true, // Question 2 is closed by default
@@ -15,6 +16,9 @@ function FarmCard({  index, img, title, body, rating, number, type}) {
       const [currentIndex, setCurrentIndex] = useContext(CurrentIndexContext);
       const [sectionType, setSectionType] = useContext(SectionTypeContext);
 
+      const { selected, setSelected } = useContext(ProductsContext);
+
+      const  navigate  = useNavigate();
     const passInfo = () => {
       setModalOpen(true)
       setCurrentIndex(index)
@@ -30,6 +34,11 @@ function FarmCard({  index, img, title, body, rating, number, type}) {
         }));
       };
       
+
+      const requestQuotation = () => {
+          setSelected(product)
+          navigate("/products/farmingSystems/method")
+      }
     useEffect(() => {
         console.log("clicked", clicked)
     },[clicked])
@@ -71,10 +80,10 @@ function FarmCard({  index, img, title, body, rating, number, type}) {
                   <FaLongArrowAltRight className="freshlyGreenText cursor-pointer mt-[12px] lg:mt-[0px]" />
               </div>
 
-            <Link to="/products/farmingSystems/method">
+            <div onClick={requestQuotation}>
               <img  className="h-[20px]  lg:h-[40px] w-[20px] lg:w-[40px] cursor-pointer mr-[16.86px] lg:mr-[0px]" src="/static/media/docLogo.png" alt="DocLogo"/>
 
-            </Link>
+            </div>
            </div>
        </div>
 
