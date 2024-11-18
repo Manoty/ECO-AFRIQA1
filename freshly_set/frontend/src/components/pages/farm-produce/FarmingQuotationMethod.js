@@ -1,11 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
+import { ProfileContext } from "../../context/ProfileContext";
 
 function FarmingQuotationMethod() {
     const [clicked, setClicked] = useState("");
 
-    const { email, setEmail, phone, setPhone } = useContext(CartContext)
+    const { setEmail, phone, setPhone } = useContext(CartContext)
+    const { profile } = useContext(ProfileContext)
     const navigate = useNavigate()
     const handleSubmit = () => {
         navigate("/verified-success")
@@ -28,7 +30,7 @@ function FarmingQuotationMethod() {
                 
                 {
                     clicked === "email"  &&  (
-                        <input value={email} onChange={(e) => setEmail(e.target.value)} className="px-[10px] py-[8px] font-inter w-[230px] rounded-[8px]" type="email" placeholder="Enter Your Email Here"/>
+                        <input value={profile?.email} className="px-[10px] py-[8px] font-inter w-[230px] rounded-[8px]" type="email" placeholder="Enter Your Email Here"/>
 
                     ) 
                 }
@@ -36,7 +38,7 @@ function FarmingQuotationMethod() {
                 {
                     clicked === "phone" && 
                        (
-                        <input value={phone} onClick={(e) => setPhone(e.target.value)} className="px-[10px] py-[8px] font-inter w-[230px] rounded-[8px]" type="number" placeholder="Enter Your Phone Number Here"/>
+                        <input value={profile?.phone}  className="px-[10px] py-[8px] font-inter w-[230px] rounded-[8px]" type="number" placeholder="Enter Your Phone Number Here"/>
 
                     )
                 }

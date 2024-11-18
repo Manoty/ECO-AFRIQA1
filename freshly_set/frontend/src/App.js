@@ -71,10 +71,13 @@ function App() {
         <Route path="/team-detailed" element={<TeamDetailed />} />
 
         <Route path="/products/farmingSystems" element={<FarmingSystemsDetail />} />
-        <Route path="/products/farmingSystems/search" element={<FarmingSystemSearch />}/>
+        <Route  path="/products/farmingSystems/search" element={<PrivateRoute><FarmingSystemSearch /></PrivateRoute>} />
+
         <Route path="/products/gardenSetups" element={<GardenSetupsDetail />} />
+        {/* <Route  path="/products/gardenSetups/search"  element={<PrivateRoute><GardenSetupSearch /></PrivateRoute>} /> */}
         <Route path="/products/gardenSetups/search" element={<GardenSetupSearch />} />
-        <Route path="/products/farmingSystems/method" element={<FarmingQuotationMethod />} />
+        <Route path="/products/farmingSystems/method" element={<PrivateRoute><FarmingQuotationMethod /></PrivateRoute>} />
+
         <Route path="/products/gardenSetups/method" element={<GardenQuotationMethod />} />
         <Route path="/cta-detail/" element={<FaqDetails />} />
         <Route path="/Hero-Detail/" element={<HeroDetail />} />
@@ -100,6 +103,7 @@ function App() {
         <Route path="/order-progress" element={<OrderProgress />}/>
         <Route path="/order-history" element={<OrderHistory />}/>
         <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+
         {/* <Route path="/profile" element={<Profile />}/> */}
 
 
