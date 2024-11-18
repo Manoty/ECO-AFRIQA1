@@ -38,7 +38,7 @@ function FarmCard({  index, img, title, body, rating, number, type}) {
        
        <div className="block">
           <div className="flex justify-center">
-            <img className="w-[168px] lg:w-[373.07px] h-[83.48px] lg:h-[200px] object-cover rounded-t-[24px]" src={img}/>
+            <img className="w-[168px] lg:w-[373.07px] h-[83.48px] lg:h-[200px] object-cover rounded-t-[24px]" src={`${process.env.REACT_APP_API_URL}/${img}`}/>
           </div>
           
           <div className="flex space-x-[16px] items-center px-[6.71px] lg:px-[20px]">

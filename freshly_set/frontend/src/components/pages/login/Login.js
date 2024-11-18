@@ -27,7 +27,7 @@ const Login = () => {
     e.preventDefault();
     
     try {
-      const response = await axios.post(`${apiUrl}freshlyapp/token/`, formData);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/freshlyapp/token/`, formData);
       const { access, refresh } = response.data;
   
       // Save tokens

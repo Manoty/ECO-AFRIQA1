@@ -20,7 +20,7 @@ export const ProfileProvider = ({ children }) => {
 
         try {
             setLoading(true);
-            const response = await axios.get(`${apiUrl}profile/`, {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/profile/`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
