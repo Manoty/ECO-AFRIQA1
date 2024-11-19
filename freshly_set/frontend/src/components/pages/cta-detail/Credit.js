@@ -37,7 +37,7 @@ function Credit() {
   const handleCheckout = async () => {
     const csrfToken = getCsrfToken();
     try {
-      const response = await axios.post(`${apiUrl}orders/`, orderData, { 
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/orders/`, orderData, { 
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': csrfToken,
