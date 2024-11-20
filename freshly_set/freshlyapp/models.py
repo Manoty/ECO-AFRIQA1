@@ -358,9 +358,9 @@ class Vote(models.Model):
         (OTHER, 'Other'),
     ]
 
-    poll = models.ForeignKey(Poll, related_name='votes',
+    poll = models.ForeignKey(Poll, related_name='poll_votes',
                              on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name='votes',
+    user = models.ForeignKey(User, related_name='user_votes',
                              on_delete=models.CASCADE)
     choice = models.CharField(max_length=10, choices=CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -471,7 +471,7 @@ class Banner(models.Model):
     def __str__(self):
         return self.title
 
-        return False
+    
 
 
 class Cart(models.Model):
@@ -561,32 +561,32 @@ class Notification(models.Model):
 
 
 # payment transation model
-class Transaction(models.Model):
-    STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('completed', 'Completed'),
-        ('failed', 'Failed'),
-        ('retry', 'Retry')
-    ]
+# class Transaction(models.Model):
+#     STATUS_CHOICES = [
+#         ('pending', 'Pending'),
+#         ('completed', 'Completed'),
+#         ('failed', 'Failed'),
+#         ('retry', 'Retry')
+#     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=12)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    mpesa_receipt_number = models.CharField(
-        max_length=100, blank=True, null=True)
-    status = models.CharField(
-        max_length=50, choices=STATUS_CHOICES, default='pending')
-    transaction_date = models.DateTimeField(auto_now_add=True)
-    # Store error messages, if any
-    error_message = models.TextField(blank=True, null=True)
-    retry_count = models.IntegerField(default=0)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     phone_number = models.CharField(max_length=12)
+#     amount = models.DecimalField(max_digits=10, decimal_places=2)
+#     mpesa_receipt_number = models.CharField(
+#         max_length=100, blank=True, null=True)
+#     status = models.CharField(
+#         max_length=50, choices=STATUS_CHOICES, default='pending')
+#     transaction_date = models.DateTimeField(auto_now_add=True)
+#     # Store error messages, if any
+#     error_message = models.TextField(blank=True, null=True)
+#     retry_count = models.IntegerField(default=0)
 
-    def __str__(self):
-        return f'{self.user} - {self.amount}'
+#     def __str__(self):
+#         return f'{self.user} - {self.amount}'
 
-    def can_retry(self):
-        # Set retry limit to 3 attempts
-        return self.retry_count < 3 and self.status == 'failed'
+#     def can_retry(self):
+#         # Set retry limit to 3 attempts
+#         return self.retry_count < 3 and self.status == 'failed'
 
 
 class Order(models.Model):
@@ -701,9 +701,14 @@ class FarmingSystems(models.Model):
     name = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=255, blank=False)
     rating = models.IntegerField(default=0)
+    in_stock = models.BooleanField(default=True)
+
+class FarmingSystemImages(models.Model):
+    farmingsystem= models.ForeignKey(FarmingSystems,related_name='images',on_delete=models.CASCADE)
+    uploaded_at=models.DateTimeField(auto_now_add=True)
     image = models.ImageField(
         upload_to='static/images/FarmingSystems', null=True, blank=True)
-    in_stock = models.BooleanField(default=True)
+
 
 
 class Quotation(models.Model):
@@ -800,3 +805,14 @@ class TeamMember(models.Model):
     position = models.CharField(max_length=255)
     image = models.ImageField(null=True, blank=False)
     department = models.CharField(max_length=255)
+
+class GardenSystems (models.Model):
+    name=models.CharField(max_length=255)
+    description=models.TextField(max_length=350)
+    rating=models.IntegerField(default=0)
+    
+class GardenSystemImages(models.Model):
+    gardensystem= models.ForeignKey(GardenSystems,related_name='images',on_delete=models.CASCADE)
+    image = models.ImageField(
+        upload_to='images/GardenSystems', null=True, blank=True)
+    uploaded_at=models.DateTimeField(auto_now_add=True)

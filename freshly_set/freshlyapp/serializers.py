@@ -661,3 +661,19 @@ class ShippingSerializer(serializers.ModelSerializer):
     def get_location(self, obj):
         # Location is the same as drop_off
         return self.get_drop_off(obj)
+
+class GardenSystemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=GardenSystems
+        fields=['__all__']
+
+class GardenSystemImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =GardenSystemImages
+        fields=['gardensystems','image','uploaded_at']
+
+class FarmingSystemImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =FarmingSystemImages
+        fields=['__all__']
+

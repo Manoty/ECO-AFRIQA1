@@ -227,5 +227,12 @@ urlpatterns = [
     path('transporter/profile/', TransporterDetailView.as_view(), name='transporter-profile'),
 
 
+#gardensystems
+path('gardensystems/',GardenSystems.as_view,name='garden systems'),
+path('newgardensystems/',NewGardenSystems.as_view,name='new garden systems')
+
+#gardensystemsimage
+
+
 
 ]
