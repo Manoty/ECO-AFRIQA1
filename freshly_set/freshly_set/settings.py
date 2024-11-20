@@ -1,12 +1,23 @@
 from datetime import timedelta
+from logging import config
 import os
 from pathlib import Path
+from decouple import config
+from dotenv import load_dotenv
+import environ
+
+# Load environment variables from .env file
+load_dotenv()
+
+
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
-SECRET_KEY = 'fake-secret-key'
+SECRET_KEY = 'SECRET_KEY'
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 
@@ -49,16 +60,24 @@ REST_FRAMEWORK = {
 }
 
 
-
-
-
-
 # Security and session management
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_HTTPONLY = True
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+
+
+
+
+# made it False as we are still in development , it is rejecting the site without secured requet.
 SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_HTTPONLY = True
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_HTTPONLY = False
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
@@ -68,6 +87,7 @@ SIMPLE_JWT = {
     'SIGNING_KEY': SECRET_KEY,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -105,10 +125,23 @@ WSGI_APPLICATION = 'freshly_set.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT'),
     }
 }
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -128,14 +161,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Password Hashing
+# PASSWORD HASHING BCRYPT
+
+
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
-    'django.contrib.auth.hashers.BCryptPasswordHasher',
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
     'django.contrib.auth.hashers.Argon2PasswordHasher',
 ]
+
 
 # SMTP Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -144,6 +179,33 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'user@example.com'
 EMAIL_HOST_PASSWORD = 'fake-email-password'
 EMAIL_USE_TLS = True
+
+# Payment setting
+# Initialize environment variables
+env = environ.Env()
+
+environ.Env.read_env(env_file=str(BASE_DIR) + '/.env')  
+# MPESA Configuration
+
+MPESA_API_URL = config('MPESA_API_URL')
+
+
+if not MPESA_API_URL:
+    raise ImproperlyConfigured("Set the MPESA_API_URL environment variable")
+MPESA_API_URL = env('MPESA_API_URL')  # This already raises an error if the variable is not found
+
+MPESA_SHORTCODE = env('MPESA_SHORTCODE')
+MPESA_PASSKEY = env('MPESA_PASSKEY')
+MPESA_CONSUMER_KEY = env('MPESA_CONSUMER_KEY')
+MPESA_CONSUMER_SECRET = env('MPESA_CONSUMER_SECRET')
+MPESA_CALLBACK_URL = env('MPESA_CALLBACK_URL')
+
+
+# Retry configurations for payments
+MAX_RETRIES = 3  # Number of retry attempts
+RETRY_DELAY = 5  # Delay between retries in seconds
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -183,6 +245,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React frontend origin
     "http://127.0.0.1:3000",
+     config('FRONTEND_URL')
+
 ]
 
 # Allow credentials like cookies in cross-origin requests
@@ -192,6 +256,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:8000",
+    config('FRONTEND_URL')
+
     # Add other trusted origins here
 ]
 
@@ -200,3 +266,7 @@ REACT_APP_DIR = BASE_DIR / 'frontend/build'
 
 # Including React build static files in STATICFILES_DIRS
 STATICFILES_DIRS.append(REACT_APP_DIR / 'static/media')
+
+
+
+ 
