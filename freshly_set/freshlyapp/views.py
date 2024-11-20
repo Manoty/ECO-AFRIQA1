@@ -1034,6 +1034,22 @@ class WriteFarmingSystems(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class UploadFarmingSystemImage(APIView):
+    def post(self,request,farmingsystem_id):
+
+        try:
+            farmingsystem = FarmingSystems.objects.get(id=farmingsystem_id)
+        except FarmingSystems.DoesNotExist:
+            return Response({'error': 'Farming system not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer=FarmingSystemImages(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save(farmingsystem=farmingsystem)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class TeamMembers(APIView):
     permission_classes = [IsAuthenticated]
@@ -1477,8 +1493,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.utils import timezone
-from .models import Order, Transporter
-from .serializers import TransporterSerializer
+from .models import Order, Transporter,GardenSystemImages,GardenSystems
+from .serializers import TransporterSerializer,GardenSystemImageSerializer,GardenSystemSerializer
 from rest_framework.permissions import IsAuthenticated
 
 class MarkAsDeliveredView(APIView):
@@ -1529,3 +1545,47 @@ class TransporterDetailView(APIView):
                 {"error": "Transporter profile not found."},
                 status=status.HTTP_404_NOT_FOUND
             )
+
+class GardenSystems(APIView):
+    def get (self,request):
+        try:
+         gardensystem=GardenSystemSerializer.objects.prefetch_related('images').all()
+         serializer= GardenSystemSerializer(gardensystem,many=True)
+         return Response (serializer.data,status=status.HTTP_200_OK)
+        
+        except GardenSystems.DoesNotExist:
+            return Response(
+                {'error':'No Garden systems found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+class NewGardenSystems(APIView):
+    def post (self,request):
+    
+     serializer= GardenSystemSerializer(data=request.data)
+     if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status= status.HTTP_201_CREATED)
+
+     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+##to upload the images
+
+class UploadGardenSystemImage(APIView):
+    def post(self,request,gardensystem_id):
+
+        try:
+            gardensystem = GardenSystems.objects.get(id=gardensystem_id)
+        except GardenSystems.DoesNotExist:
+            return Response({'error': 'Garden system not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer=GardenSystemImages(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save(gardensystem=gardensystem)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
