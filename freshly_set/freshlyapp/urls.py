@@ -198,9 +198,13 @@ urlpatterns = [
     path('quotations/', QuotationListView.as_view(), name='my-quotations'),
 
 
-   #Farmer Registration
+   #Farmer
     path('register-farmer/', RegisterFarmerView.as_view(), name='register-farmer'),
     path('unregister-farmer/', UnregisterFarmerView.as_view(), name='unregister-farmer'),
+    path('farmer-profile/', FarmerProfileView.as_view(), name='farmer-profile'),
+    path('farmer-sales/', FarmerSalesHistoryView.as_view(), name='farmer-sales'),
+    path('farmer-produce/', FarmerFarmProduceView.as_view(), name='farmer-produce'),
+
 
   #handling payment methods
     path('payment-method/create/', CreatePaymentMethodView.as_view(), name='create-payment-method'),

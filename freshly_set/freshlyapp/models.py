@@ -114,17 +114,66 @@ class Category(models.Model):
         return self.name
 
 
+class Farmer(models.Model):
+    # Choices for farming systems
+    FARMING_SYSTEM_CHOICES = [
+        ("Traditional", "Traditional"),
+        ("Modern", "Modern"),
+        ("Sustainable", "Sustainable"),
+        ("Innovative", "Innovative"),
+    ]
+
+    # Choices for garden setups
+    GARDEN_SETUP_CHOICES = [
+        ("Urban", "Urban"),
+        ("Specialized", "Specialized"),
+        ("Traditional", "Traditional"),
+        ("Modern", "Modern"),
+        ("Tuk-Tuk", "Tuk-Tuk"),
+    ]
+
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, blank=True, null=True
+    )
+    farm_size = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True, help_text="Size of the farm in acres"
+    )
+    main_crop = models.CharField(
+        max_length=255, blank=True, null=True, help_text="Primary crop grown by the farmer"
+    )
+    farming_system = models.CharField(
+        max_length=20, choices=FARMING_SYSTEM_CHOICES, blank=True, null=True
+    )
+    garden_setup = models.CharField(
+        max_length=20, choices=GARDEN_SETUP_CHOICES, blank=True, null=True
+    )
+    address = models.TextField(
+        blank=True, null=True, help_text="Address of the farmer"
+    )
+    total_income = models.DecimalField(
+        max_digits=15, decimal_places=2, default=0.00, help_text="Total income of the farmer"
+    )
+    total_sales = models.DecimalField(
+        max_digits=15, decimal_places=2, default=0.00, help_text="Total sales of the farmer"
+    )
+
+    def __str__(self):
+        return f"Farmer: {self.user.username}" if self.user else "Farmer: Anonymous"
+
+
+
 class Product(models.Model):
+    farmer = models.ForeignKey(Farmer, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=255)
     desc = models.TextField()
+    used_for = models.CharField(max_length=255, blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     qtty = models.IntegerField(default=0)
-    unit = models.CharField(max_length=255, null=True,
-                            blank=True, default="PACKET")
+    original_qtty = models.IntegerField(editable=False, default=0)  # New field
+    unit = models.CharField(max_length=255, null=True, blank=True, default="PACKET")
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name='products', blank=True, null=True)
-    image = models.ImageField(
-        upload_to='static/images/Products', null=True, blank=True)
+    image = models.ImageField(upload_to='static/images/Products', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
@@ -135,18 +184,15 @@ class Product(models.Model):
         if len(self.name.strip()) == 0:
             raise ValidationError({'name': 'Name cannot be empty.'})
         if len(self.name) > 255:
-            raise ValidationError(
-                {'name': 'Name cannot exceed 255 characters.'})
+            raise ValidationError({'name': 'Name cannot exceed 255 characters.'})
 
         # Price validation
         if self.price < 0:
             raise ValidationError({'price': 'Price cannot be negative.'})
         if self.price < 0.01 or self.price > 99999.99:
-            raise ValidationError(
-                {'price': 'Price must be between 0.01 and 99999.99.'})
+            raise ValidationError({'price': 'Price must be between 0.01 and 99999.99.'})
         if self.price.as_tuple().exponent < -2:
-            raise ValidationError(
-                {'price': 'Price cannot have more than two decimal places.'})
+            raise ValidationError({'price': 'Price cannot have more than two decimal places.'})
 
         # Quantity validation
         if self.qtty < 0:
@@ -156,38 +202,38 @@ class Product(models.Model):
 
         # Description validation
         if len(self.desc) < 10:
-            raise ValidationError(
-                {'desc': 'Description is too short. It should be at least 10 characters long.'})
+            raise ValidationError({'desc': 'Description is too short. It should be at least 10 characters long.'})
         if profanity.contains_profanity(self.desc):
-            raise ValidationError(
-                {'desc': 'Description contains prohibited or inappropriate content.'})
+            raise ValidationError({'desc': 'Description contains prohibited or inappropriate content.'})
 
         # Image validation
         if self.image:
             ext = os.path.splitext(self.image.name)[1].lower()
             valid_extensions = ['.jpg', '.jpeg', '.png']
             if ext not in valid_extensions:
-                raise ValidationError(
-                    {'image': 'Unsupported file extension. Allowed extensions are: .jpg, .jpeg, .png'})
+                raise ValidationError({'image': 'Unsupported file extension. Allowed extensions are: .jpg, .jpeg, .png'})
 
             if self.image.size > 5 * 1024 * 1024:
-                raise ValidationError(
-                    {'image': 'Image file size cannot exceed 5MB.'})
+                raise ValidationError({'image': 'Image file size cannot exceed 5MB.'})
 
             image = Image.open(self.image)
             width, height = image.size
             if width < 800 or height < 600:
-                raise ValidationError(
-                    {'image': 'Image resolution too low. Minimum resolution is 800x600.'})
+                raise ValidationError({'image': 'Image resolution too low. Minimum resolution is 800x600.'})
             if width > 4000 or height > 3000:
-                raise ValidationError(
-                    {'image': 'Image resolution too high. Maximum resolution is 4000x3000.'})
+                raise ValidationError({'image': 'Image resolution too high. Maximum resolution is 4000x3000.'})
 
     def save(self, *args, **kwargs):
-        # Call the clean method to ensure validations are checked before saving
-        self.clean()
+        # Set the original_qtty only when creating a new object
+        if not self.pk:  # This means the object is being created
+            self.original_qtty = self.qtty
         super(Product, self).save(*args, **kwargs)
 
+    
+
+
+
+     
 
 class Review(models.Model):
     product = models.ForeignKey(
@@ -198,12 +244,8 @@ class Review(models.Model):
 
     def __str__(self):
         return f'Review for {self.product.name} by {self.id}'
-
-
-class Farmer(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, blank=True, null=True)
-
+from django.db import models
+from django.contrib.auth.models import User
 
 class Transporter(models.Model):
     user = models.OneToOneField(
@@ -634,6 +676,10 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(
         Order, on_delete=models.CASCADE, related_name='items')
+    product_id = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name='prouct_ids', blank=True, null=True)
+    
+
     product_name = models.CharField(
         max_length=100, default="Unknown Product")  # Default value
     product_price = models.DecimalField(

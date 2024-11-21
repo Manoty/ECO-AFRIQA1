@@ -191,22 +191,33 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'product_id',
                   'rating', 'comment', 'created_at']
 
-
 class FarmerSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     email = serializers.EmailField(source='user.email', read_only=True)
-    first_name = serializers.CharField(
-        source='user.first_name', read_only=True)
+    first_name = serializers.CharField(source='user.first_name', read_only=True)
     last_name = serializers.CharField(source='user.last_name', read_only=True)
     phone = serializers.CharField(source='user.profile.phone', read_only=True)
-    location = serializers.CharField(
-        source='user.profile.location', read_only=True)
+    location = serializers.CharField(source='user.profile.location', read_only=True)
 
     class Meta:
         model = Farmer
-        fields = ['id', 'username', 'email', 'first_name',
-                  'last_name', 'phone', 'location', 'user']
-
+        fields = [
+            'id',
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+            'phone',
+            'location',
+            'user',
+            'farm_size',
+            'main_crop',
+            'farming_system',
+            'garden_setup',
+            'address',
+            'total_income',
+            'total_sales'
+        ]
 
 class GardenSerializer(serializers.ModelSerializer):
     class Meta:
@@ -416,7 +427,7 @@ class NotificationSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ['product_name', 'product_price', 'product_quantity']
+        fields = ['product_name', 'product_price', 'product_quantity', 'product_id']
 
 
 class OrderSerializer(serializers.ModelSerializer):
