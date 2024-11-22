@@ -248,6 +248,18 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Transporter(models.Model):
+
+    TRANSPORT_CHOICES = [
+        ("Van", "Van"),
+        ("Lorry", "Lorry"),
+        ("Motorbike", "Motorbike"),
+        ("Bicycle", "Bicycle"),
+        ("Pick-up", "Pick-up"),
+        ("Pro-box", "Pro-box"),
+        ("Tuk-Tuk", "Tuk-Tuk"),
+
+
+    ]
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, blank=True, null=True)
     transporter_name = models.CharField(max_length=100, blank=True, null=True)
@@ -256,6 +268,17 @@ class Transporter(models.Model):
         max_digits=10, decimal_places=2, default=0.00)
     average_rating = models.DecimalField(
         max_digits=3, decimal_places=2, blank=True, null=True)
+    address = models.TextField(
+        blank=True, null=True, help_text="Address of the Transporter"
+    )
+    vehicle = models.CharField(
+        max_length=20, choices=TRANSPORT_CHOICES, blank=True, null=True
+    )
+
+    experience = models.IntegerField(default=0)
+    id_front = models.ImageField(upload_to='static/images/Transporters', null=True, blank=True)
+    id_back = models.ImageField(upload_to='static/images/Transporters', null=True, blank=True)
+
 
     def save(self, *args, **kwargs):
         # Set default transporter name to the user's name if not provided
@@ -265,6 +288,9 @@ class Transporter(models.Model):
 
     def __str__(self):
         return self.transporter_name or f"Transporter {self.user.username}"
+
+
+
 
 # models.py
 
