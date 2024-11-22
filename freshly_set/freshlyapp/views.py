@@ -499,7 +499,20 @@ class CreateProduct(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        serializer = ProductSerializer(data=request.data)
+        # Check if the user is a farmer
+        try:
+            farmer = Farmer.objects.get(user=request.user)
+        except Farmer.DoesNotExist:
+            return Response(
+                {"detail": "You must be registered as a farmer to create a product."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        # Parse and validate the request data
+        data = request.data.copy()  # Copy to avoid directly modifying the original
+        data['farmer'] = farmer.id  # Auto-assign the farmer field
+
+        serializer = ProductSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -1034,6 +1047,22 @@ class WriteFarmingSystems(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class UploadFarmingSystemImage(APIView):
+    def post(self,request,farmingsystem_id):
+
+        try:
+            farmingsystem = FarmingSystems.objects.get(id=farmingsystem_id)
+        except FarmingSystems.DoesNotExist:
+            return Response({'error': 'Farming system not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer=FarmingSystemImages(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save(farmingsystem=farmingsystem)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class TeamMembers(APIView):
     permission_classes = [IsAuthenticated]
@@ -1093,7 +1122,6 @@ class QuotationListView(APIView):
         # Return the paginated response
         return paginator.get_paginated_response(serializer.data)
 
-
 class RegisterFarmerView(APIView):
     def post(self, request):
         user = request.user
@@ -1105,10 +1133,43 @@ class RegisterFarmerView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Create a Farmer object linked to the current user
-        farmer = Farmer.objects.create(user=user)
+        # Extract data from request
+        data = request.data
+
+        # Validate farming_system choice
+        valid_farming_systems = [choice[0] for choice in Farmer.FARMING_SYSTEM_CHOICES]
+        if 'farming_system' in data and data['farming_system'] not in valid_farming_systems:
+            return Response(
+                {
+                    "farming_system": f"Invalid choice. Valid options are: {', '.join(valid_farming_systems)}"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Validate garden_setup choice
+        valid_garden_setups = [choice[0] for choice in Farmer.GARDEN_SETUP_CHOICES]
+        if 'garden_setup' in data and data['garden_setup'] not in valid_garden_setups:
+            return Response(
+                {
+                    "garden_setup": f"Invalid choice. Valid options are: {', '.join(valid_garden_setups)}"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Create a Farmer object with the provided data
+        farmer = Farmer.objects.create(
+            user=user,
+            farm_size=data.get('farm_size'),
+            main_crop=data.get('main_crop'),
+            farming_system=data.get('farming_system'),
+            garden_setup=data.get('garden_setup'),
+            address=data.get('address')
+        )
+
+        # Serialize and return the farmer data
         serializer = FarmerSerializer(farmer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 
 class UnregisterFarmerView(APIView):
@@ -1128,6 +1189,167 @@ class UnregisterFarmerView(APIView):
                 {"detail": "User is not registered as a farmer."},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+
+
+class UpdateFarmerView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        user = request.user
+
+        # Check if the user is a farmer
+        try:
+            farmer = Farmer.objects.get(user=user)
+        except Farmer.DoesNotExist:
+            return Response(
+                {"detail": "User is not registered as a Farmer."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        data = request.data
+
+        # Validate farming_system choice if provided
+        valid_farming_systems = [choice[0] for choice in Farmer.FARMING_SYSTEM_CHOICES]
+        if 'farming_system' in data:
+            if data['farming_system'] not in valid_farming_systems:
+                return Response(
+                    {
+                        "farming_system": f"Invalid choice. Valid options are: {', '.join(valid_farming_systems)}"
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            farmer.farming_system = data['farming_system']
+
+        # Validate garden_setup choice if provided
+        valid_garden_setups = [choice[0] for choice in Farmer.GARDEN_SETUP_CHOICES]
+        if 'garden_setup' in data:
+            if data['garden_setup'] not in valid_garden_setups:
+                return Response(
+                    {
+                        "garden_setup": f"Invalid choice. Valid options are: {', '.join(valid_garden_setups)}"
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            farmer.garden_setup = data['garden_setup']
+
+        # Update farm_size if provided
+        if 'farm_size' in data:
+            try:
+                farmer.farm_size = float(data['farm_size'])
+            except ValueError:
+                return Response(
+                    {"farm_size": "Invalid value for farm_size. Must be a numeric value."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        # Update main_crop if provided
+        if 'main_crop' in data:
+            farmer.main_crop = data['main_crop']
+
+        # Update address if provided
+        if 'address' in data:
+            farmer.address = data['address']
+
+        # Save the updated farmer details
+        farmer.save()
+
+        serializer = FarmerSerializer(farmer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class FarmerProfileView(APIView):
+    def get(self, request):
+        user = request.user
+
+        # Check if the user is a registered Farmer
+        try:
+            farmer = Farmer.objects.get(user=user)
+        except Farmer.DoesNotExist:
+            return Response(
+                {"detail": "You are not registered as a farmer."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Serialize and return the farmer data
+        serializer = FarmerSerializer(farmer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+class FarmerSalesHistoryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # Ensure the user is a farmer
+        if not hasattr(request.user, 'farmer'):
+            return Response(
+                {"detail": "You must be a farmer to access this view."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        # Get order items where the requesting user is the farmer of the product
+        farmer = request.user.farmer
+        order_items = OrderItem.objects.filter(
+            product_id__farmer=farmer
+        ).order_by('-order__created_at')  # Order by the associated order's creation time
+
+        # Paginate the results
+        paginator = PageNumberPagination()
+        paginator.page_size = 10
+        paginated_items = paginator.paginate_queryset(order_items, request)
+
+        # Serialize and modify the response structure
+        serialized_data = [
+            {
+                "produce": item.product_name,
+                "bags_sold": item.product_quantity,
+                "amount": item.product_price,
+                "date": item.order.created_at.strftime("%Y-%m-%d"),
+            }
+            for item in paginated_items
+        ]
+
+        return paginator.get_paginated_response(serialized_data)
+
+
+
+
+
+
+class FarmerFarmProduceView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # Ensure the user is a farmer
+        if not hasattr(request.user, 'farmer'):
+            return Response(
+                {"detail": "You must be a farmer to access this view."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        # Get products owned by the farmer
+        farmer = request.user.farmer
+        products = Product.objects.filter(farmer=farmer).order_by('-created_at')
+
+        # Paginate the results
+        paginator = PageNumberPagination()
+        paginator.page_size = 10
+        paginated_products = paginator.paginate_queryset(products, request)
+
+        # Serialize and format the data
+        serialized_data = [
+            {
+                "crop": product.name,
+                "used_to_grow": product.used_for,
+                "bags_harvested": product.original_qtty,
+                "bags_sold": product.original_qtty - product.qtty,
+            }
+            for product in paginated_products
+        ]
+
+        return paginator.get_paginated_response(serialized_data)
+
 
 
 class CreatePaymentMethodView(APIView):
@@ -1406,10 +1628,68 @@ class RegisterTransporterView(APIView):
                 {"detail": "User is already registered as a Transporter."},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        data = request.data
+        valid_transport_choices = [choice[0] for choice in Transporter.TRANSPORT_CHOICES]
+        if 'vehicle' in data and data['vehicle'] not in valid_transport_choices:
+            return Response(
+                {
+                    "vehicle": f"Invalid choice. Valid options are: {', '.join(valid_transport_choices)}"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-        transporter = Transporter.objects.create(user=user)
+        transporter = Transporter.objects.create(
+            user=user,
+            id_back=data.get('id_back'),
+            experience=data.get('experience'),
+            id_front=data.get('id_front'),
+            vehicle=data.get('vehicle'),
+            address=data.get('address')
+            
+            )
         serializer = TransporterSerializer(transporter)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class UpdateTransporterView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        user = request.user
+
+        # Check if the user is a transporter
+        try:
+            transporter = Transporter.objects.get(user=user)
+        except Transporter.DoesNotExist:
+            return Response(
+                {"detail": "User is not registered as a Transporter."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        data = request.data
+        valid_transport_choices = [choice[0] for choice in Transporter.TRANSPORT_CHOICES]
+
+        # Validate vehicle choice if provided
+        if 'vehicle' in data:
+            if data['vehicle'] not in valid_transport_choices:
+                return Response(
+                    {
+                        "vehicle": f"Invalid choice. Valid options are: {', '.join(valid_transport_choices)}"
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            transporter.vehicle = data['vehicle']
+
+        # Update address if provided
+        if 'address' in data:
+            transporter.address = data['address']
+
+        # Save updated transporter information
+        transporter.save()
+
+        serializer = TransporterSerializer(transporter)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class UnregisterTransporterView(APIView):
     def delete(self, request):
@@ -1477,8 +1757,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.utils import timezone
-from .models import Order, Transporter
-from .serializers import TransporterSerializer
+from .models import Order, Transporter,GardenSystemImages,GardenSystems
+from .serializers import TransporterSerializer,GardenSystemImageSerializer,GardenSystemSerializer
 from rest_framework.permissions import IsAuthenticated
 
 class MarkAsDeliveredView(APIView):
@@ -1521,6 +1801,8 @@ class TransporterDetailView(APIView):
                 "total_deliveries": serializer.data.get("total_deliveries"),
                 "total_earnings": serializer.data.get("total_earnings"),
                 "average_rating": serializer.data.get("average_rating"),
+                "vehicle": serializer.data.get("vehicle"),
+
             }
             return Response(transporter_data, status=status.HTTP_200_OK)
 
@@ -1529,3 +1811,47 @@ class TransporterDetailView(APIView):
                 {"error": "Transporter profile not found."},
                 status=status.HTTP_404_NOT_FOUND
             )
+
+class GardenSystems(APIView):
+    def get (self,request):
+        try:
+         gardensystem=GardenSystemSerializer.objects.prefetch_related('images').all()
+         serializer= GardenSystemSerializer(gardensystem,many=True)
+         return Response (serializer.data,status=status.HTTP_200_OK)
+        
+        except GardenSystems.DoesNotExist:
+            return Response(
+                {'error':'No Garden systems found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+class NewGardenSystems(APIView):
+    def post (self,request):
+    
+     serializer= GardenSystemSerializer(data=request.data)
+     if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status= status.HTTP_201_CREATED)
+
+     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+##to upload the images
+
+class UploadGardenSystemImage(APIView):
+    def post(self,request,gardensystem_id):
+
+        try:
+            gardensystem = GardenSystems.objects.get(id=gardensystem_id)
+        except GardenSystems.DoesNotExist:
+            return Response({'error': 'Garden system not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer=GardenSystemImages(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save(gardensystem=gardensystem)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+

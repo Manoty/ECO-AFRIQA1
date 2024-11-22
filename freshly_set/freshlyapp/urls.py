@@ -198,9 +198,14 @@ urlpatterns = [
     path('quotations/', QuotationListView.as_view(), name='my-quotations'),
 
 
-   #Farmer Registration
+   #Farmer
     path('register-farmer/', RegisterFarmerView.as_view(), name='register-farmer'),
     path('unregister-farmer/', UnregisterFarmerView.as_view(), name='unregister-farmer'),
+    path('farmer-profile/', FarmerProfileView.as_view(), name='farmer-profile'),
+    path('farmer-sales/', FarmerSalesHistoryView.as_view(), name='farmer-sales'),
+    path('farmer-produce/', FarmerFarmProduceView.as_view(), name='farmer-produce'),
+    path('farmer-update/', UpdateFarmerView.as_view(), name='update-farmer'),
+
 
   #handling payment methods
     path('payment-method/create/', CreatePaymentMethodView.as_view(), name='create-payment-method'),
@@ -225,6 +230,13 @@ urlpatterns = [
     path('previous-deliveries/', PreviousDeliveriesView.as_view(), name='previous-deliveries'),
     path('upcoming-deliveries/', UpcomingDeliveriesView.as_view(), name='upcoming-deliveries'),
     path('transporter/profile/', TransporterDetailView.as_view(), name='transporter-profile'),
+    path('transporter/update/', UpdateTransporterView.as_view(), name='update-transporter'),
+
+#gardensystems
+path('gardensystems/',GardenSystems.as_view,name='garden systems'),
+path('newgardensystems/',NewGardenSystems.as_view,name='new garden systems')
+
+#gardensystemsimage
 
 
 

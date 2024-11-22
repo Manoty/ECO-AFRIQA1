@@ -191,22 +191,33 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'product_id',
                   'rating', 'comment', 'created_at']
 
-
 class FarmerSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     email = serializers.EmailField(source='user.email', read_only=True)
-    first_name = serializers.CharField(
-        source='user.first_name', read_only=True)
+    first_name = serializers.CharField(source='user.first_name', read_only=True)
     last_name = serializers.CharField(source='user.last_name', read_only=True)
     phone = serializers.CharField(source='user.profile.phone', read_only=True)
-    location = serializers.CharField(
-        source='user.profile.location', read_only=True)
+    location = serializers.CharField(source='user.profile.location', read_only=True)
 
     class Meta:
         model = Farmer
-        fields = ['id', 'username', 'email', 'first_name',
-                  'last_name', 'phone', 'location', 'user']
-
+        fields = [
+            'id',
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+            'phone',
+            'location',
+            'user',
+            'farm_size',
+            'main_crop',
+            'farming_system',
+            'garden_setup',
+            'address',
+            'total_income',
+            'total_sales'
+        ]
 
 class GardenSerializer(serializers.ModelSerializer):
     class Meta:
@@ -416,7 +427,7 @@ class NotificationSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ['product_name', 'product_price', 'product_quantity']
+        fields = ['product_name', 'product_price', 'product_quantity', 'product_id']
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -623,7 +634,7 @@ class TransporterSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'username', 'email', 'first_name', 'last_name', 'phone',
             'location', 'transporter_name', 'total_deliveries', 'total_earnings',
-            'average_rating', 'user'
+            'average_rating', 'user', 'address', 'vehicle', 'experience', 'id_front', 'id_back'
         ]
 
 
@@ -661,3 +672,19 @@ class ShippingSerializer(serializers.ModelSerializer):
     def get_location(self, obj):
         # Location is the same as drop_off
         return self.get_drop_off(obj)
+
+class GardenSystemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=GardenSystems
+        fields=['__all__']
+
+class GardenSystemImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =GardenSystemImages
+        fields=['gardensystems','image','uploaded_at']
+
+class FarmingSystemImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =FarmingSystemImages
+        fields=['__all__']
+
