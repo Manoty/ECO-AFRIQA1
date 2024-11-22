@@ -275,7 +275,3 @@ STATICFILES_DIRS.append(REACT_APP_DIR / 'static/media')
 
 
  
-
-
-
-

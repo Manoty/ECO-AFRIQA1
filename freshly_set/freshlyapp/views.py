@@ -1170,6 +1170,8 @@ class RegisterFarmerView(APIView):
         serializer = FarmerSerializer(farmer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
+
 class UnregisterFarmerView(APIView):
     def delete(self, request):
         user = request.user
@@ -1187,6 +1189,73 @@ class UnregisterFarmerView(APIView):
                 {"detail": "User is not registered as a farmer."},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+
+
+class UpdateFarmerView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        user = request.user
+
+        # Check if the user is a farmer
+        try:
+            farmer = Farmer.objects.get(user=user)
+        except Farmer.DoesNotExist:
+            return Response(
+                {"detail": "User is not registered as a Farmer."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        data = request.data
+
+        # Validate farming_system choice if provided
+        valid_farming_systems = [choice[0] for choice in Farmer.FARMING_SYSTEM_CHOICES]
+        if 'farming_system' in data:
+            if data['farming_system'] not in valid_farming_systems:
+                return Response(
+                    {
+                        "farming_system": f"Invalid choice. Valid options are: {', '.join(valid_farming_systems)}"
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            farmer.farming_system = data['farming_system']
+
+        # Validate garden_setup choice if provided
+        valid_garden_setups = [choice[0] for choice in Farmer.GARDEN_SETUP_CHOICES]
+        if 'garden_setup' in data:
+            if data['garden_setup'] not in valid_garden_setups:
+                return Response(
+                    {
+                        "garden_setup": f"Invalid choice. Valid options are: {', '.join(valid_garden_setups)}"
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            farmer.garden_setup = data['garden_setup']
+
+        # Update farm_size if provided
+        if 'farm_size' in data:
+            try:
+                farmer.farm_size = float(data['farm_size'])
+            except ValueError:
+                return Response(
+                    {"farm_size": "Invalid value for farm_size. Must be a numeric value."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        # Update main_crop if provided
+        if 'main_crop' in data:
+            farmer.main_crop = data['main_crop']
+
+        # Update address if provided
+        if 'address' in data:
+            farmer.address = data['address']
+
+        # Save the updated farmer details
+        farmer.save()
+
+        serializer = FarmerSerializer(farmer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class FarmerProfileView(APIView):
@@ -1559,10 +1628,68 @@ class RegisterTransporterView(APIView):
                 {"detail": "User is already registered as a Transporter."},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        data = request.data
+        valid_transport_choices = [choice[0] for choice in Transporter.TRANSPORT_CHOICES]
+        if 'vehicle' in data and data['vehicle'] not in valid_transport_choices:
+            return Response(
+                {
+                    "vehicle": f"Invalid choice. Valid options are: {', '.join(valid_transport_choices)}"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-        transporter = Transporter.objects.create(user=user)
+        transporter = Transporter.objects.create(
+            user=user,
+            id_back=data.get('id_back'),
+            experience=data.get('experience'),
+            id_front=data.get('id_front'),
+            vehicle=data.get('vehicle'),
+            address=data.get('address')
+            
+            )
         serializer = TransporterSerializer(transporter)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class UpdateTransporterView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        user = request.user
+
+        # Check if the user is a transporter
+        try:
+            transporter = Transporter.objects.get(user=user)
+        except Transporter.DoesNotExist:
+            return Response(
+                {"detail": "User is not registered as a Transporter."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        data = request.data
+        valid_transport_choices = [choice[0] for choice in Transporter.TRANSPORT_CHOICES]
+
+        # Validate vehicle choice if provided
+        if 'vehicle' in data:
+            if data['vehicle'] not in valid_transport_choices:
+                return Response(
+                    {
+                        "vehicle": f"Invalid choice. Valid options are: {', '.join(valid_transport_choices)}"
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            transporter.vehicle = data['vehicle']
+
+        # Update address if provided
+        if 'address' in data:
+            transporter.address = data['address']
+
+        # Save updated transporter information
+        transporter.save()
+
+        serializer = TransporterSerializer(transporter)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class UnregisterTransporterView(APIView):
     def delete(self, request):
@@ -1674,6 +1801,8 @@ class TransporterDetailView(APIView):
                 "total_deliveries": serializer.data.get("total_deliveries"),
                 "total_earnings": serializer.data.get("total_earnings"),
                 "average_rating": serializer.data.get("average_rating"),
+                "vehicle": serializer.data.get("vehicle"),
+
             }
             return Response(transporter_data, status=status.HTTP_200_OK)
 

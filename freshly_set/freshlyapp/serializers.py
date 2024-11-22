@@ -634,7 +634,7 @@ class TransporterSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'username', 'email', 'first_name', 'last_name', 'phone',
             'location', 'transporter_name', 'total_deliveries', 'total_earnings',
-            'average_rating', 'user'
+            'average_rating', 'user', 'address', 'vehicle', 'experience', 'id_front', 'id_back'
         ]
 
 
