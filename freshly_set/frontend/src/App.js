@@ -71,10 +71,13 @@ function App() {
         <Route path="/team-detailed" element={<TeamDetailed />} />
 
         <Route path="/products/farmingSystems" element={<FarmingSystemsDetail />} />
-        <Route path="/products/farmingSystems/search" element={<FarmingSystemSearch />}/>
+        <Route  path="/products/farmingSystems/search" element={<PrivateRoute><FarmingSystemSearch /></PrivateRoute>} />
+
         <Route path="/products/gardenSetups" element={<GardenSetupsDetail />} />
+        {/* <Route  path="/products/gardenSetups/search"  element={<PrivateRoute><GardenSetupSearch /></PrivateRoute>} /> */}
         <Route path="/products/gardenSetups/search" element={<GardenSetupSearch />} />
-        <Route path="/products/farmingSystems/method" element={<FarmingQuotationMethod />} />
+        <Route path="/products/farmingSystems/method" element={<PrivateRoute><FarmingQuotationMethod /></PrivateRoute>} />
+
         <Route path="/products/gardenSetups/method" element={<GardenQuotationMethod />} />
         <Route path="/cta-detail/" element={<FaqDetails />} />
         <Route path="/Hero-Detail/" element={<HeroDetail />} />
@@ -84,10 +87,9 @@ function App() {
         <Route path="/transporter-success" element={<TransporterSuccess />} />
 
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/mpesa2" element={<Mpesa2/>} />
+        <Route path="/checkoutMpesa" element={<Mpesa2/>} />
 
-        <Route path="/mpesa" element={<Mpesa />} />
-         <Route path="/credit" element={<Credit />} />
+         <Route path="/checkoutCard" element={<Credit />} />
          <Route path="/resultssearch" element={<ResultsSearch />} />       
         <Route path="/consultation" element={<Consultation />} />
 
@@ -100,7 +102,8 @@ function App() {
         <Route path="/notification" element={<Notifications />} />
         <Route path="/order-progress" element={<OrderProgress />}/>
         <Route path="/order-history" element={<OrderHistory />}/>
-        <Route path="/profile" element={<PrivateRoute component={Profile}/>}/>  
+        <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+
         {/* <Route path="/profile" element={<Profile />}/> */}
 
 

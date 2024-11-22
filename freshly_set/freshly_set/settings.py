@@ -4,12 +4,12 @@ import os
 from pathlib import Path
 from decouple import config
 from dotenv import load_dotenv
+import environ
 
 # Load environment variables from .env file
 load_dotenv()
 
 
-import environ
 from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -80,7 +80,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': True,
     'ALGORITHM': 'HS256',
@@ -125,7 +125,7 @@ WSGI_APPLICATION = 'freshly_set.wsgi.application'
 
 DATABASES = {
     'default': {
-         'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
@@ -187,12 +187,13 @@ env = environ.Env()
 environ.Env.read_env(env_file=str(BASE_DIR) + '/.env')  
 # MPESA Configuration
 
-MPESA_API_URL = os.environ.get('MPESA_API_URL')
+MPESA_API_URL = config('MPESA_API_URL')
 
 
 if not MPESA_API_URL:
     raise ImproperlyConfigured("Set the MPESA_API_URL environment variable")
-MPESA_API_URL = env('MPESA_API_URL')
+MPESA_API_URL = env('MPESA_API_URL')  # This already raises an error if the variable is not found
+
 MPESA_SHORTCODE = env('MPESA_SHORTCODE')
 MPESA_PASSKEY = env('MPESA_PASSKEY')
 MPESA_CONSUMER_KEY = env('MPESA_CONSUMER_KEY')
@@ -244,6 +245,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React frontend origin
     "http://127.0.0.1:3000",
+     config('FRONTEND_URL'),
+     config('BACKEND_URL'),
+
+
+
 ]
 
 # Allow credentials like cookies in cross-origin requests
@@ -253,6 +259,10 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:8000",
+     config('FRONTEND_URL'),
+     config('BACKEND_URL'),
+     config('BACKEND_URL2')
+
     # Add other trusted origins here
 ]
 
@@ -263,26 +273,5 @@ REACT_APP_DIR = BASE_DIR / 'frontend/build'
 STATICFILES_DIRS.append(REACT_APP_DIR / 'static/media')
 
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': 'errors.log',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    },
-}
 
-
-
-
-
+ 

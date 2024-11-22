@@ -8,9 +8,11 @@ module.exports = {
     fontFamily: {
       josefin: ['Josefin Sans', 'sans-serif'],
       inter: ['Inter', 'sans-serif'],
+      suez: ['Suez One', 'sans-serif'],
     },
     extend: { 
       backgroundImage: theme => ({
+        'installation': "url('/public/static/media/Installation.png')",
         'loginSignUp': "url('/public/static/media/signUpLoginBg.jpg')",
         'metrics-homepage': "url('/public/static/media/mesh.png')",
         'hero-homepage': "url('/public/static/media/HomeHeroBg.png')",

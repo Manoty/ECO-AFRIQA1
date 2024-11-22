@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import FaqDetailCard from './FaqDetailCard';
 import Nav from '../../Nav/Navbar';
-
+import config from '../../../config';
 function FaqDetails() {
     const [faqs, setFaqs] = useState([]);
     const FaqNumber = 8;
+    const apiUrl = config.API_URL;
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/faqs/')
+        fetch(`${apiUrl}api/faqs/`)
 
             .then(response => response.json())
             .then(data => setFaqs(data))

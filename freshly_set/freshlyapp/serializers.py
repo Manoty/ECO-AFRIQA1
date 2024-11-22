@@ -4,11 +4,12 @@ from .models import Order, OrderItem
 from .models import FAQMainPage
 from .models import Profile
 import os
+from .models import *
 from PIL import Image
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from .models import Blog, Product, Garden, Comment, Like, Share, Poll, Vote, IDVerification, Review, Farmer, Cart, CartItem, Banner, Category, Notification, FAQMainPage, FAQ
+from .models import Blog, Product, Garden, Comment, Like, Share, Poll, Vote, IDVerification, Review, Farmer, Cart, CartItem, Banner, Category, Notification, FAQMainPage, FAQ, FarmingSystems
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework.validators import ValidationError
 from django.contrib.auth.models import User
@@ -190,22 +191,33 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'product_id',
                   'rating', 'comment', 'created_at']
 
-
 class FarmerSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     email = serializers.EmailField(source='user.email', read_only=True)
-    first_name = serializers.CharField(
-        source='user.first_name', read_only=True)
+    first_name = serializers.CharField(source='user.first_name', read_only=True)
     last_name = serializers.CharField(source='user.last_name', read_only=True)
     phone = serializers.CharField(source='user.profile.phone', read_only=True)
-    location = serializers.CharField(
-        source='user.profile.location', read_only=True)
+    location = serializers.CharField(source='user.profile.location', read_only=True)
 
     class Meta:
         model = Farmer
-        fields = ['id', 'username', 'email', 'first_name',
-                  'last_name', 'phone', 'location', 'user']
-
+        fields = [
+            'id',
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+            'phone',
+            'location',
+            'user',
+            'farm_size',
+            'main_crop',
+            'farming_system',
+            'garden_setup',
+            'address',
+            'total_income',
+            'total_sales'
+        ]
 
 class GardenSerializer(serializers.ModelSerializer):
     class Meta:
@@ -415,7 +427,7 @@ class NotificationSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ['product_name', 'product_price', 'product_quantity']
+        fields = ['product_name', 'product_price', 'product_quantity', 'product_id']
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -424,7 +436,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['order_id', 'customer_name', 'customer_email', 'customer_phone',
-                  'delivery_fee', 'total_price', 'payment_method', 'items', 'created_at', 'updated_at']
+                  'delivery_fee', 'total_price', 'payment_method', 'items', 'created_at', 'updated_at', 'paid']
         read_only_fields = ['order_id', 'created_at', 'updated_at']
 
     def create(self, validated_data):
@@ -448,6 +460,7 @@ class FAQMainPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = FAQMainPage
         fields = ['id', 'question', 'answer']
+<<<<<<< HEAD
         
         
         
@@ -459,4 +472,233 @@ class ConsultantSerializer(serializers.ModelSerializer):
         model = Consultant
         fields = ['id', 'name', 'field', 'description', 'rate', 'img']
 
+=======
+
+
+class FarmingSystemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FarmingSystems
+        fields = ['name', 'description', 'rating', 'image', 'in_stock']
+
+
+class TeamMembersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamMember
+        fields = '__all__'
+
+
+class QuotationSerializer(serializers.ModelSerializer):
+    buyer_name = serializers.CharField(source='buyer.username', read_only=True)
+    seller_name = serializers.CharField(
+        source='seller.username', read_only=True)
+
+    class Meta:
+        model = Quotation
+        fields = [
+            'quotation_id', 'cart', 'buyer', 'buyer_name', 'seller', 'seller_name',
+            'customer_name', 'customer_email', 'customer_phone',
+            'total_amount', 'discount_amount', 'final_amount',
+            'valid_until', 'status', 'created_at', 'updated_at'
+        ]
+        read_only_fields = ['quotation_id', 'total_amount', 'final_amount',
+                            'created_at', 'updated_at', 'buyer_name', 'seller_name']
+
+    def validate_discount_amount(self, value):
+        """Ensure the discount amount does not exceed the total amount."""
+        if value and self.instance and value > self.instance.total_amount:
+            raise serializers.ValidationError(
+                "Discount amount cannot exceed total amount.")
+        return value
+
+
+class CreditCardDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CreditCardDetails
+        fields = ['card_number', 'expiry_date', 'card_holder_name', 'cvv']
+        extra_kwargs = {
+            # Ensure CVV is write-only for security
+            'cvv': {'write_only': True},
+            'card_number': {'write_only': True},
+        }
+
+    def validate_card_number(self, value):
+        if not value.isdigit() or len(value) not in [13, 15, 16]:
+            raise serializers.ValidationError("Invalid card number.")
+        return value
+
+    def validate_cvv(self, value):
+        if not value.isdigit() or len(value) not in [3, 4]:
+            raise serializers.ValidationError("Invalid CVV.")
+        return value
+
+
+class MpesaDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MpesaDetails
+        fields = ['phone_number', 'account_name']
+
+    def validate_phone_number(self, value):
+        if not value.startswith('+') or not value[1:].isdigit():
+            raise serializers.ValidationError("Invalid phone number format.")
+        return value
+
+
+class PaymentMethodSerializer(serializers.ModelSerializer):
+    credit_card_details = CreditCardDetailsSerializer(required=False)
+    mpesa_details = MpesaDetailsSerializer(required=False)
+
+    class Meta:
+        model = PaymentMethod
+        fields = ['id', 'credit_card_details',
+                  'mpesa_details', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
+    def validate(self, data):
+        payment_type = self.context['request'].data.get('payment_type')
+        if payment_type == 'credit_card':
+            if not data.get('credit_card_details'):
+                raise serializers.ValidationError({
+                    'credit_card_details': "This field is required for credit card payment method."
+                })
+        elif payment_type == 'mpesa':
+            if not data.get('mpesa_details'):
+                raise serializers.ValidationError({
+                    'mpesa_details': "This field is required for Mpesa payment method."
+                })
+        else:
+            raise serializers.ValidationError({
+                'payment_type': "Invalid payment method selected."
+            })
+        return data
+
+    def create(self, validated_data):
+        credit_card_data = validated_data.pop('credit_card_details', None)
+        mpesa_data = validated_data.pop('mpesa_details', None)
+
+        payment_method = PaymentMethod.objects.create(**validated_data)
+
+        payment_type = self.context['request'].data.get('payment_type')
+        if payment_type == 'credit_card' and credit_card_data:
+            CreditCardDetails.objects.create(
+                payment_method=payment_method, **credit_card_data)
+        elif payment_type == 'mpesa' and mpesa_data:
+            MpesaDetails.objects.create(
+                payment_method=payment_method, **mpesa_data)
+
+        return payment_method
+
+    def update(self, instance, validated_data):
+        credit_card_data = validated_data.pop('credit_card_details', None)
+        mpesa_data = validated_data.pop('mpesa_details', None)
+
+        payment_type = self.context['request'].data.get('payment_type')
+        if payment_type == 'credit_card':
+            if credit_card_data:
+                if hasattr(instance, 'credit_card_details'):
+                    # Update existing credit card details
+                    serializer = CreditCardDetailsSerializer(
+                        instance.credit_card_details, data=credit_card_data, partial=True)
+                    serializer.is_valid(raise_exception=True)
+                    serializer.save()
+                else:
+                    # Create new credit card details
+                    CreditCardDetails.objects.create(
+                        payment_method=instance, **credit_card_data)
+            # Optionally, delete Mpesa details if switching from Mpesa to Credit Card
+            if hasattr(instance, 'mpesa_details'):
+                instance.mpesa_details.delete()
+
+        elif payment_type == 'mpesa':
+            if mpesa_data:
+                if hasattr(instance, 'mpesa_details'):
+                    # Update existing Mpesa details
+                    serializer = MpesaDetailsSerializer(
+                        instance.mpesa_details, data=mpesa_data, partial=True)
+                    serializer.is_valid(raise_exception=True)
+                    serializer.save()
+                else:
+                    # Create new Mpesa details
+                    MpesaDetails.objects.create(
+                        payment_method=instance, **mpesa_data)
+            # Optionally, delete Credit Card details if switching from Credit Card to Mpesa
+            if hasattr(instance, 'credit_card_details'):
+                instance.credit_card_details.delete()
+
+        return instance
+
+
+class TransporterSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+    email = serializers.EmailField(source='user.email', read_only=True)
+    first_name = serializers.CharField(
+        source='user.first_name', read_only=True)
+    last_name = serializers.CharField(source='user.last_name', read_only=True)
+    phone = serializers.CharField(source='user.profile.phone', read_only=True)
+    location = serializers.CharField(
+        source='user.profile.location', read_only=True)
+
+    transporter_name = serializers.CharField()
+    total_deliveries = serializers.IntegerField()
+    total_earnings = serializers.DecimalField(max_digits=10, decimal_places=2)
+    average_rating = serializers.DecimalField(max_digits=3, decimal_places=2)
+
+    class Meta:
+        model = Transporter
+        fields = [
+            'id', 'username', 'email', 'first_name', 'last_name', 'phone',
+            'location', 'transporter_name', 'total_deliveries', 'total_earnings',
+            'average_rating', 'user', 'address', 'vehicle', 'experience', 'id_front', 'id_back'
+        ]
+
+
+class ShippingSerializer(serializers.ModelSerializer):
+    order_number = serializers.UUIDField(source='order_id')
+    order_status = serializers.CharField(source='status')
+    expected_delivery_date = serializers.DateTimeField(
+        source='expected_delivery')
+    client_contact = serializers.CharField(source='customer_phone')
+
+    # Custom fields
+    pick_up = serializers.SerializerMethodField()
+    drop_off = serializers.SerializerMethodField()
+    location = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Order
+        fields = [
+            'order_number', 'order_status', 'pick_up', 'drop_off',
+            'client_contact', 'expected_delivery_date', 'location'
+        ]
+
+    def get_pick_up(self, obj):
+        # Get the location of the transporter's profile
+        transporter_profile = Profile.objects.filter(
+            user=obj.transporter.user).first()
+        return transporter_profile.location if transporter_profile else None
+
+    def get_drop_off(self, obj):
+        # Get the drop-off location based on the user with the customer_email in the order
+        user = User.objects.filter(email=obj.customer_email).first()
+        profile = Profile.objects.filter(user=user).first() if user else None
+        return profile.location if profile else None
+
+    def get_location(self, obj):
+        # Location is the same as drop_off
+        return self.get_drop_off(obj)
+
+class GardenSystemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=GardenSystems
+        fields=['__all__']
+
+class GardenSystemImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =GardenSystemImages
+        fields=['gardensystems','image','uploaded_at']
+
+class FarmingSystemImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =FarmingSystemImages
+        fields=['__all__']
+>>>>>>> 491e3625cc0035a51061e9037a6bb39ed8c60ff8
 

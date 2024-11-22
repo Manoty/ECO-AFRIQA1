@@ -1,14 +1,16 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
- const PrivateRoute = ({ component: Component, ...rest }) => {
-  const isAuthenticated = localStorage.getItem('accessToken') !== null;
+import React, { useContext } from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import { AuthContext } from '../components/context/AuthContext';
 
-  return isAuthenticated ? (
-    <Component {...rest} />
-  ) : (
-    <Navigate to="/login" />
-  );
+const PrivateRoute = ({ children, ...rest }) => {
+  const { isAuthenticated, loading } = useContext(AuthContext);
+
+  if (loading) {
+    // Show loading spinner or placeholder during initial auth check
+    return <div>Loading...</div>;
+  }
+
+  return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
-
-export default PrivateRoute
+export default PrivateRoute;

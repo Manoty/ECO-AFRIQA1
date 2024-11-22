@@ -9,6 +9,8 @@ import { ActiveSectionProvider } from './components/context/ActiveSectionContext
 import { CartProvider } from './components/context/CartContext';
 import { AuthProvider } from './components/context/AuthContext';
 import { ProfileProvider } from './components/context/ProfileContext';
+import { ProductsProvider } from './components/context/ProductsContext';
+import { ConsultationProvider } from './components/context/ConsultationsContext';
 // import reportWebVitals from './reportWebVitals';
 // import './styles/tailwind.css';
 
@@ -22,7 +24,13 @@ root.render(
           <CartProvider>
             <AuthProvider>
               <ProfileProvider>
-                <App />
+                <ProductsProvider>
+                  <ConsultationProvider>
+                    <App />
+
+                  </ConsultationProvider>
+
+                </ProductsProvider>
               </ProfileProvider>
             </AuthProvider>
           </CartProvider>

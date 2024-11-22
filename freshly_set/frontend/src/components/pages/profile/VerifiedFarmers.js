@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaPlusCircle } from 'react-icons/fa';
 import FarmProduceListCard from './FarmProduceListCard';
@@ -7,6 +7,8 @@ import FarmSalesListCard from './FarmSalesListCard';
 import FarmSalesList from './json/FarmSalesList.json';
 
 import LineChart from './utils/LineChart';
+import { ProfileContext } from '../../context/ProfileContext';
+import NotFarmerModal from './NotFarmerModal';
 
 function VerifiedFarmers() {
   //Name of the Account User
@@ -20,8 +22,13 @@ function VerifiedFarmers() {
   const ProduceQuantity = 4;
   const SalesQuantity = 4;
 
+  const { isFarmer } = useContext(ProfileContext);
+
+  const [showModal, setShowModal] = useState(true);
+
   return (
     <div className='VerifiedFarmers pb-[40px] lg:pb-[80px]'>
+  
       <div className='VerifiedFarmersWrapper mx-[10px] lg:mx-0  lg:mr-[140px]'>
         {/*Page Header */}
         <div className='PageHeader'>
@@ -169,8 +176,10 @@ function VerifiedFarmers() {
             </div>  {/*Farm Sales List Wrapper */}
           </div> {/*Farm Sales Wrapper */}
         </div>  {/*Farm Sales */} 
-       
+        {showModal && <NotFarmerModal link="verified" role="farmer" onClose={() => setShowModal(false)} />}
+
       </div> {/*Verified Farmers Wrapper */}
+      
     </div> //Verified Farmers
   )
 }

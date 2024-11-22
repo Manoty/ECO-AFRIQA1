@@ -5,7 +5,7 @@ import BlogHero from './BlogHero';
 import FreshlyFooter from '../../footer/FreshlyFooter';
 import BlogPosts from './BlogList'
 import blogItems from './blogItems.json'
-
+import config from '../../../config';
 // import BlogForm from './BlogForm';
 import Contact from './Contact';
 import { BlogsClickedContext, PageContext, SelectedSectionContext } from '../../context/PageContext';
@@ -26,6 +26,7 @@ const Blogs = () => {
   const [blogs, setBlogs] = useContext(BlogsContext);
   const [visible, setVisible] = useState(3);
   const [activeTab, setActiveTab] = useContext(PageContext);
+  const apiUrl = config.API_URL;
 
   const [csrfToken, setCsrfToken] = useState('');
 
@@ -57,7 +58,7 @@ useEffect(() => {
     setCsrfToken(token.getAttribute('content'));
   }
 
-  axios.get('http://localhost:8000/freshlyapp/blogs/', {
+  axios.get(`${apiUrl}freshlyapp/blogs/`, {
     headers: {
       'X-CSRFToken': csrfToken
     },

@@ -5,7 +5,7 @@
         "name": "Dr Jane Kimani",
         "field": "Botanist",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.",
-        "rate": "KSH 200/HR"
+        "rate": 200
     },
     {
         "id": 2,
@@ -13,7 +13,87 @@
         "name": "Dr Jane Kimani",
         "field": "Botanist",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.",
-        "rate": "KSH 200/HR"
+        "rate": 200
+    },
+    {
+        "id": 3,
+        "img": "/static/media/consultant2.png",
+        "name": "Dr Jane Kimani",
+        "field": "Botanist",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.",
+        "rate": 200
+    },
+    {
+        "id": 4,
+        "img": "/static/media/consultant2.png",
+        "name": "Dr Jane Kimani",
+        "field": "Botanist",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.",
+        "rate": 200
+    },
+    {
+        "id": 5,
+        "img": "/static/media/consultant2.png",
+        "name": "Dr Jane Kimani",
+        "field": "Botanist",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.",
+        "rate": 200
+    },
+    {
+        "id": 6,
+        "img": "/static/media/consultant2.png",
+        "name": "Dr Jane Kimani",
+        "field": "Botanist",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.",
+        "rate": 200
+    },
+    {
+        "id": 7,
+        "img": "/static/media/consultant2.png",
+        "name": "Dr Jane Kimani",
+        "field": "Botanist",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.",
+        "rate": 200
+    },
+    {
+        "id": 8,
+        "img": "/static/media/consultant2.png",
+        "name": "Dr Jane Kimani",
+        "field": "Botanist",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.",
+        "rate": 200
+    },
+    {
+        "id": 9,
+        "img": "/static/media/consultant2.png",
+        "name": "Dr Jane Kimani",
+        "field": "Botanist",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.",
+        "rate": 200
+    },
+    {
+        "id": 10,
+        "img": "/static/media/consultant2.png",
+        "name": "Dr Jane Kimani",
+        "field": "Botanist",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.",
+        "rate": 200
+    },
+    {
+        "id": 11,
+        "img": "/static/media/consultant2.png",
+        "name": "Dr Jane Kimani",
+        "field": "Botanist",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.",
+        "rate": 200
+    },
+    {
+        "id": 12,
+        "img": "/static/media/consultant2.png",
+        "name": "Dr Jane Kimani",
+        "field": "Botanist",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.",
+        "rate": 200
     }
    
 ]

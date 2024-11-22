@@ -6,17 +6,17 @@ import axios from "axios";
 import { getCsrfToken } from "../../../utils/getCsrfToken";
 import { ProfileContext } from "../../context/ProfileContext";
 import { AuthContext } from "../../context/AuthContext";
+import { ConsultationContext } from "../../context/ConsultationsContext";
 function OrderSummary() {
     const { cartItems, totalPrice, delivery } = useContext(CartContext);
     const { isAuthenticated } = useContext(AuthContext);
     const { profile } = useContext(ProfileContext);
-  
+    const { name, setName, meetingType, setMeetingType, date, setDate, time, setTime, note, setNote} = useContext(ConsultationContext);
+
     // State for form fields, used when not authenticated
-    const [orderName, setOrderName] = useState("");
-    const [orderEmail, setOrderEmail] = useState("");
-    const [orderPhone, setOrderPhone] = useState("");
-    const [orderLocation, setOrderLocation] = useState("");
-  
+    const { orderName, setOrderName, orderEmail, setOrderEmail, orderPhone, setOrderPhone, orderLocation, setOrderLocation } = useContext(CartContext)
+
+    const {service, setService} = useContext(ProfileContext)
     // Populate the form with profile data when authenticated
     useEffect(() => {
       if (isAuthenticated && profile) {
@@ -26,6 +26,10 @@ function OrderSummary() {
         setOrderLocation(profile.location);
       }
     }, [isAuthenticated, profile]);
+
+    useEffect(() => {
+        
+    })
   
     const orderData = {
       customer_name: orderName,
@@ -46,7 +50,7 @@ function OrderSummary() {
                 <input
                     className="border-none outline-none font-inter font-[700] text-[16px] w-full"
                     placeholder="First and Last Name"
-                    value={orderName}
+                    value={service?name:orderName}
                     onChange={(e) => setOrderName(e.target.value)}
                     readOnly={isAuthenticated}
                 />

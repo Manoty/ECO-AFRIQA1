@@ -1,49 +1,52 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios'; // Ensure axios is imported
 import { Link, useNavigate } from 'react-router-dom';
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { IoEye } from "react-icons/io5";
 import Nav from '../../Nav/Navbar';
 import { ProfileContext } from '../../context/ProfileContext';
+import { AuthContext } from '../../context/AuthContext';
+import config from '../../../config';
 
 const Login = () => {
   const navigate = useNavigate();
+  const apiUrl = config.API_URL;
+
   const { fetchProfile } = useContext(ProfileContext);
   const [formData, setFormData] = useState({
     username: '',  
     password: '',
   });
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
+
+  const { login } = useContext(AuthContext);
+  
+
+
   const handleLogin = async (e) => {
     e.preventDefault();
     
-    // const loginData = {
-    //   email: email,
-    //   password: password,
-    // };
-
     try {
-      const response = await axios.post('http://localhost:8000/freshlyapp/token/', formData);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/freshlyapp/token/`, formData);
       const { access, refresh } = response.data;
-
-      // Save tokens in localStorage or cookies
+  
+      // Save tokens
       localStorage.setItem('accessToken', access);
       localStorage.setItem('refreshToken', refresh);
-
-      // Redirect user or update UI based on successful login
+  
+      // Update authentication state
+      login(access); // Trigger AuthContext login to set isAuthenticated to true
       console.log('Login successful');
-      console.log('Login successful', access);
-      fetchProfile();
       navigate('/profile');  
+      // fetchProfile()
 
-
-      // Redirect or update UI here
+  
+    } catch (error) {
+      console.error('Login failed:', error.response);
+      setError('Invalid username or password');
     }
-   catch (error) {
-    console.error('Login failed:', error.response);
-    setError('Invalid username or password');
-  }
-};
+  };
+
   const [passwordToggle, setPasswordToggle] = useState(false);
   const [errors, setErrors] = useState({});
   const [backendErrors, setBackendErrors] = useState('');
@@ -65,7 +68,7 @@ const Login = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/freshlyapp/login/', payload, {
+            const response = await axios.post(`${apiUrl}freshlyapp/login/`, payload, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -108,6 +111,10 @@ const Login = () => {
     setFormData({ ...formData, [name]: value });
 };
 
+
+useEffect(() => {
+  fetchProfile()
+},[login])
   return (  
     <div className="LoginPage relative">
       {/*Navbar */}

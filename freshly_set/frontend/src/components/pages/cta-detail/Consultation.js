@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import FreshlyFooter from "../../footer/FreshlyFooter";
 import ConsultantCard from "./ConsultantCard";
 import Nav from "../../Nav/Navbar";
+import { ConsultationContext } from "../../context/ConsultationsContext";
 
 function Consultation() {
 

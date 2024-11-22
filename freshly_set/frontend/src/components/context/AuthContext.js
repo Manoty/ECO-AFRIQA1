@@ -1,18 +1,43 @@
 import { createContext, useState, useEffect } from 'react';
-
+import axios from 'axios';
+import config from '../../config';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // Check if the user is logged in
+  const [loading, setLoading] = useState(true); // Track loading state for initial auth check
+  const apiUrl = config.API_URL;
+
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
-  }, [isAuthenticated]);
+    const checkAuthentication = async () => {
+      const accessToken = localStorage.getItem('accessToken');
+      
+      if (accessToken) {
+        try {
+          // Verify token with a protected endpoint
+          const response = await axios.get(`${apiUrl}profile/`, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          });
+
+          if (response.status === 200) {
+            setIsAuthenticated(true);
+          }
+        } catch (error) {
+          if (error.response && error.response.status === 403) {
+            // Token expired or invalid
+            setIsAuthenticated(false);
+            localStorage.removeItem('accessToken');
+          }
+        }
+      } else {
+        setIsAuthenticated(false);
+      }
+      
+      setLoading(false); // Stop loading after check
+    };
+
+    checkAuthentication();
+  }, []);
 
   const login = (token) => {
     localStorage.setItem('accessToken', token);
@@ -24,12 +49,8 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
-  useEffect(() => {
-    console.log("isAuthenticated", isAuthenticated)
-  },[isAuthenticated ])
-
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
