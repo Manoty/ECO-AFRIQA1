@@ -30,7 +30,7 @@ function Checkout() {
         <div className='CheckoutMethods block'>
           {/* Mpesa Method*/}
           <div className="MpesaMethod w-fit mx-auto rounded-[8px] lg:rounded-[18px] shadow-md shadow-[#00000040] border-solid border-[1px] border-[#00000040] ">
-            <Link to='/Mpesa2'>
+            <Link to='/checkoutMpesa'>
               <div className='MPesaWrapper py-[10px] lg:py-[12px] px-[12px] lg:px-[16px] h-[45px] lg:h-[102px] w-[100px] lg:w-[228px]'>
                 <img src="/static/media/tag.png" alt="Mpesa" className="h-full" />
               </div>
@@ -38,7 +38,7 @@ function Checkout() {
           </div>
           {/* Card Method*/}
           <div className="MpesaMethod w-fit mx-auto mt-[16px] lg:mt-[30px] rounded-[8px] lg:rounded-[18px] shadow-md shadow-[#00000040] border-solid border-[1px] border-[#00000040]">
-            <Link to='/Credit'>
+            <Link to='/checkoutCard'>
               <div className='CardWrapper py-[12px] px-[16px] h-[45px] lg:h-[102px] w-[58px] lg:w-[132px] mr-[42px] lg:mr-[96px]'>
                 <img src="/static/media/debit.png" alt="Mpesa" className="h-full w-full" />
               </div> 

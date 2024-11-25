@@ -128,3 +128,14 @@ class FAQMainPageAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Profile)
+
+admin.site.register(FarmingSystems)
+admin.site.register(FarmingSystemImages)
+admin.site.register(Quotation)
+admin.site.register(PaymentMethod)
+admin.site.register(CreditCardDetails)
+admin.site.register(MpesaDetails)
+admin.site.register(TeamMember)
+admin.site.register(Transporter)
+admin.site.register(GardenSystems)
+admin.site.register(GardenSystemImages)

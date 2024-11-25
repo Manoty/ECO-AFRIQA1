@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 
 function FarmingSystemsHero() {
@@ -16,7 +17,11 @@ function FarmingSystemsHero() {
                 </div>
             </div>
 
-            <button className="absolute top-[346px] left-[115px] lg:top-[275px] lg:left-[865px] h-[51px] w-[186px] lg:h-[71px] lg:w-[266px] bg-[#A6B1AD99]/[0.65] rounded-[15px] border-none text-black text-[20px] lg:text-[25px] font-inter font-[900]">Request Invoice</button>
+             <div>
+                <Link to="/products/farmingSystems/search">
+                    <button className="absolute top-[346px] left-[115px] lg:top-[275px] lg:left-[865px] h-[51px] w-[186px] lg:h-[71px] lg:w-[266px] bg-[#A6B1AD99]/[0.65] cursor-pointer rounded-[15px] border-none text-black text-[20px] lg:text-[25px] font-inter font-[900]">Request Invoice</button>
+                </Link>
+              </div>
 
         </div>
 

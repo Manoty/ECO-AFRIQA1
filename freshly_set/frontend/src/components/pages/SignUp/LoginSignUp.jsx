@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { IoEye } from "react-icons/io5";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { BiShow } from "react-icons/bi";
 import Nav from '../../Nav/Navbar';
 import axios from 'axios';
 import { getCsrfToken } from '../../../utils/getCsrfToken';
+import { useNavigate } from 'react-router-dom';
+import { ProfileContext } from '../../context/ProfileContext';
+import config from '../../../config';
 const LoginSignUp = () => {
   const [showForm, setShowForm] = useState(true);
   const [formData, setFormData] = useState({
@@ -18,13 +21,17 @@ const LoginSignUp = () => {
     rememberMe: false,
   });
 
+  const apiUrl = config.API_URL;
+
   const [passwordToggle, setPasswordToggle] = useState(false);
   const [confirmPasswordToggle, setConfirmPasswordToggle] = useState(false);
   const [errors, setErrors] = useState({});
 
   const [backendErrors, setBackendErrors] = useState('');
+  const navigate = useNavigate();
 
-
+  const {fetchProfile} = useContext(ProfileContext);
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -51,12 +58,11 @@ const LoginSignUp = () => {
             profile: {
                 phone: formData.phone,
                 location: formData.location,
-                remember_me: formData.rememberMe,
-            },
+            }
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/register/', payload, {
+            const signupResponse = await axios.post(`${apiUrl}register/`, payload, {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCsrfToken(),
@@ -64,17 +70,38 @@ const LoginSignUp = () => {
                 withCredentials: true,
             });
 
-            if (response.status === 201) {
+            if (signupResponse.status === 201) {
                 // Clear backend error messages if the signup is successful
                 setBackendErrors('');
                 alert('Signup successful!');
-                console.log("Signup Successful");
+
+                // Automatically login after successful signup
+                const loginPayload = {
+                    username: formData.email, 
+                    password: formData.password,
+                };
+
+                try {
+                    const loginResponse = await axios.post(`${apiUrl}freshlyapp/token/`, loginPayload);
+                    const { access, refresh } = loginResponse.data;
+
+                    // Save tokens in localStorage or cookies
+                    localStorage.setItem('accessToken', access);
+                    localStorage.setItem('refreshToken', refresh);
+
+                    // Fetch the profile and redirect to profile page
+                    fetchProfile();
+                    navigate('/profile');  // Redirect to profile page after login
+                } catch (loginError) {
+                    console.error('Automatic login failed:', loginError);
+                    setBackendErrors('An error occurred during automatic login. Please try to log in manually.');
+                }
             }
-        } catch (error) {
+        } catch (signupError) {
             // Handle different error messages
-            if (error.response && error.response.status === 400) {
-                if (error.response.error) {
-                    setBackendErrors(error.response.error); // Display the specific error from the backend
+            if (signupError.response && signupError.response.status === 400) {
+                if (signupError.response.error) {
+                    setBackendErrors(signupError.response.error); // Display the specific error from the backend
                 } else {
                     setBackendErrors('Signup failed. Please try again.');
                 }
@@ -85,6 +112,7 @@ const LoginSignUp = () => {
     }
 };
 
+  
   const validateForm = () => {
     const errors = {};
     if (!formData.firstName) errors.firstName = 'Required';
@@ -163,15 +191,11 @@ const LoginSignUp = () => {
 
                   {/*Location */}
                   <div className='Location block mt-[20px] rounded-[7px] bg-white overflow-hidden object-fill px-[20px] shadow-md shadow-[#00000040]'>
-                    <select name="location" className="bg-inherit font-[300] w-[100%]  text-[16px] py-[14px] text-black font-inter outline-none border-none"
+                  <input type="text" name="location" placeholder="Location" className="bg-inherit font-[300] w-[100%]  text-[16px] py-[14px] text-black font-inter outline-none border-none"
                       value={formData.location}
                       onChange={handleChange}
                       required
-                    >
-                      <option value="">Location</option>
-                      <option value="location1">Location 1</option>
-                      <option value="location2">Location 2</option>
-                    </select>
+                    />
                     {errors.location && <p className="error">{errors.location}</p>}
                   </div>
                   
@@ -267,6 +291,7 @@ const LoginSignUp = () => {
       </div> {/*Main Contents */}
     </div> //SignUp Page
   );
+
 };
 
 export default LoginSignUp;

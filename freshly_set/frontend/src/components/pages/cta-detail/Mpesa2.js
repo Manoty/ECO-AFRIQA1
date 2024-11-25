@@ -1,34 +1,90 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Nav from '../../Nav/Navbar';
 import { CartContext } from "../../context/CartContext";
 import axios from "axios";
 import { getCsrfToken } from "../../../utils/getCsrfToken";
+import { ProfileContext } from "../../context/ProfileContext";
+import { AuthContext } from "../../context/AuthContext";
+import OrderSummary from "./OrderSummary";
+import { ConsultationContext } from "../../context/ConsultationsContext";
 
+import config from "../../../config";
 function Mpesa2() {
-
   const { cartItems, totalPrice, delivery } = useContext(CartContext);
+  const { isAuthenticated } = useContext(AuthContext);
+  const { profile } = useContext(ProfileContext);
+  const apiUrl = config.API_URL;
 
-  // Example order data to send (based on your app's structure)
+  const { service, setService } = useContext(ProfileContext);
+  // State for form fields, used when not authenticated
+  const { orderName, setOrderName, orderEmail, setOrderEmail, orderPhone, setOrderPhone, orderLocation, setOrderLocation } = useContext(CartContext)
+
+
+  const { clearCart } = useContext(CartContext);
+  const { name, setName, meetingType, setMeetingType, date, setDate, time, setTime, note, setNote, consultant, selectedConsultants, setSelectedConsultants } = useContext(ConsultationContext);
+
+  const navigate = useNavigate();
+  // Populate the form with profile data when authenticated
+
+  useEffect(() => {
+    const consultArray = []
+
+    consultArray.push(consultant)
+    setSelectedConsultants([...selectedConsultants], consultArray)
+
+    console.log("array", selectedConsultants);
+    if (service) {
+      setOrderName(`${name}`);
+    }
+  },[])
+  useEffect(() => {
+    if (isAuthenticated && profile &&!service) {
+      setOrderName(`${profile.first_name} ${profile.last_name}`);
+      setOrderEmail(profile.email);
+      setOrderPhone(profile.phone);
+      setOrderLocation(profile.location);
+    }
+  }, [isAuthenticated, profile]);
+
   const orderData = {
-    customer_name: 'Jhon mungai',
-    customer_email: 'johndoe@example.com',
-    customer_phone: '1234567890',
+    customer_name: orderName,
+    customer_email: orderEmail,
+    customer_phone: orderPhone,
     items: cartItems.map(item => ({
-      product_name: item.name,         // Changed from 'name' to 'product_name'
-      product_price: item.price,       // Changed from 'price' to 'product_price'
-      product_quantity: item.qtty  // Changed from 'quantity' to 'product_quantity'
+      product_name: item.name,
+      product_price: item.price,
+      product_quantity: item.qtty,
     })),
     total_price: cartItems.reduce((sum, item) => sum + item.price * item.qtty, 0),
-    delivery_fee: delivery,             // Changed from 'delivery' to 'delivery_fee'
+    delivery_fee: delivery,
     payment_method: 'mpesa',
   };
-  
+
+
+
+  const orderDataService = {
+    customer_name: orderName,
+    customer_email: orderEmail,
+    customer_phone: orderPhone,
+   
+    items: selectedConsultants.map(consultant => ({
+      product_name:`{consultation request for ${consultant.name}}`,
+      product_price:consultant?.rate,
+      product_quantity:1
+    })),
+    total_price: consultant?.rate,
+    delivery_fee: 0,
+    payment_method: 'mpesa',
+  };
 
   const handleCheckout = async () => {
     const csrfToken = getCsrfToken();
+    setService(false)
+
     try {
-      const response = await axios.post('http://localhost:8000/orders/', orderData, { 
+      const response = await axios.post('http://localhost:8000/orders/', !service?orderData:orderDataService, {
+
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': csrfToken,
@@ -37,25 +93,34 @@ function Mpesa2() {
       });
       if (response.status === 201) {
         console.log('Order created:', response.data);
+        clearCart();
         alert(`Order placed successfully! Your Order ID is ${response.data.order_id}`);
 
+        if (isAuthenticated) {
+          navigate("/profile")
+        } else {
+          navigate("/")
+        }
       } else {
         console.error('Unexpected response:', response);
         alert('Unexpected response from the server.');
       }
     } catch (error) {
-      console.log('Error response:', error.response?.data);  // Log detailed error response
+      console.log('Error response:', error.response?.data);
       alert('There was an issue placing the order. Check the console for more details.');
     }
   };
-   
-  
 
   useEffect(() => {
-    console.log("Cart items total price:", totalPrice);
-  }, [totalPrice]);
-  console.log(orderData);
-  console.log(cartItems); 
+    isAuthenticated
+  }, [isAuthenticated])
+
+  useEffect(() => {
+    if (service) {
+
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-[#F5FAF9] overflow-x-hidden">
       <Nav /> {/* The Upper NavBar */}
@@ -71,7 +136,7 @@ function Mpesa2() {
       <h1 className="lg:text-center text-center mt-6 text-[35px] font-bold">Checkout</h1>
 
       <div className="InnerContents px-[4px] lg:px-[40px] lg:mt-6 mx-[6px] lg:mx-[50px] lg:my-[20px] rounded-[20px] border-gray-400 border-[2px] shadow-lg shadow-white lg:shadow-gray-700 mb-[40px]">
-        
+
 
         <div className="PaymentsPart block lg:flex justify-between mt-[30px]">
           {/* Payment Section */}
@@ -93,14 +158,14 @@ function Mpesa2() {
                 <div className="PromptMessage">
                   <p className="text-start font-inter font-[800] text-[14px] lg:text-[18px]">An Mpesa Prompt has been sent to +254712345678. Enter your Mpesa PIN to complete payment.</p>
                 </div>
-                
+
                 <div className="AskPrompt flex justify-start my-[20px]">
                   <p className="text-start font-inter font-[800] text-[11px] lg:text-[16px] text-[#000000B2] my-[12px] mr-[8px] lg:mr-[40px]">Haven’t received a prompt?</p>
                   <div className="bg-[#008000] px-[10px] lg:px-[40px] rounded-[12px] border-none h-fit cursor-pointer active:scale-90 transition-all duration-100 ease-out">
                     <p className="text-white text-center font-inter font-[800] text-[12px] lg:text-[16px] my-[12px]">RESEND PROMPT</p>
                   </div>
                 </div> {/* Ask Prompt Ends Here */}
-                
+
                 <div className="RememberMpesa flex justify-start mt-[40px] pb-[30px]">
                   <input type="checkbox" className="block mr-[10px] lg:mr-[30px] w-[25px] h-[25px]" />
                   <p className="block text-start font-inter font-[800] my-0 text-[14px] lg:text-[18px] pt-[4px]">Always use M-pesa for your future bookings</p>
@@ -118,38 +183,12 @@ function Mpesa2() {
                   <h2 className="text-[30px] font-bold text-green-700 text-center mb-0 font-inter">ORDER SUMMARY</h2> {/* No margin-bottom */}
 
                   {/* Container for Input Boxes */}
-                  <div className="flex flex-col space-y-0 mt-2">
-                    <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-                      <input 
-                        className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
-                        placeholder="First Name" 
-                        value={'Owner: Maria Lisa'} 
-                        readOnly
-                      />
-                      <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]" />
-                    </div>
 
-                    <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-                      <input 
-                        className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
-                        placeholder="Last Name" 
-                        value={'Location: Westlands'} 
-                        readOnly
-                      />
-                      <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]" />
-                    </div>
+                  <h3 className="text-center font-inter ">Booking for Consultant {consultant.name}</h3>
+                      <OrderSummary />
 
-                    <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-                      <input 
-                        className="border-none outline-none font-inter font-[700] text-[16px] w-full" 
-                        placeholder="Phone" 
-                        value={'Phone: +254899098678'} 
-                        readOnly
-                      />
-                      <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]" />
-                    </div>
-                  </div>
-                  
+                    
+
                   {/* Order Summary Details */}
                   <div className="Metrics mx-[30px] lg:mt-12 lg:mx-[40px]">
                     <div className="flex justify-between mt-[14px] lg:mt-[8px]">
@@ -157,10 +196,15 @@ function Mpesa2() {
                       <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">KSH {totalPrice}</p>
                     </div>
 
-                    <div className="flex justify-between mt-[14px] lg:mt-[20px]">
-                      <p className="text-start font-[900] my-0 font-inter text-[#000000B2] text-[16px] lg:text-[18px]">DELIVERY</p>
-                      <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">KSH {delivery}</p>
-                    </div>
+                    {
+                      !service && (
+                        <div className="flex justify-between mt-[14px] lg:mt-[20px]">
+                          <p className="text-start font-[900] my-0 font-inter text-[#000000B2] text-[16px] lg:text-[18px]">DELIVERY</p>
+                          <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">KSH {delivery}</p>
+                        </div>
+
+                      )
+                    }
 
                     <div className="flex justify-between mt-[14px] lg:mt-[20px]">
                       <p className="text-start font-[900] my-0 font-inter text-[#000000B2] text-[16px] lg:text-[18px]">Total</p>

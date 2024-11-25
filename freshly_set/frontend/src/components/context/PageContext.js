@@ -1,6 +1,6 @@
 import axios from "axios";
 import {  createContext, useEffect, useState } from "react";
-
+import config from "../../config";
 export const PageContext = createContext();
 export const PopupContext = createContext();
 export const ModalContext = createContext();
@@ -15,12 +15,16 @@ export const ProductsSideBarContext = createContext();
 export const ProductsContext = createContext();
 export const SearchContext = createContext();
 export const EmptyContext = createContext();
+export const GeneralContext = createContext();
 
 export  const PageContextProvider = ({ children }) => {
     const [activeTab, setActiveTab] = useState("home");
     const [popUpOpen, setPopUpOpen] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [date, setDate] = useState(new Date());
+    const apiUrl = config.API_URL;
 
+    const [email, setEmail] = useState("");
     // Selected Sections Context
 
     const [selectedSection, setSelectedSection] = useState("blogs")
@@ -88,9 +92,7 @@ export  const PageContextProvider = ({ children }) => {
 
     const [modalToggleContentsGardens, setModalToggleContentsGardens]  = useState([
 
-        // <FarmCard number={1} img="/static/media/gardens1.png" title="Raised Bed Gardens" body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut."/>
-        // <FarmCard number={2} img="/static/media/gardens2.png" title="Container Gardens" body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut."/>
-        // <FarmCard number={3} img="/static/media/gardens3.png" title="Square Root Gardens" body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut."/>
+      
         {
             number:1,
             img:"/static/media/gardens1.png",
@@ -154,7 +156,7 @@ export  const PageContextProvider = ({ children }) => {
     setCsrfToken(token.getAttribute('content'));
   }
 
-  axios.get('http://localhost:8000/products/')
+  axios.get(`${apiUrl}products/`)
   .then(response => {
     setProducts(response.data.results);
 
@@ -195,7 +197,10 @@ export  const PageContextProvider = ({ children }) => {
                                                     <ProductsContext.Provider value={[products, setProducts]}>
                                                         <SearchContext.Provider value={{handleSearch}}>
                                                             <EmptyContext.Provider value={[empty, setEmpty]}>
-                                                                {children}
+                                                                <GeneralContext.Provider value={[date, setDate]}>
+                                                                    {children}
+
+                                                                </GeneralContext.Provider>
                                                             </EmptyContext.Provider>
                                                         </SearchContext.Provider>
                                                     </ProductsContext.Provider>

@@ -3,16 +3,17 @@ import Nav from '../../Nav/Navbar';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-
+import config from '../../../config';
 function ResultsSearch() {
   const [blogs, setBlogs] = useState([]);
   const location = useLocation();
   const query = new URLSearchParams(location.search).get('q');
+  const apiUrl = config.API_URL;
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/search_blog?q=${query}`);
+        const response = await axios.get(`${apiUrl}search_blog?q=${query}`);
         setBlogs(response.data);
         console.log("Blogs", blogs)
       } catch (error) {

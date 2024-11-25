@@ -3,11 +3,12 @@
 // import { useNavigate} from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import config from '../../../config';
 const BlogForm = ({ onBlogCreated }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
+  const apiUrl = config.API_URL;
 
   useEffect(() => {
     const token = document.querySelector('meta[name="csrf-token"]');
@@ -20,7 +21,7 @@ const BlogForm = ({ onBlogCreated }) => {
 
 const csrfToken = getCSRFToken();
 
-        axios.post('http://localhost:8000/freshlyapp/blogs/', formData, {
+        axios.post(`${apiUrl}freshlyapp/blogs/`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'X-CSRFToken': csrfToken
@@ -77,7 +78,7 @@ const csrfToken = getCSRFToken();
     }
 
     try {
-      const response = await axios.post('http://localhost:8000/freshlyapp/create/', formData, {
+      const response = await axios.post(`${apiUrl}freshlyapp/create/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'X-CSRFToken': csrfToken  // Include the CSRF token in the headers

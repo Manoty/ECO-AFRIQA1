@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function GardenSetupsHero() {
   return (
@@ -13,10 +14,14 @@ function GardenSetupsHero() {
                     <p className="text-[12px] lg:text-[16px] font-josefin text-black font-[600] leading-[20.8px] lg:w-[258px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
                     <p className="text-[12px] lg:text-[16px] font-josefin text-black font-[600] leading-[20.8px] lg:w-[258px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
                 </div>
-            </div>
-
-            <button className="absolute top-[346px] left-[115px] lg:top-[275px] lg:left-[865px] h-[51px] w-[186px] lg:h-[71px] lg:w-[266px] bg-[#A6B1AD99]/[0.65] rounded-[15px] border-none text-black text-[20px] lg:text-[25px] font-inter font-[900]">Request Invoice</button>
-
+              </div>
+              <div>
+                <Link to="/products/gardenSetups/search">
+                    <button className="absolute top-[346px] left-[115px] lg:top-[275px] lg:left-[865px] h-[51px] w-[186px] lg:h-[71px] lg:w-[266px] bg-[#A6B1AD99]/[0.65] rounded-[15px] border-none text-black text-[20px] lg:text-[25px] font-inter font-[900]">Request Invoice</button>
+                </Link>
+              </div>
+              
+            
         </div>
 
         <div className="grid grid-cols-2 lg:flex lg:space-x-[73px] justify-center mt-[25px] lg:mt-[32px] mx-[20px] lg:mx-[0px]">

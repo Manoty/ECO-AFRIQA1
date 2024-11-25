@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaCaretDown } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import config from '../../../config';
 
 function Faq() {
     // State to control the opening of the Questions
@@ -8,6 +9,7 @@ function Faq() {
     
     // State to store FAQs fetched from the backend
     const [faqs, setFaqs] = useState([]);
+    const apiUrl = config.API_URL;
 
     // Function to toggle FAQ visibility
     const toggleFAQ = (id) => {
@@ -19,7 +21,7 @@ function Faq() {
 
     // Fetch FAQs from the backend when the component mounts
     useEffect(() => {
-        fetch('http://localhost:8000/api/faqsmainpage/')  // Use your actual backend URL
+        fetch(`${apiUrl}api/faqsmainpage/`)  // Use your actual backend URL
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

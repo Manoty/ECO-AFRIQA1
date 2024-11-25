@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.contrib.auth import views as auth_views
-from django.urls import re_path
 from django.views.generic import TemplateView
 from rest_framework.routers import DefaultRouter
 from .views import BlogListCreateView, BlogListView, CustomPasswordResetView, Register, search_blog, initiate_payment, mpesa_callback
@@ -12,7 +11,6 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from django.urls import path
@@ -22,13 +20,11 @@ from .views import OrderListCreateView, OrderDetailView
 from .views import FAQListView
 from .views import FAQMainPageListView
 
-
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
 )
-
 
 from .views import (
     BlogRetrieveUpdateDestroyAPIView,
@@ -47,13 +43,19 @@ urlpatterns = [
          TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
-
-    # Catch-all route to serve React app for all frontend routes
+    # Catch-all routes to serve React app for all frontend routes
     path('', TemplateView.as_view(template_name='index.html')),
 
     path('about-us/', TemplateView.as_view(template_name='index.html')),
     path("marketplace/", TemplateView.as_view(template_name="index.html")),
     path("signup/", TemplateView.as_view(template_name="index.html")),
+
+    path("checkout/", TemplateView.as_view(template_name="index.html")),
+    path("checkoutMpesa/", TemplateView.as_view(template_name="index.html")),
+    path("checkoutCard/", TemplateView.as_view(template_name="index.html")),
+    path("login/", TemplateView.as_view(template_name="index.html")),
+
+
 
     # path('blogs/', views.blogs, name='blogs'),
     path('freshlyapp/blogs/', BlogListView.as_view(), name='blog-list'),
@@ -62,7 +64,6 @@ urlpatterns = [
     # path('create-blogs/', views.blog_create, name='blogs_create'),
     # path('freshlyapp/blogs/', views.blog_create, name='blog_create'),
     path('freshlyapp/search/', views.search_blog, name='search_blog'),
-
 
     path('login/', auth_views.LoginView.as_view, name='login'),
     # path('signup/', views.signup, name='signup'),
@@ -121,7 +122,6 @@ urlpatterns = [
     path('freshlyapp/verification/detail/',
          IDVerificationDetailView.as_view(), name='id-verification-detail'),
 
-
     # product urls
     path('products/', ProductListView.as_view(), name='list-products'),
     path('products/create/', CreateProduct.as_view(), name='create-product'),
@@ -131,21 +131,24 @@ urlpatterns = [
     path('products/<int:pk>/delete/',
          DeleteProduct.as_view(), name='delete-product'),
 
-
     # Banner URL
-
     path('freshlyapp/banners/', BannerListView.as_view(), name='banner-list'),
 
+    path('orders/', OrderListCreateView.as_view(), name='OrderListCreateView'),
+    path('orders/<uuid:order_id>/', OrderDetailView.as_view(), name='order-detail'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
+    # faq
+    path('api/faqs/', FAQListView.as_view(), name='faq-list'),
+    path('api/faqsmainpage/', FAQMainPageListView.as_view(),
+         name='faq-mainpage-list'),
 
     # Category URL
-
     path('freshlyapp/categories/', CategoryListCreateView.as_view(),
          name='category-list-create'),
     path('freshlyapp/categories/<int:pk>/', CategoryDetailView.as_view(),
          name='category-detail'),
-
-
 
     # CART URLS
     path('cart/', views.get_cart_instance, name='get_cart'),
@@ -153,37 +156,21 @@ urlpatterns = [
     path('cart/update/', views.update_quantity, name='update_quantity'),
     path('cart/remove/', views.remove_from_cart, name='remove_from_cart'),
 
-
-
-
     # notification url
     path('notifications/', NotificationListView.as_view(),
          name='notification-list'),
 
     # true order
     path('orders/', OrderListCreateView.as_view(), name='OrderListCreateView'),
+
     path('orders/<uuid:order_id>/', OrderDetailView.as_view(), name='order-detail'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
 
     # faq
     path('api/faqs/', FAQListView.as_view(), name='faq-list'),
     path('api/faqsmainpage/', FAQMainPageListView.as_view(),
          name='faq-mainpage-list'),
-
-
-
-
-
-    # order url
-    path('orders/', views.my_orders, name='my_orders'),
-    path('order/<str:tracking_no>/', views.view_order, name='view_order'),
-    path('order/cancel/<str:tracking_no>/',
-         views.cancel_order, name='cancel_order'),
-    path('order/create/', views.create_order, name='create_order'),
-
-
 
     # notification url
     path('notifications/', NotificationListView.as_view(),
@@ -193,8 +180,64 @@ urlpatterns = [
     path('api/initiate-payment/', initiate_payment, name='initiate-payment'),
     path('api/mpesa-callback/', mpesa_callback, name='mpesa-callback'),
 
-
     # Verified Farmers
     path('verified-farmers/', FarmerListView.as_view(), name='verified-farmers'),
+
+    # farming systems
+    path('farming-systems/', GetFarmingSystems.as_view(), name='farming systems'),
+    path('addingfarming-systems/', WriteFarmingSystems.as_view(),
+         name='adding farming systems'),
+
+
+
+
+
+
+
+    # quotations
+    path('quotations/', QuotationListView.as_view(), name='my-quotations'),
+
+
+   #Farmer
+    path('register-farmer/', RegisterFarmerView.as_view(), name='register-farmer'),
+    path('unregister-farmer/', UnregisterFarmerView.as_view(), name='unregister-farmer'),
+    path('farmer-profile/', FarmerProfileView.as_view(), name='farmer-profile'),
+    path('farmer-sales/', FarmerSalesHistoryView.as_view(), name='farmer-sales'),
+    path('farmer-produce/', FarmerFarmProduceView.as_view(), name='farmer-produce'),
+    path('farmer-update/', UpdateFarmerView.as_view(), name='update-farmer'),
+
+
+  #handling payment methods
+    path('payment-method/create/', CreatePaymentMethodView.as_view(), name='create-payment-method'),
+    path('payment-method/update/', UpdatePaymentMethodView.as_view(), name='update-payment-method'),
+    path('payment-methods/', UserPaymentMethodsView.as_view(), name='user-payment-methods'),
+    path('payment-method/delete/', DeletePaymentMethodView.as_view(), name='delete-payment-method'),
+
+
+
+   
+    path('myorders/', OrderListView.as_view(), name='My-orders'),
+
+ #team memebers
+    path('teammembers/',TeamMembers.as_view(),name='Team'),
+    path('addteammember/',AddingNewTeamMembers.as_view,name='New team members'),
+
+
+# Transporters
+    path('mark/<uuid:order_id>/', MarkAsDeliveredView.as_view(), name='mark-as-delivered'),
+    path('register-transporter/', RegisterTransporterView.as_view(), name='register-transporter'),
+    path('unregister-transporter/', UnregisterTransporterView.as_view(), name='unregister-transporter'),
+    path('previous-deliveries/', PreviousDeliveriesView.as_view(), name='previous-deliveries'),
+    path('upcoming-deliveries/', UpcomingDeliveriesView.as_view(), name='upcoming-deliveries'),
+    path('transporter/profile/', TransporterDetailView.as_view(), name='transporter-profile'),
+    path('transporter/update/', UpdateTransporterView.as_view(), name='update-transporter'),
+
+#gardensystems
+path('gardensystems/',GardenSystems.as_view,name='garden systems'),
+path('newgardensystems/',NewGardenSystems.as_view,name='new garden systems')
+
+#gardensystemsimage
+
+
 
 ]

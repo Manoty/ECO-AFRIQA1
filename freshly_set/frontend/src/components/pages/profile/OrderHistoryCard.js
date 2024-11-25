@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function OrderHistoryCard({img, CropOrdered, QuantityOrdered, DateOrdered, OrderStatus, OrderAmount }) {
+function OrderHistoryCard({img, title, QuantityOrdered, DateOrdered, OrderStatus, OrderAmount }) {
     return (
         <div className="OrderHistoryCard mt-[40px]">
             <div className="OrderCardWrapper rounded-[27px] px-[28px] py-[30px] border-solid border-[0.7px] border-[#0000004A] shadow-md shadow-[#00000040] ">
@@ -13,7 +13,7 @@ function OrderHistoryCard({img, CropOrdered, QuantityOrdered, DateOrdered, Order
                             <div className="CropCard block bg-[#00AA5B1A] shadow-md shadow-[#00000040] mr-[40px] rounded-[7.5px] px-[20px] py-[30px] ">
                                 {/*Crop Image */}
                                 <div className="ImageWrapper h-[72px] w-[86px]">
-                                    <img src={img} alt={CropOrdered} className="w-full h-full"/>
+                                    <img src={img} alt={title} className="w-full h-full"/>
                                 </div>
                             </div>   {/*Crop Card */}
 
@@ -21,11 +21,11 @@ function OrderHistoryCard({img, CropOrdered, QuantityOrdered, DateOrdered, Order
                             <div className="CropDescriptions block">
                                 {/*Crop Name */}
                                 <div className="CropName">
-                                    <p className="text-start text-[18px] text-[#000000] font-inter font-[700] my-0">{CropOrdered}</p>
+                                    <p className="text-start text-[18px] text-[#000000] font-inter font-[700] my-0">{title}</p>
                                 </div>
                                 {/*Quantity Ordered */}
                                 <div className="QuantityOrdered mt-[20px]">
-                                    <p className="text-start text-[18px] text-[#0000008F] font-inter font-[700] my-0">{QuantityOrdered}</p>
+                                    <p className="text-start text-[18px] text-[#0000008F] font-inter font-[700] my-0">Quantity: {QuantityOrdered}</p>
                                 </div>
                                 {/*Date Ordered */}
                                 <div className="DateOdered mt-[46px]">
@@ -50,7 +50,7 @@ function OrderHistoryCard({img, CropOrdered, QuantityOrdered, DateOrdered, Order
                             </div>
                             {/*Amount */}
                             <div className="Amount mt-[20px]">
-                                <p className="text-center text-[16px] text-[#FF0C1A] font-inter font-[900] my-0">{OrderAmount}</p>
+                                <p className="text-center text-[16px] text-[#FF0C1A] font-inter font-[900] my-0">Ksh {OrderAmount}</p>
                             </div>
                         </div>
 
