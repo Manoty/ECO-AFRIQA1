@@ -19,7 +19,7 @@ function Checkout() {
               
         {/* Back Button */}
         <div className="BackButton block mx-[6px] lg:mx-[10px] w-fit mt-[10px] lg:mt-[30px]">
-          <Link to="/booking">
+          <Link to="/cart">
             <div className='ImageWrapper w-[27px] lg:w-[61px] h-[21px] lg:h-[47px]'>
               <img src="/static/media/image10.png" alt="Back" className="w-full h-full" />
             </div>
