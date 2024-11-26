@@ -127,6 +127,16 @@ class FAQMainPageAdmin(admin.ModelAdmin):
     search_fields = ['question']
 
 
+#consultant
+from .models import Consultant
+
+class ConsultantAdmin(admin.ModelAdmin):
+    list_display = ('name', 'field', 'description', 'rate', 'img')
+    search_fields = ('name', 'field')  # Add a search bar for these fields
+    list_filter = ('field',)  # Add filters based on the consultant's field
+
+# Register the model with the custom admin class
+admin.site.register(Consultant, ConsultantAdmin)
 admin.site.register(Profile)
 
 admin.site.register(FarmingSystems)

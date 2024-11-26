@@ -767,6 +767,22 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
+<<<<<<< HEAD
+    
+    
+#consaltation
+
+class Consultant(models.Model):
+    name = models.CharField(max_length=255)
+    field = models.CharField(max_length=255)
+    description = models.TextField()
+    rate = models.CharField(max_length=50)
+    img = models.ImageField(upload_to='consultants/')
+
+    def __str__(self):
+        return self.name
+
+=======
 
 
 class FarmingSystems(models.Model):
@@ -888,3 +904,4 @@ class GardenSystemImages(models.Model):
     image = models.ImageField(
         upload_to='images/GardenSystems', null=True, blank=True)
     uploaded_at=models.DateTimeField(auto_now_add=True)
+>>>>>>> 491e3625cc0035a51061e9037a6bb39ed8c60ff8
