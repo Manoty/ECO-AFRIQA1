@@ -161,19 +161,21 @@ class Farmer(models.Model):
         return f"Farmer: {self.user.username}" if self.user else "Farmer: Anonymous"
 
 
-
 class Product(models.Model):
-    farmer = models.ForeignKey(Farmer, on_delete=models.CASCADE, null=True, blank=True)
+    farmer = models.ForeignKey(
+        Farmer, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=255)
     desc = models.TextField()
     used_for = models.CharField(max_length=255, blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     qtty = models.IntegerField(default=0)
     original_qtty = models.IntegerField(editable=False, default=0)  # New field
-    unit = models.CharField(max_length=255, null=True, blank=True, default="PACKET")
+    unit = models.CharField(max_length=255, null=True,
+                            blank=True, default="PACKET")
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name='products', blank=True, null=True)
-    image = models.ImageField(upload_to='static/images/Products', null=True, blank=True)
+    image = models.ImageField(
+        upload_to='static/images/Products', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
@@ -184,15 +186,18 @@ class Product(models.Model):
         if len(self.name.strip()) == 0:
             raise ValidationError({'name': 'Name cannot be empty.'})
         if len(self.name) > 255:
-            raise ValidationError({'name': 'Name cannot exceed 255 characters.'})
+            raise ValidationError(
+                {'name': 'Name cannot exceed 255 characters.'})
 
         # Price validation
         if self.price < 0:
             raise ValidationError({'price': 'Price cannot be negative.'})
         if self.price < 0.01 or self.price > 99999.99:
-            raise ValidationError({'price': 'Price must be between 0.01 and 99999.99.'})
+            raise ValidationError(
+                {'price': 'Price must be between 0.01 and 99999.99.'})
         if self.price.as_tuple().exponent < -2:
-            raise ValidationError({'price': 'Price cannot have more than two decimal places.'})
+            raise ValidationError(
+                {'price': 'Price cannot have more than two decimal places.'})
 
         # Quantity validation
         if self.qtty < 0:
@@ -202,26 +207,32 @@ class Product(models.Model):
 
         # Description validation
         if len(self.desc) < 10:
-            raise ValidationError({'desc': 'Description is too short. It should be at least 10 characters long.'})
+            raise ValidationError(
+                {'desc': 'Description is too short. It should be at least 10 characters long.'})
         if profanity.contains_profanity(self.desc):
-            raise ValidationError({'desc': 'Description contains prohibited or inappropriate content.'})
+            raise ValidationError(
+                {'desc': 'Description contains prohibited or inappropriate content.'})
 
         # Image validation
         if self.image:
             ext = os.path.splitext(self.image.name)[1].lower()
             valid_extensions = ['.jpg', '.jpeg', '.png']
             if ext not in valid_extensions:
-                raise ValidationError({'image': 'Unsupported file extension. Allowed extensions are: .jpg, .jpeg, .png'})
+                raise ValidationError(
+                    {'image': 'Unsupported file extension. Allowed extensions are: .jpg, .jpeg, .png'})
 
             if self.image.size > 5 * 1024 * 1024:
-                raise ValidationError({'image': 'Image file size cannot exceed 5MB.'})
+                raise ValidationError(
+                    {'image': 'Image file size cannot exceed 5MB.'})
 
             image = Image.open(self.image)
             width, height = image.size
             if width < 800 or height < 600:
-                raise ValidationError({'image': 'Image resolution too low. Minimum resolution is 800x600.'})
+                raise ValidationError(
+                    {'image': 'Image resolution too low. Minimum resolution is 800x600.'})
             if width > 4000 or height > 3000:
-                raise ValidationError({'image': 'Image resolution too high. Maximum resolution is 4000x3000.'})
+                raise ValidationError(
+                    {'image': 'Image resolution too high. Maximum resolution is 4000x3000.'})
 
     def save(self, *args, **kwargs):
         # Set the original_qtty only when creating a new object
@@ -229,11 +240,6 @@ class Product(models.Model):
             self.original_qtty = self.qtty
         super(Product, self).save(*args, **kwargs)
 
-    
-
-
-
-     
 
 class Review(models.Model):
     product = models.ForeignKey(
@@ -244,8 +250,7 @@ class Review(models.Model):
 
     def __str__(self):
         return f'Review for {self.product.name} by {self.id}'
-from django.db import models
-from django.contrib.auth.models import User
+
 
 class Transporter(models.Model):
 
@@ -276,9 +281,10 @@ class Transporter(models.Model):
     )
 
     experience = models.IntegerField(default=0)
-    id_front = models.ImageField(upload_to='static/images/Transporters', null=True, blank=True)
-    id_back = models.ImageField(upload_to='static/images/Transporters', null=True, blank=True)
-
+    id_front = models.ImageField(
+        upload_to='static/images/Transporters', null=True, blank=True)
+    id_back = models.ImageField(
+        upload_to='static/images/Transporters', null=True, blank=True)
 
     def save(self, *args, **kwargs):
         # Set default transporter name to the user's name if not provided
@@ -288,8 +294,6 @@ class Transporter(models.Model):
 
     def __str__(self):
         return self.transporter_name or f"Transporter {self.user.username}"
-
-
 
 
 # models.py
@@ -539,8 +543,6 @@ class Banner(models.Model):
     def __str__(self):
         return self.title
 
-    
-
 
 class Cart(models.Model):
     user = models.ForeignKey(
@@ -704,7 +706,6 @@ class OrderItem(models.Model):
         Order, on_delete=models.CASCADE, related_name='items')
     product_id = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name='prouct_ids', blank=True, null=True)
-    
 
     product_name = models.CharField(
         max_length=100, default="Unknown Product")  # Default value
@@ -769,122 +770,14 @@ class Profile(models.Model):
     phone = models.CharField(max_length=15, blank=True, null=True)
 
 
-class FarmingSystems(models.Model):
-    name = models.CharField(max_length=50, blank=False)
-    description = models.TextField(max_length=255, blank=False)
-    rating = models.IntegerField(default=0)
-    in_stock = models.BooleanField(default=True)
+# consaltation
 
-class FarmingSystemImages(models.Model):
-    farmingsystem= models.ForeignKey(FarmingSystems,related_name='images',on_delete=models.CASCADE)
-    uploaded_at=models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(
-        upload_to='static/images/FarmingSystems', null=True, blank=True)
-
-
-
-class Quotation(models.Model):
-    quotation_id = models.UUIDField(
-        default=uuid.uuid4, editable=False, unique=True)
-    cart = models.OneToOneField(
-        'Cart', on_delete=models.CASCADE, related_name="quotation")
-    buyer = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="buyer_quotations")
-    seller = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="seller_quotations")
-    customer_name = models.CharField(max_length=100, null=True, blank=True)
-    customer_email = models.EmailField(null=True, blank=True)
-    customer_phone = models.CharField(max_length=15, null=True, blank=True)
-    total_amount = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True)
-    discount_amount = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True)
-    final_amount = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True)
-    valid_until = models.DateField(null=True, blank=True)
-    status = models.CharField(max_length=20, choices=[
-        ('Pending', 'Pending'),
-        ('Accepted', 'Accepted'),
-        ('Rejected', 'Rejected'),
-        ('Expired', 'Expired')
-    ], default='Pending')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"Quotation {self.quotation_id} for Cart {self.cart.id}"
-
-    def calculate_final_amount(self):
-        """Calculate the final amount after applying any discount."""
-        if self.discount_amount:
-            self.final_amount = max(
-                self.total_amount - self.discount_amount, 0)
-        else:
-            self.final_amount = self.total_amount
-
-    def save(self, *args, **kwargs):
-        # Calculate the total amount from the cart's total cost
-        self.total_amount = self.cart.total_cost
-
-        # Calculate final amount based on discount
-        self.calculate_final_amount()
-
-        # Automatically set valid_until date if not provided (e.g., 30 days from creation)
-        if not self.valid_until:
-            self.valid_until = timezone.now().date() + timezone.timedelta(days=30)
-
-        # Ensure status is set to "Expired" if validity has passed
-        if self.valid_until and timezone.now().date() > self.valid_until:
-            self.status = 'Expired'
-
-        super(Quotation, self).save(*args, **kwargs)
-
-
-class PaymentMethod(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='payment_method')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.user.username}'s Payment Method"
-
-
-class CreditCardDetails(models.Model):
-    payment_method = models.OneToOneField(
-        PaymentMethod, on_delete=models.CASCADE, related_name='credit_card_details')
-    card_number = models.CharField(max_length=16)
-    expiry_date = models.DateField()
-    card_holder_name = models.CharField(max_length=100)
-    cvv = models.CharField(max_length=4)
-
-    def __str__(self):
-        return f"Credit Card ending in {self.card_number[-4:]}"
-
-
-class MpesaDetails(models.Model):
-    payment_method = models.OneToOneField(
-        PaymentMethod, on_delete=models.CASCADE, related_name='mpesa_details')
-    phone_number = models.CharField(max_length=15)
-    account_name = models.CharField(max_length=100, blank=True, null=True)
-
-    def __str__(self):
-        return f"Mpesa Account - {self.phone_number}"
-
-
-class TeamMember(models.Model):
+class Consultant(models.Model):
     name = models.CharField(max_length=255)
-    position = models.CharField(max_length=255)
-    image = models.ImageField(null=True, blank=False)
-    department = models.CharField(max_length=255)
+    field = models.CharField(max_length=255)
+    description = models.TextField()
+    rate = models.CharField(max_length=50)
+    img = models.ImageField(upload_to='consultants/')
 
-class GardenSystems (models.Model):
-    name=models.CharField(max_length=255)
-    description=models.TextField(max_length=350)
-    rating=models.IntegerField(default=0)
-    
-class GardenSystemImages(models.Model):
-    gardensystem= models.ForeignKey(GardenSystems,related_name='images',on_delete=models.CASCADE)
-    image = models.ImageField(
-        upload_to='images/GardenSystems', null=True, blank=True)
-    uploaded_at=models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.name
