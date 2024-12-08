@@ -54,9 +54,12 @@ function WhyChooseDetailed() {
     ]
 
     // Smooth scrolling function
-    function scrollToSection(id, offset = 170) {
+    
+    function scrollToSection(id, offset) {
         const element = document.getElementById(id);
         if (element) {
+            const screenWidth = window.innerWidth;
+            screenWidth >= 1024 ? offset = 170 : offset = 140;
             const elementPosition = element.getBoundingClientRect().top + window.scrollY;
             const offsetPosition = elementPosition - offset;
 
@@ -74,40 +77,40 @@ function WhyChooseDetailed() {
             <Nav />
         </div>
                  
-        <div className="DynamicContent">
+        <div className="DynamicContent pb-[120px]">
             {/*Left Static Sidebar */}
             <div className="LeftNavbar w-[125px] lg:w-[330px] h-full fixed top-[140px]  bg-[#008000]">
-                <div onClick={() => scrollToSection("TechnologyFarming", 170)}  className='ml-[4px] lg:ml-[25px] mt-[40px]'>
-                    <p className="text-[11px] cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out  lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] mb-[30px] lg:mb-[10px]"> Technology Farming</p>
+                <div onClick={() => scrollToSection("TechnologyFarming")}  className='ml-[4px] lg:ml-[25px] lg:mt-[40px]'>
+                    <p className="text-[11px] cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out  lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] lg:mb-[10px]"> Technology Farming</p>
                 </div>
                     
-                <div onClick={() => scrollToSection("FoodSecurity", 170)} className='ml-[4px] lg:ml-[25px]'>
-                    <p  className="text-[11px]  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out  lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] mb-[30px] lg:mb-[10px]"> Food Security</p>
+                <div onClick={() => scrollToSection("FoodSecurity")} className='ml-[4px] lg:ml-[25px]'>
+                    <p  className="text-[11px]  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out  lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] lg:mb-[10px]"> Food Security</p>
                 </div>
                   
                 <div className='ml-[4px] lg:ml-[25px]'>
-                    <p onClick={() => scrollToSection("VerticalFarming", 170)} className="text-[11px] cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out  lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] mb-[30px] lg:mb-[10px]"> Vertical Farming</p>
+                    <p onClick={() => scrollToSection("VerticalFarming")} className="text-[11px] cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out  lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] lg:mb-[10px]"> Vertical Farming</p>
                 </div>
 
                 <div className='ml-[4px] lg:ml-[25px]'>
-                    <p onClick={() => scrollToSection("UrbanFarming",170)} className="text-[11px]  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] mb-[30px] lg:mb-[10px]"> Urban Farming</p>
+                    <p onClick={() => scrollToSection("UrbanFarming")} className="text-[11px]  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] lg:mb-[10px]"> Urban Farming</p>
                 </div>
                 
                 <div className='ml-[4px] lg:ml-[25px]'>
-                    <p onClick={() => scrollToSection("IndoorFarming", 170)} className="text-[11px]  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] mb-[30px] lg:mb-[10px]"> Indoor Farming</p>
+                    <p onClick={() => scrollToSection("IndoorFarming")} className="text-[11px]  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] lg:mb-[10px]"> Indoor Farming</p>
                 </div>                                                             
             </div> {/*Side Bar*/}
 
             {/*Right Back Button */}
-            <div className='lg:fixed lg:right-[10px] lg:top-[170px] lg:h-full'>
+            <div className='hidden lg:block lg:fixed lg:right-[10px] lg:top-[170px] lg:h-full'>
                 <Link to= '/about-us'>
                     <img src='/static/media/image10.png' alt='Back' />
                 </Link>
             </div>
         
             {/* Main Content */}
-            <div className="MainContent relative block ml-[125px] lg:ml-[330px] lg:mr-[60px] pb-[20px] top-[130px] ">
-                <div className="MiddleContainer my-[40px] mx-[8px] lg:mx-[80px]">                        
+            <div className="MainContent relative block ml-[125px] lg:ml-[330px] lg:mr-[60px] pb-[200px] top-[140px] lg:top-[130px] ">
+                <div className="MiddleContainer lg:my-[40px] mx-[8px] lg:mx-[80px]">                        
                     <div className='PageContents'>
                         {PageData.map((data) => (
                             <PageStructure id={data.id} Heading={data.Heading} MajorImage={data.MajorImage} SubImage={data.SubImage} LeftText={data.LeftText} MiddleText={data.MiddleText} RightText={data.RightText}/>
@@ -125,9 +128,9 @@ function WhyChooseDetailed() {
 // Reusable Page Component
 function PageStructure({id,Heading,MajorImage, SubImage,LeftText, MiddleText, RightText }) {
     return (
-        <div id={id} className='Reusablestructure mt-[40px]'>
+        <div id={id} className='Reusablestructure lg:mt-[40px]'>
             {/* Main Title */}
-            <div className="FirstTitle block py-[18px] lg:py-[10px]">
+            <div className="FirstTitle block py-[10px] lg:py-[10px]">
                 <h1 className="text-black font-inter lg:text-[35px] text-[15px] lg:text-start font-[700] my-0">{Heading}</h1>
             </div>
             {/*Major Image */}
