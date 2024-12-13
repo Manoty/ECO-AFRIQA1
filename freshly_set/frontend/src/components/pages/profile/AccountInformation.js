@@ -93,9 +93,9 @@ function AccountInformation() {
     //     fetchProfile()
     // },[loading])
     return (
-        <div className="flex">
+        <div className="lg:flex">
             <div className="block">
-                <h2 className="freshlyGreenText text-[22px] font-inter text-start">Account Information</h2>
+                <h2 className="freshlyGreenText text-[22px] font-inter text-start my-0">Account Information</h2>
                 <h4 className="text-[#000000]/[50%] text-[15px]">Manage Your Account Information</h4>
 
                 {/* Profile Image */}

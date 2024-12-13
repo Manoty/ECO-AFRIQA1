@@ -34,7 +34,7 @@ function ProfileSidebar({ setSelectedSection }) {
       <IoMdMenu className='lg:hidden absolute right-0 mx-[20px] w-[30px] h-[30px] pt-[15px]'
         onClick={()=> showMenu(1)}
       />
-      <div className={`SidebarBody ${clicked[1] ? "block" : "hidden lg:flex "} float lg:flex  top-0  h-[100%] pt-[13px]`}
+      <div className={`SidebarBody ${clicked[1] ? "block" : "hidden lg:flex "} float lg:flex  top-0  h-[100%] lg:pt-[13px]`}
       onClick={()=> showMenu(1)}
       >
       <ul className="fixed flex-col h-full justify-between  bg-gradient-to-r from-[#008000]  to-[#001A00] via-[#008000] w-[235.64px] pb-[42.7px]">

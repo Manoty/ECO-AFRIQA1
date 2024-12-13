@@ -59,16 +59,19 @@ function Profile() {
     <div>
       <Nav />
       
-      <div className="flex mt-[120px]">
+      <div className="lg:flex lg:mt-[120px]">
         {/* Sidebar */}
-        <div className="w-[240px]">
+        <div className="flex justify-end lg:block w-[180px] lg:w-[240px]">
             <ProfileSidebar setSelectedSection={setSelectedSection} />
 
         </div>
 
         {/* Main content area */}
-        <div className="flex-1 lg:ml-[69.36px] mt-[60px]">
-          {renderSection()}
+        <div className="lg:flex-1 lg:ml-[69.36px] lg:mt-[60px]">
+          <div className='mt-[20px] lg:mt-0'>
+            {renderSection()}
+          </div>
+          
         </div>
       </div>
     </div>
