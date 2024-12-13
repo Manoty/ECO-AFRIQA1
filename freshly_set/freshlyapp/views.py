@@ -1028,7 +1028,6 @@ class FarmerListView(APIView):
         return paginator.get_paginated_response(serializer.data)
 
 
-<<<<<<< HEAD
 
 #consaltations
 from .models import Consultant
@@ -1040,7 +1039,8 @@ def consultant_list(request):
     consultants = Consultant.objects.all()
     serializer = ConsultantSerializer(consultants, many=True)
     return Response(serializer.data)
-=======
+
+
 @permission_classes([AllowAny])
 class GetFarmingSystems(APIView):
 
@@ -1867,5 +1867,4 @@ class UploadGardenSystemImage(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
->>>>>>> 491e3625cc0035a51061e9037a6bb39ed8c60ff8
 

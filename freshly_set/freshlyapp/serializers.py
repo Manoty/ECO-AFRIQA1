@@ -460,7 +460,6 @@ class FAQMainPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = FAQMainPage
         fields = ['id', 'question', 'answer']
-<<<<<<< HEAD
         
         
         
@@ -472,7 +471,6 @@ class ConsultantSerializer(serializers.ModelSerializer):
         model = Consultant
         fields = ['id', 'name', 'field', 'description', 'rate', 'img']
 
-=======
 
 
 class FarmingSystemSerializer(serializers.ModelSerializer):
@@ -700,5 +698,4 @@ class FarmingSystemImageSerializer(serializers.ModelSerializer):
     class Meta:
         model =FarmingSystemImages
         fields=['__all__']
->>>>>>> 491e3625cc0035a51061e9037a6bb39ed8c60ff8
 
