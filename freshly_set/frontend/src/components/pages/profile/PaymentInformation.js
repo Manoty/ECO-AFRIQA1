@@ -13,12 +13,12 @@ function PaymentInformation() {
   const OrdersMade = 6;
 
   return (
-    <div className='PaymentInformation mb-[20px] lg:mb-[50px]'>
-      <div className='PaymentInformationWrapper mx-[10px] lg:mr-[60px]'>
+    <div className='PaymentInformation pb-[50px]'>
+      <div className='PaymentInformationWrapper mx-[12px] lg:mr-[60px]'>
         {/*Header */}
         <div className='PaymentsHeader'>
           <div className='PaymentHeading'>
-            <p className='text-start text-[18px] lg:text-[22px] text-[#008000] font-inter font-[700] my-0 '>Payment Information</p>
+            <p className='text-start text-[20px] lg:text-[22px] text-[#008000] font-inter font-[900] my-0 '>Payment Information</p>
           </div>
           <div className='PaymentSubHeading mt-[6px] lg:mt-[10px]'>
             <p className='text-start text-[13px] lg:text-[15px] text-[#00000080] font-inter font-[700] my-0 '>Manage Your Payment Information</p>
