@@ -95,7 +95,7 @@ function AccountInformation() {
     return (
         <div className="lg:flex mx-[12px] lg:mx-0 pb-[50px]">
           <div className="block">
-          <h2 className="freshlyGreenText text-[20px] lg:text-[22px] font-inter font-[900] text-start my-0">Account Information</h2>
+          <h2 className="freshlyGreenText text-[20px] lg:text-[24px] font-inter font-[900] text-start my-0">Account Information</h2>
           <div className='mt-[6px] lg:mt-[10px]'>
             <h4 className="text-start text-[13px] lg:text-[15px] text-[#00000080] font-inter font-[700] my-0">Manage Your Account Information</h4>
           </div>

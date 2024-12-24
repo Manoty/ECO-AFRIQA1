@@ -30,7 +30,7 @@ function ProfileSidebar({ setSelectedSection }) {
   }, [clicked])
 
   return (
-    <div className="SideNavbar mt-[120px] lg:mt-0">
+    <div className="SideNavbar z-20 mt-[120px] lg:mt-0">
       <IoMdMenu className='lg:hidden absolute right-0 mx-[20px] w-[30px] h-[30px] pt-[15px]'
         onClick={()=> showMenu(1)}
       />
