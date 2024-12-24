@@ -1,0 +1,86 @@
+[
+    {
+        "id": "1",
+        "ServiceImage": "/static/media/productsHero.png",
+        "ServiceName": "Hydroponics System",
+        "ServiceCategory": "Farming Systems",
+        "ServiceDate": "30TH SEPTMBER 2024"
+    },
+    {
+        "id": "2",
+        "ServiceImage": "/static/media/gardens1.png",
+        "ServiceName": "Raised Bed Gardens",
+        "ServiceCategory": "Garden Setups",
+        "ServiceDate": "12TH AUGUST 2024"
+    },
+    {
+        "id": "3",
+        "ServiceImage": "/static/media/gardens1.png",
+        "ServiceName": "Vertical System",
+        "ServiceCategory": "Farming Systems",
+        "ServiceDate": "26TH DECEMBER 2024"
+    },
+    {
+        "id": "4",
+        "ServiceImage": "/static/media/productsHero.png",
+        "ServiceName": "Hydroponics System",
+        "ServiceCategory": "Farming Systems",
+        "ServiceDate": "30TH SEPTMBER 2024"
+    },
+    {
+        "id": "5",
+        "ServiceImage": "/static/media/gardens1.png",
+        "ServiceName": "Raised Bed Gardens",
+        "ServiceCategory": "Garden Setups",
+        "ServiceDate": "12TH AUGUST 2024"
+    },
+    {
+        "id": "6",
+        "ServiceImage": "/static/media/gardens1.png",
+        "ServiceName": "Vertical System",
+        "ServiceCategory": "Farming Systems",
+        "ServiceDate": "26TH DECEMBER 2024"
+    },
+    {
+        "id": "7",
+        "ServiceImage": "/static/media/productsHero.png",
+        "ServiceName": "Hydroponics System",
+        "ServiceCategory": "Farming Systems",
+        "ServiceDate": "30TH SEPTMBER 2024"
+    },
+    {
+        "id": "8",
+        "ServiceImage": "/static/media/gardens1.png",
+        "ServiceName": "Raised Bed Gardens",
+        "ServiceCategory": "Garden Setups",
+        "ServiceDate": "12TH AUGUST 2024"
+    },
+    {
+        "id": "9",
+        "ServiceImage": "/static/media/gardens1.png",
+        "ServiceName": "Vertical System",
+        "ServiceCategory": "Farming Systems",
+        "ServiceDate": "26TH DECEMBER 2024"
+    },
+    {
+        "id": "10",
+        "ServiceImage": "/static/media/productsHero.png",
+        "ServiceName": "Hydroponics System",
+        "ServiceCategory": "Farming Systems",
+        "ServiceDate": "30TH SEPTMBER 2024"
+    },
+    {
+        "id": "11",
+        "ServiceImage": "/static/media/gardens1.png",
+        "ServiceName": "Raised Bed Gardens",
+        "ServiceCategory": "Garden Setups",
+        "ServiceDate": "12TH AUGUST 2024"
+    },
+    {
+        "id": "12",
+        "ServiceImage": "/static/media/gardens1.png",
+        "ServiceName": "Vertical System",
+        "ServiceCategory": "Farming Systems",
+        "ServiceDate": "26TH DECEMBER 2024"
+    }    
+]
