@@ -7,7 +7,7 @@ function Help() {
             <div className="HelpWrapper mx-[12px] lg:mx-0 lg:mr-[80px]">
                 {/*Page Heading */}
                 <div className="Heading mr-[80px] lg:mr-0">
-                    <p className="text-start text-[#008000] font-inter font-[900] lg:font-[700] text-[20px] lg:text-[24px] my-0 ">Need Help ? We’ve got your back</p>
+                    <p className="text-start text-[#008000] font-inter font-[900] text-[20px] lg:text-[24px] my-0 ">Need Help ? We’ve got your back</p>
                 </div>
 
                 {/*Cards Grids */}

@@ -5,11 +5,11 @@ import QuotationHistoryList from './json/QuotationHistoryList.json'
 function QuotationHistory() {
   return (
     <section className='QuotationHistory pb-[50px]'>
-      <div className='QuotationHistoryWrapper mx-[12px] lg:mr-[60px]'>
+      <div className='QuotationHistoryWrapper mx-[12px] lg:ml-0 lg:mr-[60px]'>
      {/*Header */}
         <div className='QuotationHeader'>
           <div className='QuotationHeading'>
-            <p className='text-start text-[20px] lg:text-[22px] text-[#008000] font-inter font-[900] my-0 '>Your Quotation History</p>
+            <p className='text-start text-[20px] lg:text-[24px] text-[#008000] font-inter font-[900] my-0 '>Your Quotation History</p>
           </div>
           <div className='QuotationSubHeading block lg:hidden mt-[6px] lg:mt-[10px]'>
             <p className='text-start text-[13px] lg:text-[15px] text-[#00000080] font-inter font-[700] my-0 '>Manage Your Past Quotation Requests</p>
