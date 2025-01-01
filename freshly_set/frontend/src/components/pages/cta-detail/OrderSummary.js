@@ -45,51 +45,80 @@ function OrderSummary() {
       payment_method: 'mpesa',
     };
     return (
-        <div className="flex flex-col space-y-0 mt-2">
-            <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-                <input
-                    className="border-none outline-none font-inter font-[700] text-[16px] w-full"
-                    placeholder="First and Last Name"
-                    value={service?name:orderName}
-                    onChange={(e) => setOrderName(e.target.value)}
-                    readOnly={isAuthenticated}
-                />
-                <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]" />
+        <div className="OrderSummary">
+            {/*location */}
+            <div className="block mt-[20px]">
+                <div className="InputBox flex justify-between  rounded-[8px] overflow-hidden object-fill px-[10px] border-solid border-[1px] border-[#0000006B] shadow-md shadow-[#00000040]">
+                    <div className="FieldLabel my-auto mr-[6px]">
+                        <p className="text-start text-[#0000008F] text-[12px] lg:text-[14px] font-inter  font-[900] my-0 ">Owner:</p>
+                    </div>
+                    <input className="font-inter font-[800] text-[12px] lg:text-[14px] border-none outline-none my-[2px] py-[4px] w-[100%]"
+                        placeholder="First and Last Name"
+                        value={service?name:orderName}
+                        onChange={(e) => setOrderName(e.target.value)}
+                        readOnly={isAuthenticated}
+                    />
+                    <div className="editButton my-auto ml-[6px]">
+                            <img src="/static/media/edit.png" alt="Edit" className="w-[28px] lg:w-[32px] h-[28px] lg:h-[32px]" />
+                    </div>   
+                </div>
+            </div>
+    
+            {/*location */}
+            <div className="block mt-[12px] lg:mt-[10px]">
+                <div className="InputBox flex justify-between  rounded-[8px] overflow-hidden object-fill px-[10px] border-solid border-[1px] border-[#0000006B] shadow-md shadow-[#00000040]">
+                    <div className="FieldLabel my-auto mr-[6px]">
+                        <p className="text-start text-[#0000008F] text-[12px] lg:text-[14px] font-inter  font-[900] my-0 ">Location:</p>
+                    </div>
+                    <input className="font-inter font-[800] text-[12px] lg:text-[14px] border-none outline-none my-[2px] py-[4px] w-[100%]"
+                        placeholder="Your Location"
+                        value={orderLocation}
+                        onChange={(e) => setOrderLocation(e.target.value)}
+                        readOnly={isAuthenticated}
+                    />
+                    <div className="editButton my-auto ml-[6px]">
+                        <img src="/static/media/edit.png" alt="Edit" className="w-[28px] lg:w-[32px] h-[28px] lg:h-[32px]" />
+                    </div>   
+                </div>
             </div>
 
-            <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-                <input
-                    className="border-none outline-none font-inter font-[700] text-[16px] w-full"
-                    placeholder="Email"
-                    value={orderEmail}
-                    onChange={(e) => setOrderEmail(e.target.value)}
-                    readOnly={isAuthenticated}
-                />
-                <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]" />
+            {/*Email Address */}
+            <div className="block mt-[12px] lg:mt-[10px]">
+                <div className="InputBox flex justify-between  rounded-[8px] overflow-hidden object-fill px-[10px] border-solid border-[1px] border-[#0000006B] shadow-md shadow-[#00000040]">
+                    <div className="FieldLabel my-auto mr-[6px]">
+                        <p className="text-start text-[#0000008F] text-[12px] lg:text-[14px] font-inter  font-[900] my-0 ">Email:</p>
+                    </div>
+                    <input className="font-inter font-[800] text-[12px] lg:text-[14px] border-none outline-none my-auto py-[4px] w-[100%]"
+                        placeholder="Your Email Address"
+                        value={orderEmail}
+                        onChange={(e) => setOrderEmail(e.target.value)}
+                        readOnly={isAuthenticated}
+                    />
+                    <div className="editButton my-auto ml-[6px]">
+                        <img src="/static/media/edit.png" alt="Edit" className="w-[28px] lg:w-[32px] h-[28px] lg:h-[32px]" />
+                    </div>                  
+                </div>
             </div>
-
-            <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-                <input
-                    className="border-none outline-none font-inter font-[700] text-[16px] w-full"
-                    placeholder="Phone"
-                    value={orderPhone}
-                    onChange={(e) => setOrderPhone(e.target.value)}
-                    readOnly={isAuthenticated}
-                />
-                <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]" />
+                        
+            {/*Phone Number */}
+            <div className="block mt-[12px] lg:mt-[10px]">
+                <div className="InputBox flex justify-between  rounded-[8px] overflow-hidden object-fill px-[10px] border-solid border-[1px] border-[#0000006B] shadow-md shadow-[#00000040]">
+                    <div className="FieldLabel my-auto mr-[6px]">
+                        <p className="text-start text-[#0000008F] text-[12px] lg:text-[14px] font-inter  font-[900] my-0 ">Phone:</p>
+                    </div>
+                    <input className="font-inter font-[800] text-[12px] lg:text-[14px] border-none outline-none my-[2px] py-[4px] w-[100%]"
+                        placeholder="Your Phone Number"
+                        value={orderPhone}
+                        onChange={(e) => setOrderPhone(e.target.value)}
+                        readOnly={isAuthenticated}
+                    />
+                    <div className="editButton my-auto ml-[6px]">
+                        <img src="/static/media/edit.png" alt="Edit" className="w-[28px] lg:w-[32px] h-[28px] lg:h-[32px]" />
+                    </div>              
+                </div>
             </div>
-
-            <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px] mb-0">
-                <input
-                    className="border-none outline-none font-inter font-[700] text-[16px] w-full"
-                    placeholder="Location"
-                    value={orderLocation}
-                    onChange={(e) => setOrderLocation(e.target.value)}
-                    readOnly={isAuthenticated}
-                />
-                <img src="/static/media/edit.png" alt="Edit" className="ml-[4px]" />
-            </div>
-        </div>)
+        </div>
+    )
 }
 
 export default OrderSummary
