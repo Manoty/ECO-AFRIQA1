@@ -21,7 +21,7 @@ function About() {
   return (
     <div className="overflow-x-hidden">
       <Nav />
-      <SubNavbar partnership={true} sections={[{title:"Freshly Functions", id: "functions"},{title:"Freshly Objectives", id: "objectives"}, {title:"Freshly Testimonials", id: "testimonials"}, {title:"Freshly Team", id: "team"}]}/>
+      <SubNavbar partnership={true} sections={[{title:"Freshly Objectives", id: "objectives"}, {title:"Freshly Testimonials", id: "testimonials"}, {title:"Freshly Team", id: "team"}]}/>
 
       <Hero />
       <WhyChoose />

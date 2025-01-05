@@ -64,13 +64,13 @@ const smoothScroll = (event, targetId) => {
     <div className={`fixed flex w-[100%] lg:mx-auto z-40 transition-all duration-500 ease-in-out rounded-[26px]  ${visible ? 'top-[120px]' : '-top-[100px]'}`}
       style={{ transform: visible ? 'translateY(0)' : 'translateY(-100%)' }}
     >
-      <nav className="flex justify-evenly mx-auto bg-black/[0.40] backdrop-blur-[17px] mt-[22px] lg:mt-[50px] rounded-[21px] lg:rounded-[26px] px-[10px] lg:px-[30px]">
-        <div className="flex ">
+      <nav className="flex justify-evenly mx-auto w-[90%] lg:w-fit bg-black/40 backdrop-blur-[17px] mt-[22px] lg:mt-[50px] rounded-[21px] lg:rounded-[26px] px-[4px] lg:px-[30px]">
+        <div className="flex justify-between">
           
           {
             sections.map((section) => (
               <>
-                <div className="bg-[#D9D9D9]/[0.10] cursor-pointer mx-[10px] lg:mx-[20px] my-[10px] lg:my-[14px] rounded-[4px] lg:rounded-[8px] py-[4px] lg:py-[14px] px-[16px] lg:px-[34px] whitespace-nowrap"
+                <div className="bg-[#D9D9D9]/[0.10] cursor-pointer mx-[6px] lg:mx-[20px] my-[10px] lg:my-[14px] rounded-[4px] lg:rounded-[8px] py-[4px] lg:py-[14px] px-[6px] lg:px-[34px] whitespace-nowrap"
                   onMouseEnter={() => setActiveSection(section.id)}
                   onMouseLeave={() => activeSection !== section.id && setActiveSection('')} 
                   onClick={(e) => {
@@ -78,7 +78,7 @@ const smoothScroll = (event, targetId) => {
                       setActiveSection(section.id);
                     }}
                   >
-                  <a className="text-white text-center text-[10px] lg:text-[20px] font-inter font-[900] "
+                  <a className="text-white text-center text-[8px] lg:text-[20px] font-inter font-[900] "
                     href={`#${section.id}`}
                     
                     >
