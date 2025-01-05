@@ -20,7 +20,7 @@ function Hero({ id }) {
         <div className="HeroInnerContents -mt-[50px] pb-[140px] lg:pb-[250px]  bg-hero-homepage bg-no-repeat bg-cover">
             <div className='HeroWrapper mt-[150px]  mx-[10px] lg:mx-[270px]'>
                 {/*Hero Title */}
-                <div data-aos="fade-in" data-aos-duration="5000" data-aos-easing="" className='HeroTittle pt-[130px] lg:pt-[170px] mx-[6px]'>
+                <div data-aos="fade-in" data-aos-duration="5000" data-aos-easing="" className='HeroTittle pt-[100px] lg:pt-[170px] mx-[6px]'>
                     <h1 className="text-start lg:text-center font-inter font-[700] text-[26px] lg:text-[60px] text-[#FFFFFF] my-0">Urbanization Farming and Vertical Farming</h1>
                 </div>
                 {/*Hero Details */}
