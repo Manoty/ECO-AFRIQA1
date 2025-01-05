@@ -70,7 +70,7 @@ const smoothScroll = (event, targetId) => {
           {
             sections.map((section) => (
               <>
-                <div className="bg-[#D9D9D9]/[0.10] cursor-pointer mx-[10px] lg:mx-[20px] my-[10px] lg:my-[14px] rounded-[4px] lg:rounded-[8px] py-[6px] lg:py-[14px] px-[16px] lg:px-[34px] whitespace-nowrap"
+                <div className="bg-[#D9D9D9]/[0.10] cursor-pointer mx-[10px] lg:mx-[20px] my-[10px] lg:my-[14px] rounded-[4px] lg:rounded-[8px] py-[4px] lg:py-[14px] px-[16px] lg:px-[34px] whitespace-nowrap"
                   onMouseEnter={() => setActiveSection(section.id)}
                   onMouseLeave={() => activeSection !== section.id && setActiveSection('')} 
                   onClick={(e) => {
