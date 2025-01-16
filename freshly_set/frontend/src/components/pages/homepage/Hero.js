@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import useSectionObserver from '../../UseSectionObserver';
 import { AuthContext } from '../../context/AuthContext';
 import AOS from 'aos';
-import 'aos/dist/aos.css'; // You can also use <link> for styles
+import 'aos/dist/aos.css'; 
 function Hero({ id }) {
     useSectionObserver(`#${id}`);
     console.log("hero id", id)
@@ -20,12 +20,12 @@ function Hero({ id }) {
         <div className="HeroInnerContents -mt-[50px] pb-[140px] lg:pb-[250px]  bg-hero-homepage bg-no-repeat bg-cover">
             <div className='HeroWrapper mt-[150px]  mx-[10px] lg:mx-[270px]'>
                 {/*Hero Title */}
-                <div data-aos="fade-in" data-aos-duration="5000" data-aos-easing="" className='HeroTittle pt-[100px] lg:pt-[170px] mx-[6px]'>
-                    <h1 className="text-start lg:text-center font-inter font-[700] text-[26px] lg:text-[60px] text-[#FFFFFF] my-0">Urbanization Farming and Vertical Farming</h1>
+                <div data-aos="fade-in" data-aos-duration="5000" data-aos-easing="" className='HeroTittle pt-[130px] lg:pt-[170px] mx-[6px]'>
+                    <h1 className="text-start lg:text-center font-inter font-[700] text-[26px] lg:text-[60px] text-[#FFFFFF] my-0">Transform Your Space into a Green Paradise with Freshly Farms</h1>
                 </div>
                 {/*Hero Details */}
                 <div className='Herodetails mt-[20px] lg:mt-[30px] mx-[6px]'>
-                    <p className="text-start font-inter font-[400] text-[#FFF3E5] text-[14px] lg:text-[22px] my-0">Freshly Farms is known for urbanizing the food farming industry especially on horticulture. It helps farmers understand their crops and how to manage them to grow better</p>
+                    <p className="text-start font-inter font-[400] text-[#FFF3E5] text-[14px] lg:text-[22px] my-0">Freshly Farms is known for urbanizing the food farming industry especialSustainable urban farming solutions designed for every home. Explore innovative systems like cone gardens, hydroponics, and more to revolutionize how you grow.</p>
                 </div>
                 {/*Hero Button */}
                 {

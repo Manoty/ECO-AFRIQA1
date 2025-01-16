@@ -39,31 +39,29 @@ function Reviews2() {
         <div className="flex space-x-[20px] ">
           <div className="block space-y-[12px]">
             <img className="h-[400px] w-[200px] object-cover" src="/static/media/image4.jpg" alt="image4" />
-            <p className='text-black text-[24px] font-[700] z-30 absolute font-inter'>Charles Kisika</p>
+            <p className='text-black text-[24px] font-[700] z-30 absolute font-inter'>Anne W.</p>
             <p className='text-black text-[16px] font-[40] w-[199px] z-30 font-josefin absolute bottom-[15px] leading-[20.8px]'>
-            "Freshly Farm's expertise has empowered our local farmers, improving the quality and quantity of our community garden's harvests."</p>
-            
+            Freshly Farms installed my kitchen garden, and it’s been a game-changer for my family. We now enjoy fresh veggies daily!      
+              </p>   
           </div>
           <div className="block space-y-[12px]">
             <img className="h-[400px] w-[200px] object-cover" src="/static/media/image3.jpg" alt="image4" />
-            <p className='text-black text-[24px] font-[700] z-30 absolute'>Brian Ouma</p>
-            <p className='text-black text-[16px] font-[40] w-[199px] z-30 font-josefin absolute bottom-[15px] leading-[20.8px]'>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru
+            <p className='text-black text-[24px] font-[700] z-30 absolute'>Mark K.</p>
+            <p className='text-black text-[16px] font-[40] w-[199px] z-30 font-josefin absolute bottom-[30px] leading-[20.8px]'>
+            The cone garden system is amazing! It’s compact, efficient, and perfect for my urban home.
             </p>
           </div>
           <div className="block space-y-[12px]">
             <img className="h-[400px] w-[200px] object-cover" src="/static/media/image2.jpg" alt="image4" />
-            <p className='text-black text-[24px] font-[700] z-30 absolute'>Stacey Gathoni</p>
-            <p className='text-black text-[16px] font-[40] w-[199px] z-30 font-josefin absolute bottom-[15px] leading-[20.8px]'>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru
-            </p>
+            <p className='text-black text-[24px] font-[700] z-30 absolute'>Grace N.</p>
+            <p className='text-black text-[16px] font-[40] w-[199px] z-30 font-josefin absolute bottom-[30px] leading-[20.8px]'>
+            Their consultations helped me optimize my small farm. The team is knowledgeable and supportive!            </p>
           </div>
           <div className="block space-y-[12px]">
             <img className="h-[400px] w-[200px] object-cover" src="/static/media/image5.png" alt="image4" />
-            <p className='text-black text-[24px] font-[700] z-30 absolute'>Sheila Mueni</p>
-            <p className='text-black text-[16px] font-[40] w-[199px] z-30 font-josefin absolute bottom-[15px] leading-[20.8px]'>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru
-            </p>
+            <p className='text-black text-[24px] font-[700] z-30 absolute'>James O.</p>
+            <p className='text-black text-[16px] font-[40] w-[199px] z-30 font-josefin absolute bottom-[30px] leading-[20.8px]'>
+            I was impressed by their professionalism during the installation. Freshly Farms truly delivers!            </p>
           </div>
         </div>
         

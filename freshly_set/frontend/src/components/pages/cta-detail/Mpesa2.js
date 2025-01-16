@@ -83,11 +83,7 @@ function Mpesa2() {
     setService(false)
 
     try {
-<<<<<<< HEAD
       const response = await axios.post(`'${process.env.REACT_APP_API_URL}/orders/'`, !service?orderData:orderDataService, {
-=======
-      const response = await axios.post(`${DJANGO_BACKEND_URL}/orders`, !service?orderData:orderDataService, {
->>>>>>> 188ef061ad30c24d8fbba9e2bbea3da4f00e3f7f
 
         headers: {
           'Content-Type': 'application/json',

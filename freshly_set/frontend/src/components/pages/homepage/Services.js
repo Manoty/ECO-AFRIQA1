@@ -21,7 +21,7 @@ function Services() {
                             </div>
                             {/*ServiceDetails */}
                             <div className='ServiceDetails ml-[4px] lg:ml-[20px] mt-[10px] lg:mt-[24px]'>
-                                <p className="text-start text-white text-[8px] lg:text-[16px] font-[600] font-josefin my-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+                                <p className="text-start text-white text-[8px] lg:text-[16px] font-[600] font-josefin my-0">Transform your outdoor spaces with our expert garden installations. From designing lush landscapes to setting up efficient irrigation systems, we make sustainable farming easy and beautiful.</p>
                             </div>
                         </div> {/*Installation Wrapper */}
                     </div> {/*Outer Wrapper */}
@@ -33,11 +33,11 @@ function Services() {
                         <div className="ConsultationWrapper mt-[130px] lg:mt-[410px] mx-[6px] lg:mx-[20px] p-[2px] bg-[#0000007D] lg:bg-transparent rounded-[8px]  ">
                             {/*ServiceHeading */}
                             <div className="ServiceHeading ml-[4px] lg:ml-[20px] ">
-                                <p className='text-start text-white text-[14px] lg:text-[40px] font-[700] font-inter my-0'>Installations</p>
+                                <p className='text-start text-white text-[14px] lg:text-[40px] font-[700] font-inter my-0'>Consultations</p>
                             </div>
                             {/*ServiceDetails */}
                             <div className='ServiceDetails ml-[4px] lg:ml-[20px] mt-[10px] lg:mt-[24px]'>
-                                <p className="text-start text-white text-[8px] lg:text-[16px] font-[600] font-josefin my-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+                                <p className="text-start text-white text-[8px] lg:text-[16px] font-[600] font-josefin my-0">Get professional advice tailored to your farming and gardening needs. Whether you're starting a new project or optimizing an existing one, our experts are here to guide you every step of the way.</p>
                             </div>
                         </div> {/*Consultation Wrapper */}
                     </div> {/*Outer Wrapper */}
@@ -53,7 +53,7 @@ function Services() {
                             </div>
                             {/*ServiceDetails */}
                             <div className='ServiceDetails ml-[4px] lg:ml-[20px] mt-[10px] lg:mt-[24px]'>
-                                <p className="text-start text-white text-[8px] lg:text-[16px] font-[600] font-josefin my-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+                                <p className="text-start text-white text-[8px] lg:text-[16px] font-[600] font-josefin my-0">Get access to top-quality gardening tools designed for durability and efficiency. From basic hand tools to advanced farming equipment, we've got everything you need to nurture your plants.</p>
                             </div>
                         </div> {/*Installation Wrapper */}
                     </div> {/*Outer Wrapper */}
