@@ -769,6 +769,7 @@ class Profile(models.Model):
     location = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 # consaltation
@@ -777,6 +778,11 @@ class Profile(models.Model):
     
 #consaltation
 >>>>>>> 188ef061ad30c24d8fbba9e2bbea3da4f00e3f7f
+=======
+    
+    
+#consaltation
+>>>>>>> 7fe309889a518172c1462fd87cd12b9ef24fde0b
 
 class Consultant(models.Model):
     name = models.CharField(max_length=255)
@@ -788,7 +794,10 @@ class Consultant(models.Model):
     def __str__(self):
         return self.name
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 7fe309889a518172c1462fd87cd12b9ef24fde0b
 
 
 
@@ -911,4 +920,7 @@ class GardenSystemImages(models.Model):
     image = models.ImageField(
         upload_to='images/GardenSystems', null=True, blank=True)
     uploaded_at=models.DateTimeField(auto_now_add=True)
+<<<<<<< HEAD
 >>>>>>> 188ef061ad30c24d8fbba9e2bbea3da4f00e3f7f
+=======
+>>>>>>> 7fe309889a518172c1462fd87cd12b9ef24fde0b

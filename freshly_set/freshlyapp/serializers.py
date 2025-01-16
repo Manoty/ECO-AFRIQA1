@@ -466,19 +466,15 @@ class FAQMainPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = FAQMainPage
         fields = ['id', 'question', 'answer']
-<<<<<<< HEAD
-=======
-        
-        
-        
-#consoltation
-from .models import Consultant
+
+
+# consoltation
+
 
 class ConsultantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Consultant
         fields = ['id', 'name', 'field', 'description', 'rate', 'img']
-
 
 
 class FarmingSystemSerializer(serializers.ModelSerializer):
@@ -558,19 +554,17 @@ class PaymentMethodSerializer(serializers.ModelSerializer):
         fields = ['id', 'credit_card_details',
                   'mpesa_details', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
->>>>>>> 188ef061ad30c24d8fbba9e2bbea3da4f00e3f7f
-
 
 # consoltation
 
 
 class ConsultantSerializer(serializers.ModelSerializer):
     class Meta:
-<<<<<<< HEAD
+
         model = Consultant
         fields = ['id', 'name', 'field', 'description', 'rate', 'img']
-=======
-        model =FarmingSystemImages
-        fields=['__all__']
+        model = FarmingSystemImages
+        fields = ['__all__']
 
->>>>>>> 188ef061ad30c24d8fbba9e2bbea3da4f00e3f7f
+        model = FarmingSystemImages
+        fields = ['__all__']
