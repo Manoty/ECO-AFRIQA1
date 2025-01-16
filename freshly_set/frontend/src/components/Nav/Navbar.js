@@ -185,158 +185,160 @@ function Nav() {
       </nav>
 
       {/* Small Screen Navbar */}
-      <nav className={open ? "Navbar flex justify-center z-[50] lg:hidden bg-[#008000]/[85%]  w-[100%] h-[100%] fixed top-0  " : "bg-gradient-to-r from-[#008000] to-[#001A00] via-[#001A00] via-[30%] flex space-x-[14.75px] fixed top-0 w-[100%] h-[130px] lg:hidden items-center px-[10px] z-[60]"}>
-        <img className={!open ? "flex h-[62px] w-[64.25px] object-cover items-center" : "hidden"} src="/static/media/freshlyLogoWhite.png" alt="navLogo" />
-        {
-          !open && (
-            <div className="flex space-x-[35px] items-center bg-[#D9D9D9]/[10%] backdrop-blur-[50%] h-[44px] px-[30px] rounded-[15px] ]">
-              <Link to="/">
-               <li className="text-gray-100 font-inter text-[15px]">Home</li>
-              </Link>
+      <nav className={open ? "Navbar flex justify-center z-[50] lg:hidden bg-[#008000]/[85%]  w-[100%] h-[100%] fixed top-0  " : "bg-gradient-to-r from-[#008000] to-[#001A00] via-[#001A00] via-[30%] fixed top-0 w-[100%] lg:hidden items-center z-[60]"}>
+        <div className={open ? "block w-[100%]": "MobileIcons flex justify-between my-[30px] mx-[10px]"}>
+          <img className={!open ? "flex h-[62px] w-[64.25px] object-cover items-center" : "hidden"} src="/static/media/freshlyLogoWhite.png" alt="navLogo" />
+          {
+            !open && (
+              <div className="flex space-x-[26px] mx-[10px] my-auto items-center bg-[#D9D9D9]/[10%] backdrop-blur-[50%] h-[44px] px-[20px] rounded-[15px] ]">
+                <Link to="/">
+                <li className="text-gray-100 font-inter text-[15px]">Home</li>
+                </Link>
 
-              <div className='MenuIcon'>
-                <IoMdMenu onClick={() => setOpen(true)} className="text-gray-100 font-inter text-[25px]"/>
-              </div>            
-            </div>
-          )
-        }
-       
-        <div className={open ? "hidden": "MobileIcons flex"}>
-          <Link to="/cart">
-            <div className='CartIcon mx-[6px] relative'>
-              <TiShoppingCart className="text-gray-100 font-inter text-[25px]"/>
-              <div className="absolute -top-[16px] left-[13px] w-[14px] h-[14px]">
-                <p className='font-inter block w-full font-[900] bg-[#f30024] rounded-full text-center text-white text-[8px] p-[3px] my-0 '>{cartItems.length}</p>
+                <div className='MenuIcon'>
+                  <IoMdMenu onClick={() => setOpen(true)} className="text-gray-100 font-inter text-[25px]"/>
+                </div>            
               </div>
-            </div>
-          </Link>
-
-          <Link to="/notification">
-             <div className="NotificationsIcon relative mx-[6px]">
-              <IoIosNotifications className="text-gray-100 font-inter text-[25px]" />
-              <div className="absolute -top-[14px] left-[13px] w-[14px] h-[14px]">
-                <p className='font-inter block w-full font-[900] bg-[#f30024] rounded-full text-center text-white text-[8px] p-[3px] my-0 '>{NotificationsNumber}</p>
+            )
+          }
+        
+          <div className={open ? "hidden": "MobileIcons my-auto flex"}>
+            <Link to="/cart">
+              <div className='CartIcon relative'>
+                <TiShoppingCart className="text-gray-100 font-inter text-[25px]"/>
+                <div className="absolute -top-[16px] left-[13px] w-[14px] h-[14px]">
+                  <p className='font-inter block w-full font-[900] bg-[#f30024] rounded-full text-center text-white text-[8px] p-[3px] my-0 '>{cartItems.length}</p>
+                </div>
               </div>
-            </div> 
-          </Link>
-              
-          <Link to="/profile">
-             <FaRegCircleUser className="ProfileIcon mx-[8px] text-[25px] text-white/[50%]" />
-          </Link> 
-        </div> {/*Mobile Navbar Icons */}
+            </Link>
 
-        {/*Mobile Hamburger Menu */}
-        {open && (
-          <div  className="MobileHamburgerMenu block w-[100%] bg-gradient-to-b from-[#007000] to-[#000A00] shadow-md shadow-[#00000040] ">
-            <div className="CloseButton mx-[30px] mt-[30px] flex justify-end ">
-              <IoMdCloseCircleOutline onClick={() => setOpen(false)} className="text-white h-[40px] w-[40px] cursor-pointer" />
+            <Link to="/notification">
+              <div className="NotificationsIcon relative mx-[16px]">
+                <IoIosNotifications className="text-gray-100 font-inter text-[25px]" />
+                <div className="absolute -top-[14px] left-[13px] w-[14px] h-[14px]">
+                  <p className='font-inter block w-full font-[900] bg-[#f30024] rounded-full text-center text-white text-[8px] p-[3px] my-0 '>{NotificationsNumber}</p>
+                </div>
+              </div> 
+            </Link>
+                
+            <Link to="/profile">
+              <FaRegCircleUser className="ProfileIcon text-[25px] text-white/[50%]" />
+            </Link> 
+          </div> {/*Mobile Navbar Icons */}
+
+          {/*Mobile Hamburger Menu */}
+          {open && (
+            <div  className="MobileHamburgerMenu block h-[100%] w-[100%] bg-gradient-to-b from-[#007000] to-[#000A00] shadow-md shadow-[#00000040] ">
+              <div className="CloseButton mx-[30px] pt-[30px] flex justify-end ">
+                <IoMdCloseCircleOutline onClick={() => setOpen(false)} className="text-white h-[40px] w-[40px] cursor-pointer" />
+              </div>
+
+              <div className="InnerWrapper block mt-[20px] ml-[30px] mr-[50px] px-[14px] py-[16px] rounded-[15px] bg-[#D9D9D91A] ">
+                {/*User Profile */}
+                <div className='UserProfile w-fit'>
+                  <Link to="/profile" className="block ">
+                    <div className='UserImage '>
+                      <img src='/static/media/user2.png' alt='User' className='w-[77px] h-[77px]' />
+                    </div>
+                    <div className='mt-[10px]'>
+                      <p className='text-start text-white text-[25px] font-[700] font-inter my-0'>New User</p>
+                    </div>
+                  </Link>
+                </div>             
+
+                {/*Set of Links */}
+                <div className='LinksSet mt-[20px]'>
+                  <Link to="/about-us" className="About mt-[14px] flex justify-start">
+                    <div className='mr-[14px] h-[32px] w-[32px]'>
+                      <FaUsers className="w-full h-full text-white  mx-0" />
+                    </div>  
+                    <p className="text-white text-[18px] font-[700] font-inter my-auto">About</p>
+                  </Link>
+
+                  <Link to="/blogs" className="mt-[14px] flex justify-start">
+                    <div className='mr-[14px] h-[32px] w-[32px]'>
+                      <CiGlobe className="w-full h-full text-white  mx-0" />
+                    </div>  
+                    <p className="text-white text-[18px] font-[700] font-inter my-auto">Blog</p>
+                  </Link>
+
+                  <Link to="/marketplace" className="mt-[14px] flex justify-start">
+                    <div className='mr-[14px] h-[32px] w-[32px]'>
+                      <CiGlobe className="w-full h-full text-white  mx-0" />
+                    </div>  
+                    <p className="text-white text-[18px] font-[700] font-inter my-auto">Market</p>
+                  </Link>            
+
+                  <div className="mt-[14px] flex justify-start">
+                    <div className='mr-[14px] h-[32px] w-[32px]'>
+                      <CiGlobe className="w-full h-full text-white  mx-0" />
+                    </div>  
+                    <p className="text-white text-[18px] font-[700] font-inter my-auto">Products</p>
+                    <FaChevronDown onClick={() => setProductsToggled(!productsToggled)} className={`text-white text-[20px] ml-[14px] my-auto cursor-pointer ${productsToggled ? "rotate-180" : ""}`} />
+                  </div>
+
+                  <div className={`${productsToggled ? "FreshlyProducts block" : "hidden"} bg-gradient-to-r from-[#008000] to-[#001A00] rounded-[10px] ml-[120px] mt-[8px] shadow-lg px-[10px] py-[8px]`}>
+                    <div className='farmingSystems'>
+                      <Link to="/products/farmingSystems">
+                        <p className="cursor-pointer font-inter font-[500] text-start text-[16px] text-white my-0">Farming Systems</p>
+                      </Link>
+                    </div>
+                    
+                    <div className='GadernSetups mt-[8px]'>
+                      <Link to="/products/gardenSetups">
+                        <p className="cursor-pointer font-inter font-[500] text-start text-[16px] text-white my-0">Garden Setups</p>
+                      </Link>
+                    </div>                
+                  </div> {/*FreshlyProducts */}
+
+                  <div className="mt-[14px] flex justify-start">
+                    <div className='mr-[14px] h-[32px] w-[32px]'>
+                      <CiGlobe className="w-full h-full text-white  mx-0" />
+                    </div>  
+                    <p className="text-white text-[18px] font-[700] font-inter my-auto">Services</p>
+                    <FaChevronDown onClick={() => setServicesToggled(!servicesToggled)} className={`text-white text-[20px] ml-[17px] my-auto cursor-pointer ${servicesToggled? "rotate-180" : ""}`} />          
+                  </div>
+
+                  <div onClick={() => setOpen(false)} className={`${servicesToggled ? "FreshlyServices block" : "hidden"} bg-gradient-to-r from-[#008000] to-[#001A00] rounded-[10px] ml-[120px] mt-[8px] shadow-lg px-[10px] py-[8px]`}>
+                    <div className='Consultation'>
+                      <Link to="/consultation">                   
+                        <p className="cursor-pointer font-inter font-[500] text-start text-[16px] text-white my-0">Consultations</p>                                         
+                      </Link>
+                    </div>
+
+                    <div className='GardenEqiupment mt-[8px]'>
+                      <Link to="/gardenEquipment">                    
+                        <p className="cursor-pointer font-inter font-[500] text-start text-[16px] text-white my-0">Garden Equipment</p>
+                      </Link>
+                    </div>                    
+                    
+                    <div className='Installation mt-[8px]'>
+                      <Link to="/installation">
+                        <p className="cursor-pointer font-inter font-[500] text-start text-[16px] text-white my-0">Installations</p>
+                      </Link>
+                    </div>
+                  </div> {/*freshly Services */}
+
+                  <Link to="/signup" onClick={() => setActiveTab("signUp")} className="mt-[14px] flex justify-start">
+                    <div className='mr-[14px] h-[32px] w-[32px]'>
+                      <FaUser className="w-full h-full text-white  mx-0" />
+                    </div>  
+                    <p className="text-white text-[18px] font-[700] font-inter my-auto">Sign Up</p>
+                  </Link>
+
+                  <Link className="mt-[14px] flex justify-start">
+                    <div className='mr-[14px] h-[32px] w-[32px]'>
+                      <CiSettings className="w-full h-full text-white  mx-0" />
+                    </div>  
+                    <p className="text-white text-[18px] font-[700] font-inter my-auto">Settings</p>
+                  </Link>
+                </div> {/*Links Set */}
+        
+              </div> {/*InnerWrapper */}
+            </div> /*Mobile Hamburger menu */
+        
+            )}
             </div>
-
-            <div className="InnerWrapper block mt-[20px] ml-[30px] mr-[50px] px-[14px] py-[16px] rounded-[15px] bg-[#D9D9D91A] ">
-              {/*User Profile */}
-              <div className='UserProfile w-fit'>
-                <Link to="/profile" className="block ">
-                  <div className='UserImage '>
-                    <img src='/static/media/user2.png' alt='User' className='w-[77px] h-[77px]' />
-                  </div>
-                  <div className='mt-[10px]'>
-                    <p className='text-start text-white text-[25px] font-[700] font-inter my-0'>New User</p>
-                  </div>
-                </Link>
-              </div>             
-
-              {/*Set of Links */}
-              <div className='LinksSet mt-[20px]'>
-                <Link to="/about-us" className="About mt-[14px] flex justify-start">
-                  <div className='mr-[14px] h-[32px] w-[32px]'>
-                    <FaUsers className="w-full h-full text-white  mx-0" />
-                  </div>  
-                  <p className="text-white text-[18px] font-[700] font-inter my-auto">About</p>
-                </Link>
-
-                <Link to="/blogs" className="mt-[14px] flex justify-start">
-                  <div className='mr-[14px] h-[32px] w-[32px]'>
-                    <CiGlobe className="w-full h-full text-white  mx-0" />
-                  </div>  
-                  <p className="text-white text-[18px] font-[700] font-inter my-auto">Blog</p>
-                </Link>
-
-                <Link to="/marketplace" className="mt-[14px] flex justify-start">
-                  <div className='mr-[14px] h-[32px] w-[32px]'>
-                    <CiGlobe className="w-full h-full text-white  mx-0" />
-                  </div>  
-                  <p className="text-white text-[18px] font-[700] font-inter my-auto">Market</p>
-                </Link>            
-
-                <div className="mt-[14px] flex justify-start">
-                  <div className='mr-[14px] h-[32px] w-[32px]'>
-                    <CiGlobe className="w-full h-full text-white  mx-0" />
-                  </div>  
-                  <p className="text-white text-[18px] font-[700] font-inter my-auto">Products</p>
-                  <FaChevronDown onClick={() => setProductsToggled(!productsToggled)} className={`text-white text-[20px] ml-[14px] my-auto cursor-pointer ${productsToggled ? "rotate-180" : ""}`} />
-                </div>
-
-                <div className={`${productsToggled ? "FreshlyProducts block" : "hidden"} bg-gradient-to-r from-[#008000] to-[#001A00] rounded-[10px] ml-[120px] mt-[8px] shadow-lg px-[10px] py-[8px]`}>
-                  <div className='farmingSystems'>
-                    <Link to="/products/farmingSystems">
-                      <p className="cursor-pointer font-inter font-[500] text-start text-[16px] text-white my-0">Farming Systems</p>
-                    </Link>
-                  </div>
-                  
-                  <div className='GadernSetups mt-[8px]'>
-                    <Link to="/products/gardenSetups">
-                      <p className="cursor-pointer font-inter font-[500] text-start text-[16px] text-white my-0">Garden Setups</p>
-                    </Link>
-                  </div>                
-                </div> {/*FreshlyProducts */}
-
-                <div className="mt-[14px] flex justify-start">
-                  <div className='mr-[14px] h-[32px] w-[32px]'>
-                    <CiGlobe className="w-full h-full text-white  mx-0" />
-                  </div>  
-                  <p className="text-white text-[18px] font-[700] font-inter my-auto">Services</p>
-                  <FaChevronDown onClick={() => setServicesToggled(!servicesToggled)} className={`text-white text-[20px] ml-[17px] my-auto cursor-pointer ${servicesToggled? "rotate-180" : ""}`} />          
-                </div>
-
-                <div onClick={() => setOpen(false)} className={`${servicesToggled ? "FreshlyServices block" : "hidden"} bg-gradient-to-r from-[#008000] to-[#001A00] rounded-[10px] ml-[120px] mt-[8px] shadow-lg px-[10px] py-[8px]`}>
-                  <div className='Consultation'>
-                    <Link to="/consultation">                   
-                      <p className="cursor-pointer font-inter font-[500] text-start text-[16px] text-white my-0">Consultations</p>                                         
-                    </Link>
-                  </div>
-
-                  <div className='GardenEqiupment mt-[8px]'>
-                    <Link to="/gardenEquipment">                    
-                      <p className="cursor-pointer font-inter font-[500] text-start text-[16px] text-white my-0">Garden Equipment</p>
-                    </Link>
-                  </div>                    
-                  
-                  <div className='Installation mt-[8px]'>
-                    <Link to="/installation">
-                      <p className="cursor-pointer font-inter font-[500] text-start text-[16px] text-white my-0">Installations</p>
-                    </Link>
-                  </div>
-                </div> {/*freshly Services */}
-
-                <Link to="/signup" onClick={() => setActiveTab("signUp")} className="mt-[14px] flex justify-start">
-                  <div className='mr-[14px] h-[32px] w-[32px]'>
-                    <FaUser className="w-full h-full text-white  mx-0" />
-                  </div>  
-                  <p className="text-white text-[18px] font-[700] font-inter my-auto">Sign Up</p>
-                </Link>
-
-                <Link className="mt-[14px] flex justify-start">
-                  <div className='mr-[14px] h-[32px] w-[32px]'>
-                    <CiSettings className="w-full h-full text-white  mx-0" />
-                  </div>  
-                  <p className="text-white text-[18px] font-[700] font-inter my-auto">Settings</p>
-                </Link>
-              </div> {/*Links Set */}
-      
-            </div> {/*InnerWrapper */}
-          </div> /*Mobile Hamburger menu */
-       
-        )}
       </nav>
     </div>
   )

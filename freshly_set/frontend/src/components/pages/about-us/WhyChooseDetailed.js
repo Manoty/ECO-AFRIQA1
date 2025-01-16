@@ -2,392 +2,168 @@ import React, { useState } from 'react';
 import Nav from '../../Nav/Navbar';
 import { Link } from 'react-router-dom';
 
+
 function WhyChooseDetailed() {
-    const [selectedSection, setSelectedSection] = useState("technologyFarming")
-  return (
-    <div className="AllPageContent">
-        <Nav /> {/*The Upper NavBar */}
+  
+    const PageData = [
+        {            
+            "id": "TechnologyFarming",
+            "Heading": "We implement Technology In Farming",
+            "MajorImage": "/static/media/image 191.png",
+            "SubImage": "/static/media/image 194.png",
+            "LeftText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+            "MiddleText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit",           
+            "RightText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit"
+        },
+        {           
+            "id": "FoodSecurity",
+            "Heading": "We Promote Food Security",
+            "MajorImage": "/static/media/image 192.png",
+            "SubImage": "/static/media/image 193.png",
+            "LeftText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+            "MiddleText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit",           
+            "RightText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit"
+        },
+        {           
+            "id": "VerticalFarming",
+            "Heading": "We Enhance Vertical Farming",
+            "MajorImage": "/static/media/image 195.png",
+            "SubImage": "/static/media/image 14.png",
+            "LeftText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+            "MiddleText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit",           
+            "RightText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit"
+        },
+        {           
+            "id": "UrbanFarming",
+            "Heading": "We Enhance Urban Farming",
+            "MajorImage": "/static/media/image 15.png",
+            "SubImage": "/static/media/image 19.png",
+            "LeftText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+            "MiddleText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit",           
+            "RightText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit"
+        },
+        {            
+            "id": "IndoorFarming",
+            "Heading": "We Endorse Indoor Farming",
+            "MajorImage": "/static/media/image 191.png",
+            "SubImage": "/static/media/image 194.png",
+            "LeftText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+            "MiddleText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit",           
+            "RightText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud. Lorem ipsum dolor sit amet, consectetur adipisicing elit"
+        }    
+    ]
 
-       
-        <div className="DynamicContent ">
+    // Smooth scrolling function
+    
+    function scrollToSection(id, offset) {
+        const element = document.getElementById(id);
+        if (element) {
+            const screenWidth = window.innerWidth;
+            screenWidth >= 1024 ? offset = 170 : offset = 140;
+            const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth',
+            });
+        }
+    };
+
+    return (
+      <div className="WhyChooseDetailed">
+        {/*The Upper NavBar */}
+        <div className='The navbar'>
+            <Nav />
+        </div>
+                 
+        <div className="DynamicContent pb-[120px]">
             {/*Left Static Sidebar */}
-            <div className="LeftNavbar w-[125px] lg:w-[343px]   h-full fixed top-[140px] rounded-4px lg:rounded-[10px]  bg-[#008000]">
-                <div className='ml-[4px] lg:ml-[25px]'>
-                    <p onClick={() => setSelectedSection("foodSecurity")} className="text-[11px]  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out  lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] mb-[30px] lg:mb-[10px]"> Food Security</p>
+            <div className="LeftNavbar w-[125px] lg:w-[330px] h-full fixed top-[140px]  bg-[#008000]">
+                <div onClick={() => scrollToSection("TechnologyFarming")}  className='ml-[4px] lg:ml-[25px] lg:mt-[40px]'>
+                    <p className="text-[11px] cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out  lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] lg:mb-[10px]"> Technology Farming</p>
+                </div>
+                    
+                <div onClick={() => scrollToSection("FoodSecurity")} className='ml-[4px] lg:ml-[25px]'>
+                    <p  className="text-[11px]  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out  lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] lg:mb-[10px]"> Food Security</p>
                 </div>
                   
                 <div className='ml-[4px] lg:ml-[25px]'>
-                    <p onClick={() => setSelectedSection("verticalFarming")} className="text-[11px] cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out  lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] mb-[30px] lg:mb-[10px]"> Vertical Farming</p>
+                    <p onClick={() => scrollToSection("VerticalFarming")} className="text-[11px] cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out  lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] lg:mb-[10px]"> Vertical Farming</p>
                 </div>
 
                 <div className='ml-[4px] lg:ml-[25px]'>
-                    <p onClick={() => setSelectedSection("urbanFarming")} className="text-[11px]  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] mb-[30px] lg:mb-[10px]"> Urban Farming</p>
+                    <p onClick={() => scrollToSection("UrbanFarming")} className="text-[11px]  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] lg:mb-[10px]"> Urban Farming</p>
                 </div>
                 
                 <div className='ml-[4px] lg:ml-[25px]'>
-                    <p onClick={() => setSelectedSection("indoorFarming")} className="text-[11px]  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] mb-[30px] lg:mb-[10px]"> Indoor Farming</p>
-                </div>
-                
-                <div className='ml-[4px] lg:ml-[25px]'>
-                    <p onClick={() => setSelectedSection("technologyFarming")} className="text-[11px] cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out  lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] mb-[30px] lg:mb-[10px]"> Technology Farming</p>
-                </div>
-                  
-                <div className='ml-[4px] lg:ml-[25px]'>
-                    <p className="text-[11px] lg:text-[22px] text-[#ffffff80] text-start font-inter  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out font-[700] mb-[30px] lg:mb-[10px]"> Technology Farming</p>
-                </div>
-
-                <div className='ml-[4px] lg:ml-[25px]'>
-                    <p className="text-[11px] lg:text-[22px] text-[#ffffff80] text-start font-inter  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out font-[700] mb-[30px] lg:mb-[10px]"> Technology Farming</p>
-                </div>
-
-                <div className='ml-[4px] lg:ml-[25px]'>
-                    <p className="text-[11px] lg:text-[22px] text-[#ffffff80] text-start font-inter  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out font-[700] mb-[30px] lg:mb-[10px]"> Technology Farming</p>
-                </div>
-
-                <div className='ml-[4px] lg:ml-[25px]'>
-                    <p className="text-[11px] lg:text-[22px] text-[#ffffff80] text-start font-inter  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out font-[700] mb-[30px] lg:mb-[10px]"> Technology Farming</p>
-                </div>
-
-                <div className='ml-[4px] lg:ml-[25px]'>
-                    <p className="text-[11px] lg:text-[22px] text-[#ffffff80] text-start font-inter  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out font-[700] mb-[30px] lg:mb-[10px]"> Technology Farming</p>
-                </div>
-            </div> {/*Side Bar Ends Here */}
+                    <p onClick={() => scrollToSection("IndoorFarming")} className="text-[11px]  cursor-pointer hover:text-gray-100 transition-all duration-500 ease-out lg:text-[22px] text-[#ffffff80] text-start font-inter font-[700] lg:mb-[10px]"> Indoor Farming</p>
+                </div>                                                             
+            </div> {/*Side Bar*/}
 
             {/*Right Back Button */}
-            <div className='lg:fixed lg:right-[10px] lg:top-[145px]  lg:h-full'>
+            <div className='hidden lg:block lg:fixed lg:right-[10px] lg:top-[170px] lg:h-full'>
                 <Link to= '/about-us'>
-                    <img src='/static/media/image10.png' alt='image 10' className=''  />
+                    <img src='/static/media/image10.png' alt='Back' />
                 </Link>
             </div>
         
             {/* Main Content */}
-            <div className="MainContent block ml-[125px] lg:ml-[343px] lg:mr-[70px] mt-[90px] lg:mt-[145px] ">
-                <div className="MiddleContainer mb-[40px] mx-[8px] lg:mx-[80px]  ">
+            <div className="MainContent relative block ml-[125px] lg:ml-[330px] lg:mr-[60px] pb-[200px] top-[140px] lg:top-[130px] ">
+                <div className="MiddleContainer lg:my-[40px] mx-[8px] lg:mx-[80px]">                        
+                    <div className='PageContents'>
+                        {PageData.map((data) => (
+                            <PageStructure id={data.id} Heading={data.Heading} MajorImage={data.MajorImage} SubImage={data.SubImage} LeftText={data.LeftText} MiddleText={data.MiddleText} RightText={data.RightText}/>
+                        ))}
+                    </div>                           
+                </div> {/*Middle Container*/}                                  
+            </div> {/*Main Contents*/} 
                    
-                    {/*1. TechnologyIn Farming */}
-
-            
-                    {
-                        selectedSection === "technologyFarming" && (
-                    <div className='Technology in Farming'>
-                        {/* Main Title */}
-                        <div className="FirstTitle block py-[18px] lg:py-[10px]">
-                            <h1 className="text-black font-inter lg:text-[35px] text-[15px] lg:text-center font-[700] my-0"> We implement Technology In Farming </h1>
-                        </div>
-        
-                        {/* Title Image */}
-                        <div className="TitleImage ">
-                            <img src="/static/media/image 191.png" alt="We implement Technology" className="mx-auto w-[100%] " />
-                        </div>
-                    
-                        {/* Sub Three Images */}
-                        <div className="SubThreeImages flex justify-between mt-[6px] lg:mt-[20px]">
-                            <div className="FirstImage w-[30%]">
-                                <img src="/static/media/image 194.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                            <div className="SecondImage w-[30%]">
-                                <img src="/static/media/image 194.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                            <div className="ThirdImage w-[30%]">
-                                <img src="/static/media/image 194.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                        </div> 
-                        {/*Sub Three Images Ends Here  */}
-      {/* {Subthree details} */}
-                        <div className="SubThreeDetails block lg:flex justify-between font-josefin -mt-[40px] lg:mt-[20px]">
-                            <div className="FirstDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-
-                            <div className="SecondDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-                                
-                            <div className="ThirdDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-
-                        </div> {/*Sub Three Images Ends Here  */}   
-                        
-                            
-                    
-                    </div>
-                        )
-                    }
-                     {/*Technology in Farming Ends Here */}
-
-                   
-                    {/*2. Food Security */}
-                    
-                    {
-                        selectedSection === "foodSecurity" && (
-                            <div className='FoodSecurity mt-[40px] lg:mt-[30px]'>
-                        {/* Main Title */}
-                        <div className="FirstTitle block py-[18px] lg:py-[10px]">
-                            <h1 className="text-black font-inter lg:text-[35px] text-[15px] lg:text-center font-[700] my-0"> We Promote Food Security </h1>
-                        </div>
-        
-                        {/* Title Image */}
-                        <div className="TitleImage ">
-                            <img src="/static/media/image 192.png" alt="We implement Technology" className="mx-auto w-[100%] " />
-                        </div>
-                    
-                        {/* Sub Three Images */}
-                        <div className="SubThreeImages flex justify-between mt-[6px] lg:mt-[20px]">
-                            <div className="FirstImage w-[30%]">
-                                <img src="/static/media/image 193.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                            <div className="SecondImage w-[30%]">
-                                <img src="/static/media/image 193.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                            <div className="ThirdImage w-[30%]">
-                                <img src="/static/media/image 193.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                        </div> {/*Sub Three Images Ends Here  */}
-
-                        <div className="SubThreeDetails block lg:flex justify-between font-josefin -mt-[40px] lg:mt-[20px]">
-                            <div className="FirstDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-
-                            <div className="SecondDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-                                
-                            <div className="ThirdDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-
-                        </div> {/*Sub Three Text Ends Here  */}    
-                    </div> 
-                        )
-                    }
-                      
-                    {/*3. Vertical Farming */}
-                    {
-                        selectedSection === "verticalFarming" && (
-<div className='VerticalinFarming mt-[40px] lg:mt-[30px]'>
-                        {/* Main Title */}
-                        <div className="FirstTitle block py-[18px] lg:py-[10px]">
-                            <h1 className="text-black font-inter lg:text-[35px] text-[15px] lg:text-center font-[700] my-0"> We Enhance Vertical Farming </h1>
-                        </div>
-        
-                        {/* Title Image */}
-                        <div className="TitleImage ">
-                            <img src="/static/media/image 195.png" alt="We implement Technology" className="mx-auto w-[100%] " />
-                        </div>
-                    
-                        {/* Sub Three Images */}
-                        <div className="SubThreeImages flex justify-between mt-[6px] lg:mt-[20px]">
-                            <div className="FirstImage w-[30%]">
-                                <img src="/static/media/image 14.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                            <div className="SecondImage w-[30%]">
-                                <img src="/static/media/image 14.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                            <div className="ThirdImage w-[30%]">
-                                <img src="/static/media/image 14.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                        </div> {/*Sub Three Images Ends Here  */}
-
-                        <div className="SubThreeDetails block lg:flex justify-between font-josefin -mt-[40px] lg:mt-[20px]">
-                            <div className="FirstDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-
-                            <div className="SecondDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-                                
-                            <div className="ThirdDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-
-                        </div> {/*Sub Three Texts Ends Here  */}        
-                    </div> 
-                        )
-                    }
-                    
-
-                    {/*4. Urban Farming */}
-                    {
-                        selectedSection === "urbanFarming" && (
-                        <div className='UrbanFarming mt-[40px] lg:mt-[30px]'>
-                        {/* Main Title */}
-                        <div className="FirstTitle block py-[18px] lg:py-[10px]">
-                            <h1 className="text-black font-inter lg:text-[35px] text-[15px] lg:text-center font-[700] my-0"> We Enhance Urban Farming </h1>
-                        </div>
-        
-                        {/* Title Image */}
-                        <div className="TitleImage ">
-                            <img src="/static/media/image 15.png" alt="We implement Technology" className="mx-auto w-[100%] " />
-                        </div>
-                    
-                        {/* Sub Three Images */}
-                        <div className="SubThreeImages flex justify-between mt-[6px] lg:mt-[20px]">
-                            <div className="FirstImage w-[30%]">
-                                <img src="/static/media/image 19.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                            <div className="SecondImage w-[30%]">
-                                <img src="/static/media/image 19.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                            <div className="ThirdImage w-[30%]">
-                                <img src="/static/media/image 19.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                        </div> {/*Sub Three Images Ends Here  */}
-
-                        <div className="SubThreeDetails block lg:flex justify-between font-josefin -mt-[40px] lg:mt-[20px]">
-                            <div className="FirstDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-
-                            <div className="SecondDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-                                
-                            <div className="ThirdDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-
-                        </div> {/*Sub Three Texts Ends Here  */}            
-                    </div> 
-                        )
-                    }
-                    
-
-                    {/*5. Indoor Farming */}
-
-                    {
-                        selectedSection === "indoorFarming" && (
-<div className='IndoorFarming mt-[40px] lg:mt-[30px]'>
-                        {/* Main Title */}
-                        <div className="FirstTitle block py-[18px] lg:py-[10px]">
-                            <h1 className="text-black font-inter lg:text-[35px] text-[15px] lg:text-center font-[700] my-0"> We Endorse Indoor Farming </h1>
-                        </div>
-        
-                        {/* Title Image */}
-                        <div className="TitleImage ">
-                            <img src="/static/media/image 191.png" alt="We implement Technology" className="mx-auto w-[100%] " />
-                        </div>
-                    
-                        {/* Sub Three Images */}
-                        <div className="SubThreeImages flex justify-between mt-[6px] lg:mt-[20px]">
-                            <div className="FirstImage w-[30%]">
-                                <img src="/static/media/image 194.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                            <div className="SecondImage w-[30%]">
-                                <img src="/static/media/image 194.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                            <div className="ThirdImage w-[30%]">
-                                <img src="/static/media/image 194.png" alt="We implement Technology" className="w-[100%] h-[60%] lg:h-[100%]" />
-                            </div>
-
-                        </div> {/*Sub Three Images Ends Here  */}
-
-                        <div className="SubThreeDetails block lg:flex justify-between font-josefin -mt-[40px] lg:mt-[20px]">
-                            <div className="FirstDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-
-                            <div className="SecondDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-                                
-                            <div className="ThirdDetails lg:w-[25%]  ">
-                                <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud
-                                </p>
-                                
-                                <p className='text-start mt-[10px] lg:mt-[5px]  text-[14px] lg:text-[18px]'> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div>
-
-                        </div> {/*Sub Three Texts Ends Here  */}        
-                    </div> 
-                        )
-                    }
-                    
-
-                </div> {/*Middle Container Ends Here */}
-            </div> {/*Main Contents Ends Here */}         
-        </div> {/*Dyanamic Conent Ends Here */}
-     
-    </div> //All page Content Ends Here
-          
-      
-
-      
+        </div> {/*Dynamic Contents*/}     
+    </div> // WhyChooseDetailed    
     
   );
+}
+
+// Reusable Page Component
+function PageStructure({id,Heading,MajorImage, SubImage,LeftText, MiddleText, RightText }) {
+    return (
+        <div id={id} className='Reusablestructure lg:mt-[40px]'>
+            {/* Main Title */}
+            <div className="FirstTitle block py-[10px] lg:py-[10px]">
+                <h1 className="text-black font-inter lg:text-[35px] text-[15px] lg:text-start font-[700] my-0">{Heading}</h1>
+            </div>
+            {/*Major Image */}
+            <div className="MajorImage ">
+                <img src={MajorImage} alt={id} className="mx-auto w-[100%] " />
+            </div>    
+            {/* Sub Three Images */}
+            <div className="SubThreeImages flex justify-between mt-[6px] lg:mt-[20px]">
+                <div className="FirstImage w-[30%]">
+                    <img src={SubImage} alt={id} className="w-[100%] h-[60%] lg:h-[100%]" />
+                </div>
+                <div className="SecondImage w-[30%]">
+                    <img src={SubImage} alt={id} className="w-[100%] h-[60%] lg:h-[100%]" />
+                </div>
+                <div className="ThirdImage w-[30%]">
+                    <img src={SubImage} alt={id} className="w-[100%] h-[60%] lg:h-[100%]" />
+                </div>
+            </div> 
+
+            {/*Sub Three Details*/}
+            <div className="SubThreeDetails block lg:flex justify-between font-josefin -mt-[40px] lg:mt-[20px]">
+                <div className="FirstDetails lg:w-[25%]  ">
+                    <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >{LeftText}</p>                    
+                </div>
+                <div className="SecondDetails lg:w-[25%]  ">
+                    <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >{MiddleText}</p>                    
+                </div>                    
+                <div className="ThirdDetails lg:w-[25%]  ">
+                    <p className="text-start mb-[18px] lg:mb-0 text-[14px] lg:text-[18px]" >{RightText}</p>                    
+                </div>
+            </div> 
+        </div>
+    )
 }
 
 export default WhyChooseDetailed;

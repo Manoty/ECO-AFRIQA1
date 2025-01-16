@@ -1030,7 +1030,10 @@ class FarmerListView(APIView):
         return paginator.get_paginated_response(serializer.data)
 
 
+<<<<<<< HEAD
 # consaltations
+=======
+>>>>>>> 188ef061ad30c24d8fbba9e2bbea3da4f00e3f7f
 
 
 @api_view(['GET'])
@@ -1039,3 +1042,835 @@ def consultant_list(request):
     consultants = Consultant.objects.all()
     serializer = ConsultantSerializer(consultants, many=True)
     return Response(serializer.data)
+<<<<<<< HEAD
+=======
+
+
+@permission_classes([AllowAny])
+class GetFarmingSystems(APIView):
+
+    def get(self, request):
+        farmingsystems = FarmingSystems.objects.all()  # Retrieve all farming systems
+        serializer = FarmingSystemSerializer(
+            farmingsystems, many=True)  # Serialize the data
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@permission_classes([IsAuthenticated])
+class WriteFarmingSystems(APIView):
+    def post(self, request):  # one can input the farming systems
+        serializer = FarmingSystemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UploadFarmingSystemImage(APIView):
+    def post(self,request,farmingsystem_id):
+
+        try:
+            farmingsystem = FarmingSystems.objects.get(id=farmingsystem_id)
+        except FarmingSystems.DoesNotExist:
+            return Response({'error': 'Farming system not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer=FarmingSystemImages(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save(farmingsystem=farmingsystem)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class TeamMembers(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        teammembers = TeamMember.objects.all()  # get all the team members
+        serializer = TeamMembersSerializer(teammembers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class AddingNewTeamMembers(APIView):
+    permission_classes = [IsAuthenticated]
+    # adding new members
+
+    def post(self, request):
+        serializer = TeamMembersSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class OrderListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        orders = Order.objects.filter(
+            customer_email=request.user.email).order_by('-created_at')
+
+        paginator = PageNumberPagination()
+        paginator.page_size = 10
+        result_page = paginator.paginate_queryset(orders, request)
+
+        serializer = OrderSerializer(result_page, many=True)
+        response = paginator.get_paginated_response(serializer.data)
+
+        return response
+
+
+class QuotationListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # Use Q objects to filter quotations where the user is either the buyer or the seller
+        quotations = Quotation.objects.filter(
+            Q(buyer=request.user) | Q(seller=request.user)
+        ).order_by('-created_at')
+
+        # Paginate the results
+        paginator = PageNumberPagination()
+        paginator.page_size = 3  # Set your desired page size here
+        result_page = paginator.paginate_queryset(quotations, request)
+
+        # Serialize the quotations
+        serializer = QuotationSerializer(result_page, many=True)
+
+        # Return the paginated response
+        return paginator.get_paginated_response(serializer.data)
+
+class RegisterFarmerView(APIView):
+    def post(self, request):
+        user = request.user
+
+        # Check if the user is already registered as a Farmer
+        if Farmer.objects.filter(user=user).exists():
+            return Response(
+                {"detail": "User is already registered as a farmer."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Extract data from request
+        data = request.data
+
+        # Validate farming_system choice
+        valid_farming_systems = [choice[0] for choice in Farmer.FARMING_SYSTEM_CHOICES]
+        if 'farming_system' in data and data['farming_system'] not in valid_farming_systems:
+            return Response(
+                {
+                    "farming_system": f"Invalid choice. Valid options are: {', '.join(valid_farming_systems)}"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Validate garden_setup choice
+        valid_garden_setups = [choice[0] for choice in Farmer.GARDEN_SETUP_CHOICES]
+        if 'garden_setup' in data and data['garden_setup'] not in valid_garden_setups:
+            return Response(
+                {
+                    "garden_setup": f"Invalid choice. Valid options are: {', '.join(valid_garden_setups)}"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Create a Farmer object with the provided data
+        farmer = Farmer.objects.create(
+            user=user,
+            farm_size=data.get('farm_size'),
+            main_crop=data.get('main_crop'),
+            farming_system=data.get('farming_system'),
+            garden_setup=data.get('garden_setup'),
+            address=data.get('address')
+        )
+
+        # Serialize and return the farmer data
+        serializer = FarmerSerializer(farmer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+
+class UnregisterFarmerView(APIView):
+    def delete(self, request):
+        user = request.user
+
+        # Check if the user has a Farmer object
+        try:
+            farmer = Farmer.objects.get(user=user)
+            farmer.delete()
+            return Response(
+                {"detail": "Farmer unregistered successfully."},
+                status=status.HTTP_204_NO_CONTENT
+            )
+        except Farmer.DoesNotExist:
+            return Response(
+                {"detail": "User is not registered as a farmer."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+
+class UpdateFarmerView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        user = request.user
+
+        # Check if the user is a farmer
+        try:
+            farmer = Farmer.objects.get(user=user)
+        except Farmer.DoesNotExist:
+            return Response(
+                {"detail": "User is not registered as a Farmer."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        data = request.data
+
+        # Validate farming_system choice if provided
+        valid_farming_systems = [choice[0] for choice in Farmer.FARMING_SYSTEM_CHOICES]
+        if 'farming_system' in data:
+            if data['farming_system'] not in valid_farming_systems:
+                return Response(
+                    {
+                        "farming_system": f"Invalid choice. Valid options are: {', '.join(valid_farming_systems)}"
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            farmer.farming_system = data['farming_system']
+
+        # Validate garden_setup choice if provided
+        valid_garden_setups = [choice[0] for choice in Farmer.GARDEN_SETUP_CHOICES]
+        if 'garden_setup' in data:
+            if data['garden_setup'] not in valid_garden_setups:
+                return Response(
+                    {
+                        "garden_setup": f"Invalid choice. Valid options are: {', '.join(valid_garden_setups)}"
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            farmer.garden_setup = data['garden_setup']
+
+        # Update farm_size if provided
+        if 'farm_size' in data:
+            try:
+                farmer.farm_size = float(data['farm_size'])
+            except ValueError:
+                return Response(
+                    {"farm_size": "Invalid value for farm_size. Must be a numeric value."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        # Update main_crop if provided
+        if 'main_crop' in data:
+            farmer.main_crop = data['main_crop']
+
+        # Update address if provided
+        if 'address' in data:
+            farmer.address = data['address']
+
+        # Save the updated farmer details
+        farmer.save()
+
+        serializer = FarmerSerializer(farmer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class FarmerProfileView(APIView):
+    def get(self, request):
+        user = request.user
+
+        # Check if the user is a registered Farmer
+        try:
+            farmer = Farmer.objects.get(user=user)
+        except Farmer.DoesNotExist:
+            return Response(
+                {"detail": "You are not registered as a farmer."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Serialize and return the farmer data
+        serializer = FarmerSerializer(farmer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+class FarmerSalesHistoryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # Ensure the user is a farmer
+        if not hasattr(request.user, 'farmer'):
+            return Response(
+                {"detail": "You must be a farmer to access this view."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        # Get order items where the requesting user is the farmer of the product
+        farmer = request.user.farmer
+        order_items = OrderItem.objects.filter(
+            product_id__farmer=farmer
+        ).order_by('-order__created_at')  # Order by the associated order's creation time
+
+        # Paginate the results
+        paginator = PageNumberPagination()
+        paginator.page_size = 10
+        paginated_items = paginator.paginate_queryset(order_items, request)
+
+        # Serialize and modify the response structure
+        serialized_data = [
+            {
+                "produce": item.product_name,
+                "bags_sold": item.product_quantity,
+                "amount": item.product_price,
+                "date": item.order.created_at.strftime("%Y-%m-%d"),
+            }
+            for item in paginated_items
+        ]
+
+        return paginator.get_paginated_response(serialized_data)
+
+
+
+
+
+
+class FarmerFarmProduceView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # Ensure the user is a farmer
+        if not hasattr(request.user, 'farmer'):
+            return Response(
+                {"detail": "You must be a farmer to access this view."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        # Get products owned by the farmer
+        farmer = request.user.farmer
+        products = Product.objects.filter(farmer=farmer).order_by('-created_at')
+
+        # Paginate the results
+        paginator = PageNumberPagination()
+        paginator.page_size = 10
+        paginated_products = paginator.paginate_queryset(products, request)
+
+        # Serialize and format the data
+        serialized_data = [
+            {
+                "crop": product.name,
+                "used_to_grow": product.used_for,
+                "bags_harvested": product.original_qtty,
+                "bags_sold": product.original_qtty - product.qtty,
+            }
+            for product in paginated_products
+        ]
+
+        return paginator.get_paginated_response(serialized_data)
+
+
+
+class CreatePaymentMethodView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        payment_type = request.data.get(
+            "payment_type")  # 'credit_card' or 'mpesa'
+
+        # Get or create the PaymentMethod object for the user
+        payment_method, created = PaymentMethod.objects.get_or_create(
+            user=user)
+
+        # Process based on the payment type
+        if payment_type == "credit_card":
+            serializer = CreditCardDetailsSerializer(data=request.data)
+            if serializer.is_valid():
+                # Save CreditCardDetails with the created PaymentMethod
+                credit_card = serializer.save(payment_method=payment_method)
+                return Response(
+                    {
+                        "status": "success",
+                        "message": "Credit card payment method created successfully.",
+                        "data": PaymentMethodSerializer(payment_method).data
+                    },
+                    status=status.HTTP_201_CREATED
+                )
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        elif payment_type == "mpesa":
+            serializer = MpesaDetailsSerializer(data=request.data)
+            if serializer.is_valid():
+                # Save MpesaDetails with the created PaymentMethod
+                mpesa_details = serializer.save(payment_method=payment_method)
+                return Response(
+                    {
+                        "status": "success",
+                        "message": "M-Pesa payment method created successfully.",
+                        "data": PaymentMethodSerializer(payment_method).data
+                    },
+                    status=status.HTTP_201_CREATED
+                )
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Invalid payment method type."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class UpdatePaymentMethodView(UpdateAPIView):
+    """
+    API View to update a user's payment method.
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = PaymentMethodSerializer
+
+    def get_queryset(self):
+        # Only allow users to access their own payment methods
+        return PaymentMethod.objects.filter(user=self.request.user)
+
+    def get_object(self):
+        # Get the user's payment method
+        return self.get_queryset().first()
+
+    def update(self, request, *args, **kwargs):
+        # Get the payment method to update
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+
+        if not instance:
+            return Response(
+                {
+                    "status": "error",
+                    "message": "No payment method found for this user."
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        payment_type = request.data.get(
+            "payment_type")  # 'credit_card' or 'mpesa'
+
+        if payment_type == "credit_card":
+            if not hasattr(instance, 'credit_card_details'):
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "No credit card details found for this payment method."
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            serializer = CreditCardDetailsSerializer(
+                instance.credit_card_details, data=request.data, partial=partial)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(
+                    {
+                        "status": "success",
+                        "message": "Credit card payment method updated successfully.",
+                        "data": PaymentMethodSerializer(instance).data
+                    },
+                    status=status.HTTP_200_OK
+                )
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Invalid data",
+                    "errors": serializer.errors
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        elif payment_type == "mpesa":
+            if not hasattr(instance, 'mpesa_details'):
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "No M-Pesa details found for this payment method."
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            serializer = MpesaDetailsSerializer(
+                instance.mpesa_details, data=request.data, partial=partial)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(
+                    {
+                        "status": "success",
+                        "message": "M-Pesa payment method updated successfully.",
+                        "data": PaymentMethodSerializer(instance).data
+                    },
+                    status=status.HTTP_200_OK
+                )
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Invalid data",
+                    "errors": serializer.errors
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        else:
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Invalid payment method type."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class UserPaymentMethodsView(APIView):
+    """
+    API View to retrieve all payment methods for the authenticated user.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        payment_methods = PaymentMethod.objects.filter(user=user)
+        serializer = PaymentMethodSerializer(payment_methods, many=True)
+
+        return Response(
+            {
+                "status": "success",
+                "message": "User payment methods retrieved successfully",
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+class DeletePaymentMethodView(APIView):
+    """
+    API View to delete a user's payment method details (M-Pesa or Credit Card).
+    """
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+        payment_type = request.data.get(
+            "payment_type")  # 'credit_card' or 'mpesa'
+
+        if not payment_type:
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Payment type is required."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            payment_method = PaymentMethod.objects.get(user=user)
+        except PaymentMethod.DoesNotExist:
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Payment method not found for this user."
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if payment_type == "credit_card":
+            if hasattr(payment_method, 'credit_card_details'):
+                payment_method.credit_card_details.delete()
+                return Response(
+                    {
+                        "status": "success",
+                        "message": "Credit card payment method details deleted successfully."
+                    },
+                    status=status.HTTP_204_NO_CONTENT
+                )
+            else:
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "No credit card details found for this payment method."
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+        elif payment_type == "mpesa":
+            if hasattr(payment_method, 'mpesa_details'):
+                payment_method.mpesa_details.delete()
+                return Response(
+                    {
+                        "status": "success",
+                        "message": "M-Pesa payment method details deleted successfully."
+                    },
+                    status=status.HTTP_204_NO_CONTENT
+                )
+            else:
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "No M-Pesa details found for this payment method."
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+        else:
+            return Response(
+                {
+                    "status": "error",
+                    "message": "Invalid payment method type."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+class RegisterTransporterView(APIView):
+    def post(self, request):
+        user = request.user
+
+        if Transporter.objects.filter(user=user).exists():
+            return Response(
+                {"detail": "User is already registered as a Transporter."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        data = request.data
+        valid_transport_choices = [choice[0] for choice in Transporter.TRANSPORT_CHOICES]
+        if 'vehicle' in data and data['vehicle'] not in valid_transport_choices:
+            return Response(
+                {
+                    "vehicle": f"Invalid choice. Valid options are: {', '.join(valid_transport_choices)}"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        transporter = Transporter.objects.create(
+            user=user,
+            id_back=data.get('id_back'),
+            experience=data.get('experience'),
+            id_front=data.get('id_front'),
+            vehicle=data.get('vehicle'),
+            address=data.get('address')
+            
+            )
+        serializer = TransporterSerializer(transporter)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class UpdateTransporterView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        user = request.user
+
+        # Check if the user is a transporter
+        try:
+            transporter = Transporter.objects.get(user=user)
+        except Transporter.DoesNotExist:
+            return Response(
+                {"detail": "User is not registered as a Transporter."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        data = request.data
+        valid_transport_choices = [choice[0] for choice in Transporter.TRANSPORT_CHOICES]
+
+        # Validate vehicle choice if provided
+        if 'vehicle' in data:
+            if data['vehicle'] not in valid_transport_choices:
+                return Response(
+                    {
+                        "vehicle": f"Invalid choice. Valid options are: {', '.join(valid_transport_choices)}"
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            transporter.vehicle = data['vehicle']
+
+        # Update address if provided
+        if 'address' in data:
+            transporter.address = data['address']
+
+        # Save updated transporter information
+        transporter.save()
+
+        serializer = TransporterSerializer(transporter)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UnregisterTransporterView(APIView):
+    def delete(self, request):
+        user = request.user
+
+        # Check if the user has a Transporter object
+        try:
+            transporter = Transporter.objects.get(user=user)
+            transporter.delete()
+            return Response(
+                {"detail": "Transporter unregistered successfully."},
+                status=status.HTTP_204_NO_CONTENT
+            )
+        except Transporter.DoesNotExist:
+            return Response(
+                {"detail": "User is not registered as a Transporter."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+
+
+
+
+class PreviousDeliveriesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # Filter orders based on transporter and status
+        previous_deliveries = Order.objects.filter(
+            transporter__user=request.user,
+            status="Ready"
+        )
+
+        paginator = PageNumberPagination()
+        paginator.page_size = 10  # Set the number of items per page
+        result_page = paginator.paginate_queryset(previous_deliveries, request)
+        serializer = ShippingSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
+
+
+class UpcomingDeliveriesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # Filter orders based on transporter and status
+        upcoming_deliveries = Order.objects.filter(
+            transporter__user=request.user,
+            status="Transporting"
+        )
+
+        paginator = PageNumberPagination()
+        paginator.page_size = 10  # Set the number of items per page
+        result_page = paginator.paginate_queryset(upcoming_deliveries, request)
+        serializer = ShippingSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
+
+
+
+
+
+
+
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.utils import timezone
+from .models import Order, Transporter,GardenSystemImages,GardenSystems
+from .serializers import TransporterSerializer,GardenSystemImageSerializer,GardenSystemSerializer
+from rest_framework.permissions import IsAuthenticated
+
+class MarkAsDeliveredView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, order_id, *args, **kwargs):
+        try:
+            # Retrieve the order and check if the user is the assigned transporter
+            order = Order.objects.get(order_id=order_id, transporter__user=request.user)
+
+            # Update order status and set delivered_at timestamp
+            order.status = "Ready"
+            order.delivered_at = timezone.now()
+            order.save()
+
+            # Increment the total deliveries for the transporter
+            transporter = Transporter.objects.get(user=request.user)
+            transporter.total_deliveries += 1
+            transporter.save()
+
+            return Response({"message": "Order marked as delivered successfully."}, status=status.HTTP_200_OK)
+
+        except Order.DoesNotExist:
+            return Response(
+                {"error": "Order not found or you are not the assigned transporter."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class TransporterDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            # Retrieve the transporter information for the authenticated user
+            transporter = Transporter.objects.get(user=request.user)
+            serializer = TransporterSerializer(transporter)
+            transporter_data = {
+                "transporter_name": serializer.data.get("transporter_name"),
+                "total_deliveries": serializer.data.get("total_deliveries"),
+                "total_earnings": serializer.data.get("total_earnings"),
+                "average_rating": serializer.data.get("average_rating"),
+                "vehicle": serializer.data.get("vehicle"),
+
+            }
+            return Response(transporter_data, status=status.HTTP_200_OK)
+
+        except Transporter.DoesNotExist:
+            return Response(
+                {"error": "Transporter profile not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+class GardenSystems(APIView):
+    def get (self,request):
+        try:
+         gardensystem=GardenSystemSerializer.objects.prefetch_related('images').all()
+         serializer= GardenSystemSerializer(gardensystem,many=True)
+         return Response (serializer.data,status=status.HTTP_200_OK)
+        
+        except GardenSystems.DoesNotExist:
+            return Response(
+                {'error':'No Garden systems found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+class NewGardenSystems(APIView):
+    def post (self,request):
+    
+     serializer= GardenSystemSerializer(data=request.data)
+     if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status= status.HTTP_201_CREATED)
+
+     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+##to upload the images
+
+class UploadGardenSystemImage(APIView):
+    def post(self,request,gardensystem_id):
+
+        try:
+            gardensystem = GardenSystems.objects.get(id=gardensystem_id)
+        except GardenSystems.DoesNotExist:
+            return Response({'error': 'Garden system not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer=GardenSystemImages(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save(gardensystem=gardensystem)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+>>>>>>> 188ef061ad30c24d8fbba9e2bbea3da4f00e3f7f

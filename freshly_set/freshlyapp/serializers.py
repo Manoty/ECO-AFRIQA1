@@ -466,6 +466,99 @@ class FAQMainPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = FAQMainPage
         fields = ['id', 'question', 'answer']
+<<<<<<< HEAD
+=======
+        
+        
+        
+#consoltation
+from .models import Consultant
+
+class ConsultantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Consultant
+        fields = ['id', 'name', 'field', 'description', 'rate', 'img']
+
+
+
+class FarmingSystemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FarmingSystems
+        fields = ['name', 'description', 'rating', 'image', 'in_stock']
+
+
+class TeamMembersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamMember
+        fields = '__all__'
+
+
+class QuotationSerializer(serializers.ModelSerializer):
+    buyer_name = serializers.CharField(source='buyer.username', read_only=True)
+    seller_name = serializers.CharField(
+        source='seller.username', read_only=True)
+
+    class Meta:
+        model = Quotation
+        fields = [
+            'quotation_id', 'cart', 'buyer', 'buyer_name', 'seller', 'seller_name',
+            'customer_name', 'customer_email', 'customer_phone',
+            'total_amount', 'discount_amount', 'final_amount',
+            'valid_until', 'status', 'created_at', 'updated_at'
+        ]
+        read_only_fields = ['quotation_id', 'total_amount', 'final_amount',
+                            'created_at', 'updated_at', 'buyer_name', 'seller_name']
+
+    def validate_discount_amount(self, value):
+        """Ensure the discount amount does not exceed the total amount."""
+        if value and self.instance and value > self.instance.total_amount:
+            raise serializers.ValidationError(
+                "Discount amount cannot exceed total amount.")
+        return value
+
+
+class CreditCardDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CreditCardDetails
+        fields = ['card_number', 'expiry_date', 'card_holder_name', 'cvv']
+        extra_kwargs = {
+            # Ensure CVV is write-only for security
+            'cvv': {'write_only': True},
+            'card_number': {'write_only': True},
+        }
+
+    def validate_card_number(self, value):
+        if not value.isdigit() or len(value) not in [13, 15, 16]:
+            raise serializers.ValidationError("Invalid card number.")
+        return value
+
+    def validate_cvv(self, value):
+        if not value.isdigit() or len(value) not in [3, 4]:
+            raise serializers.ValidationError("Invalid CVV.")
+        return value
+
+
+class MpesaDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MpesaDetails
+        fields = ['phone_number', 'account_name']
+
+    def validate_phone_number(self, value):
+        if not value.startswith('+') or not value[1:].isdigit():
+            raise serializers.ValidationError("Invalid phone number format.")
+        return value
+
+
+class PaymentMethodSerializer(serializers.ModelSerializer):
+    credit_card_details = CreditCardDetailsSerializer(required=False)
+    mpesa_details = MpesaDetailsSerializer(required=False)
+
+    class Meta:
+        model = PaymentMethod
+        fields = ['id', 'credit_card_details',
+                  'mpesa_details', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_at', 'updated_at']
+>>>>>>> 188ef061ad30c24d8fbba9e2bbea3da4f00e3f7f
 
 
 # consoltation
@@ -473,5 +566,11 @@ class FAQMainPageSerializer(serializers.ModelSerializer):
 
 class ConsultantSerializer(serializers.ModelSerializer):
     class Meta:
+<<<<<<< HEAD
         model = Consultant
         fields = ['id', 'name', 'field', 'description', 'rate', 'img']
+=======
+        model =FarmingSystemImages
+        fields=['__all__']
+
+>>>>>>> 188ef061ad30c24d8fbba9e2bbea3da4f00e3f7f

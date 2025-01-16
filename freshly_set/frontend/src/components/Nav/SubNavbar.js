@@ -61,208 +61,34 @@ const smoothScroll = (event, targetId) => {
 
 
   return (
-    <div
-      className={`fixed flex justify-center items-center w-[100%] mx-auto z-40 transition-all duration-500 ease-in-out rounded-[26px]  ${visible ? 'top-[120px]' : '-top-[100px]'}`}
+    <div className={`fixed flex w-[100%] lg:mx-auto z-40 transition-all duration-500 ease-in-out rounded-[26px]  ${visible ? 'top-[120px]' : '-top-[100px]'}`}
       style={{ transform: visible ? 'translateY(0)' : 'translateY(-100%)' }}
     >
-      <nav className="lg:pr-[170px] bg-black/[0.40] backdrop-blur-[17px] mt-[22px] lg:mt-[50px]  rounded-[26px] w-[400px] lg:w-auto lg:px-[30px]">
-        <ul className="flex justify-center -ml-[20px] w-[100%]  lg:max-w-7xl space-x-[14.1px] lg:space-x-[80px]">
+      <nav className="flex justify-evenly mx-auto w-[90%] lg:w-fit bg-black/40 backdrop-blur-[17px] mt-[22px] lg:mt-[50px] rounded-[21px] lg:rounded-[26px] px-[4px] lg:px-[30px]">
+        <div className="flex justify-between">
           
           {
             sections.map((section) => (
               <>
-              <li
-            onMouseEnter={() => setActiveSection(section.id)}
-            onMouseLeave={() => activeSection !== section.id && setActiveSection('')}
-            className="bg-[#D9D9D9]/[0.10] cursor-pointer py-[13px] px-[19.34px] lg:px-[34px] whitespace-nowrap"
-          >
-            <a
-              className="text-white text-center text-[10.94px] lg:text-[19.25px] font-inter"
-              href={`#${section.id}`}
-              onClick={(e) => {
-                smoothScroll(e, `#${section.id}`);
-                setActiveSection(section.id);
-              }}
-            >
-              {section.title}
-            </a>
-            {/* <div
-              className={
-                activeSection === 'mission'
-                  ? 'h-[7.5px] w-[109.005px] bg-[#008000] flex'
-                  : 'hidden'
-              }
-            /> */}
-          </li>
+                <div className="bg-[#D9D9D9]/[0.10] cursor-pointer mx-[6px] lg:mx-[20px] my-[10px] lg:my-[14px] rounded-[4px] lg:rounded-[8px] py-[4px] lg:py-[14px] px-[6px] lg:px-[34px] whitespace-nowrap"
+                  onMouseEnter={() => setActiveSection(section.id)}
+                  onMouseLeave={() => activeSection !== section.id && setActiveSection('')} 
+                  onClick={(e) => {
+                      smoothScroll(e, `#${section.id}`);
+                      setActiveSection(section.id);
+                    }}
+                  >
+                  <a className="text-white text-center text-[8px] lg:text-[20px] font-inter font-[900] "
+                    href={`#${section.id}`}
+                    
+                    >
+                    {section.title}
+                  </a>            
+                </div>
               </>
             ))
           }
-
-          {
-            // partnership && (
-            //   <div className="flex items-center space-x-[10px] relative">
-
-            //   <li onClick={() => setDropdownToggled(!dropdownToggled)} className="bg-[#D9D9D9]/[0.10] text-white cursor-pointer py-[13px] px-[34px] whitespace-nowrap"
-            //   >Partnership</li>
-            //   {/* <FaChevronUp onClick={() => setDropdownToggled(!dropdownToggled)} className={dropdownToggled ? "text-black text-[30px] ml-[10px] cursor-pointer rotate-180":"text-black text-[30px] ml-[10px] cursor-pointer" }/> */}
-              
-            //   <div className={dropdownToggled ? "block absolute bg-white  rounded-[14px] top-[50px] left-0 border border-solid shadow-lg border-gray-500 w-[285px] transition-all duration-500 ease-in-out":"hidden"}>
-            //           <Link to="/verified">
-            //               <p className="hover:bg-[#008000] cursor-pointer text-start bg-white px-[20px] py-[12px] rounded-[6px] transition-all duration-400 ease-in-out text-gray-800   text-[15px] hover:text-white">Verified Farmer</p>
-              
-            //           </Link>
-              
-            //           <Link to="/transporters">
-            //               <p className="hover:bg-[#008000] cursor-pointer text-start bg-white px-[20px] py-[12px] rounded-[6px] transition-all duration-400 ease-in-out text-gray-800   text-[15px] hover:text-white">Transporters</p>
-              
-            //           </Link>
-              
-            //   </div>
-              
-            //   </div> 
-            // )
-          }
-          
-          
-          {/* <li
-  onMouseEnter={() => setActiveSection("metric")}
-  onMouseLeave={() => activeSection !== "metric" && setActiveSection("")}
-  className="text-[#008000] my-auto text-[18px] font-inter font-[700] block h-[35px] w-[84px] cursor-pointer"
->
-  <a
-    className="freshlyGreenText"
-    href="#metric"
-    onClick={(e) => {
-      smoothScroll(e, '#metric');
-      setActiveSection("metric");
-    }}
-  >
-    Metrics
-  </a>
-  <div
-    className={
-      activeSection === "metric" 
-        ? "h-[7.5px] w-[109.005px] bg-[#008000] flex" 
-        : "hidden"
-    }
-  />
-</li>
-          <li
-      onMouseEnter={() => setActiveSection("promotion")}
-      onMouseLeave={() => activeSection !== "promotion" && setActiveSection("")}
-      className="text-[#008000] my-auto text-[18px] font-inter font-[700] block h-[35px] w-[84px] cursor-pointer"
-        >
-        <a
-          className="freshlyGreenText"
-          href="#promotion"
-          onClick={(e) => {
-            smoothScroll(e, '#promotion');
-            setActiveSection("promotion");
-          }}
-        >
-          Promotion
-        </a>
-  <div
-    className={
-      activeSection === "promotion" 
-        ? "h-[7.5px] w-[109.005px] bg-[#008000] flex" 
-        : "hidden"
-    }
-  />
-</li>
-<li
-  onMouseEnter={() => setActiveSection("services")}
-  onMouseLeave={() => activeSection !== "services" && setActiveSection("")}
-  className="text-[#008000] my-auto text-[18px] font-inter font-[700] block h-[35px] w-[84px] cursor-pointer"
->
-  <a
-    className="freshlyGreenText"
-    href="#services"
-    onClick={(e) => {
-      smoothScroll(e, '#services');
-      setActiveSection("services");
-    }}
-  >
-    Services
-  </a>
-  <div
-    className={
-      activeSection === "services" 
-        ? "h-[7.5px] w-[109.005px] bg-[#008000] flex" 
-        : "hidden"
-    }
-  />
-</li>
-          
-<li
-  onMouseEnter={() => setActiveSection("reviews")}
-  onMouseLeave={() => activeSection !== "reviews" && setActiveSection("")}
-  className="text-[#008000] my-auto text-[18px] font-inter font-[700] block h-[35px] w-[84px] cursor-pointer"
->
-  <a
-    className="freshlyGreenText"
-    href="#reviews"
-    onClick={(e) => {
-      smoothScroll(e, '#reviews');
-      setActiveSection("reviews");
-    }}
-  >
-    Reviews
-  </a>
-  <div
-    className={
-      activeSection === "reviews" 
-        ? "h-[7.5px] w-[109.005px] bg-[#008000] flex" 
-        : "hidden"
-    }
-  />
-</li>
-<li
-  onMouseEnter={() => setActiveSection("faqs")}
-  onMouseLeave={() => activeSection !== "faqs" && setActiveSection("")}
-  className="text-[#008000] my-auto text-[18px] font-inter font-[700] block h-[35px] w-[84px] cursor-pointer"
->
-  <a
-    className="freshlyGreenText"
-    href="#faqs"
-    onClick={(e) => {
-      smoothScroll(e, '#faqs');
-      setActiveSection("faqs");
-    }}
-  >
-    FAQs
-  </a>
-  <div
-    className={
-      activeSection === "faqs" 
-        ? "h-[7.5px] w-[109.005px] bg-[#008000] flex" 
-        : "hidden"
-    }
-  />
-</li>
-
-<div className="flex items-center space-x-[10px] relative">
-
-<p className="text-[#008000] my-auto text-[18px] font-inter  font-[700] block h-[35px] cursor-pointer">Partnership</p>
-<FaChevronUp onClick={() => setDropdownToggled(!dropdownToggled)} className={dropdownToggled ? "text-black text-[30px] ml-[10px] cursor-pointer rotate-180":"text-black text-[30px] ml-[10px] cursor-pointer" }/>
-
-<div className={dropdownToggled ? "block absolute bg-white  rounded-[14px] top-[50px] left-0 border border-solid shadow-lg border-gray-500 w-[285px] transition-all duration-500 ease-in-out":"hidden"}>
-        <Link to="/verified">
-            <p className="hover:bg-[#008000] cursor-pointer text-start bg-white px-[20px] py-[12px] rounded-[6px] transition-all duration-400 ease-in-out text-gray-800   text-[15px] hover:text-white">Verified Farmer</p>
-
-        </Link>
-
-        <Link to="/transporters">
-            <p className="hover:bg-[#008000] cursor-pointer text-start bg-white px-[20px] py-[12px] rounded-[6px] transition-all duration-400 ease-in-out text-gray-800   text-[15px] hover:text-white">Transporters</p>
-
-        </Link>
-
-</div>
-
-</div> Partnership End 
- */}
-
-        </ul>
+        </div>
       </nav>
     </div>
   );

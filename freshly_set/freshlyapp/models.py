@@ -768,9 +768,15 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
+<<<<<<< HEAD
 
 
 # consaltation
+=======
+    
+    
+#consaltation
+>>>>>>> 188ef061ad30c24d8fbba9e2bbea3da4f00e3f7f
 
 class Consultant(models.Model):
     name = models.CharField(max_length=255)
@@ -781,3 +787,128 @@ class Consultant(models.Model):
 
     def __str__(self):
         return self.name
+<<<<<<< HEAD
+=======
+
+
+
+class FarmingSystems(models.Model):
+    name = models.CharField(max_length=50, blank=False)
+    description = models.TextField(max_length=255, blank=False)
+    rating = models.IntegerField(default=0)
+    in_stock = models.BooleanField(default=True)
+
+class FarmingSystemImages(models.Model):
+    farmingsystem= models.ForeignKey(FarmingSystems,related_name='images',on_delete=models.CASCADE)
+    uploaded_at=models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(
+        upload_to='static/images/FarmingSystems', null=True, blank=True)
+
+
+
+class Quotation(models.Model):
+    quotation_id = models.UUIDField(
+        default=uuid.uuid4, editable=False, unique=True)
+    cart = models.OneToOneField(
+        'Cart', on_delete=models.CASCADE, related_name="quotation")
+    buyer = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="buyer_quotations")
+    seller = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="seller_quotations")
+    customer_name = models.CharField(max_length=100, null=True, blank=True)
+    customer_email = models.EmailField(null=True, blank=True)
+    customer_phone = models.CharField(max_length=15, null=True, blank=True)
+    total_amount = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True)
+    discount_amount = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True)
+    final_amount = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True)
+    valid_until = models.DateField(null=True, blank=True)
+    status = models.CharField(max_length=20, choices=[
+        ('Pending', 'Pending'),
+        ('Accepted', 'Accepted'),
+        ('Rejected', 'Rejected'),
+        ('Expired', 'Expired')
+    ], default='Pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Quotation {self.quotation_id} for Cart {self.cart.id}"
+
+    def calculate_final_amount(self):
+        """Calculate the final amount after applying any discount."""
+        if self.discount_amount:
+            self.final_amount = max(
+                self.total_amount - self.discount_amount, 0)
+        else:
+            self.final_amount = self.total_amount
+
+    def save(self, *args, **kwargs):
+        # Calculate the total amount from the cart's total cost
+        self.total_amount = self.cart.total_cost
+
+        # Calculate final amount based on discount
+        self.calculate_final_amount()
+
+        # Automatically set valid_until date if not provided (e.g., 30 days from creation)
+        if not self.valid_until:
+            self.valid_until = timezone.now().date() + timezone.timedelta(days=30)
+
+        # Ensure status is set to "Expired" if validity has passed
+        if self.valid_until and timezone.now().date() > self.valid_until:
+            self.status = 'Expired'
+
+        super(Quotation, self).save(*args, **kwargs)
+
+
+class PaymentMethod(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='payment_method')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s Payment Method"
+
+
+class CreditCardDetails(models.Model):
+    payment_method = models.OneToOneField(
+        PaymentMethod, on_delete=models.CASCADE, related_name='credit_card_details')
+    card_number = models.CharField(max_length=16)
+    expiry_date = models.DateField()
+    card_holder_name = models.CharField(max_length=100)
+    cvv = models.CharField(max_length=4)
+
+    def __str__(self):
+        return f"Credit Card ending in {self.card_number[-4:]}"
+
+
+class MpesaDetails(models.Model):
+    payment_method = models.OneToOneField(
+        PaymentMethod, on_delete=models.CASCADE, related_name='mpesa_details')
+    phone_number = models.CharField(max_length=15)
+    account_name = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return f"Mpesa Account - {self.phone_number}"
+
+
+class TeamMember(models.Model):
+    name = models.CharField(max_length=255)
+    position = models.CharField(max_length=255)
+    image = models.ImageField(null=True, blank=False)
+    department = models.CharField(max_length=255)
+
+class GardenSystems (models.Model):
+    name=models.CharField(max_length=255)
+    description=models.TextField(max_length=350)
+    rating=models.IntegerField(default=0)
+    
+class GardenSystemImages(models.Model):
+    gardensystem= models.ForeignKey(GardenSystems,related_name='images',on_delete=models.CASCADE)
+    image = models.ImageField(
+        upload_to='images/GardenSystems', null=True, blank=True)
+    uploaded_at=models.DateTimeField(auto_now_add=True)
+>>>>>>> 188ef061ad30c24d8fbba9e2bbea3da4f00e3f7f

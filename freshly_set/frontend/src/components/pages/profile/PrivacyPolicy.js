@@ -4,16 +4,16 @@ function PrivacyPolicy() {
     // Last Date the Privacy was Updated
     const UpdateDate = "January 2025";
     return (
-        <div className="PrivacyPolicy pb-[30px] lg:pb-[20px]">
-            <div className="PrivacyPolicyWrapper mx-[10px] lg:mx-0 lg:mr-[260px]">
+        <div className="PrivacyPolicy pb-[50px] lg:pb-[20px]">
+            <div className="PrivacyPolicyWrapper mx-[12px] lg:mx-0 lg:mr-[260px]">
                 {/*Heading Group*/}
                 <div className="HeadingGroup">
                     {/*Heading */}
                     <div className="Heading">
-                        <h2 className="text-start font-inter font-[700] text-[18px] lg:text-[24px] text-[#008000] my-0"> Privacy Policy</h2>
+                        <h2 className="text-start font-inter font-[900] text-[20px] lg:text-[24px] text-[#008000] my-0"> Privacy Policy</h2>
                     </div>
                     {/*Updated date */}
-                    <div className="UpdatedDate mt-[8px] lg:mt-[20px]">
+                    <div className="UpdatedDate mt-[6px] lg:mt-[10px]">
                         <p className="text-start font-inter font-[700] text-[12px] lg:text-[18px] text-[#000000B2] my-0">Last Updated On {UpdateDate}</p>
                     </div>
                     {/*Descriptions */}

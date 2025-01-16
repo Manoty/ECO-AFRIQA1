@@ -58,30 +58,33 @@ function Credit() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5FAF9] overflow-x-hidden">
-      <Nav /> {/* The Upper NavBar */}
-
-      {/* Back Button */}
-      <div className="block lg:flex justify-start lg:mt-[180px] mt-[150px] ml-12">
-        <Link to="/checkout">
-          <img src="/static/media/image10.png" alt="Back" className="lg:my-[6px] h-full" />
-        </Link>
-      </div>
-
-      {/* Heading */}
-      <h1 className="lg:text-center text-center mt-6 text-[35px] font-bold">Checkout</h1>
-
-
-      <div className="InnerContents px-[4px] lg:px-[40px] mx-[6px] lg:mx-[50px] lg:my-[20px] rounded-[20px] border-gray-400 border-[2px] shadow-lg shadow-white lg:shadow-gray-700 mb-[40px]">
+    <div className="CardCheckout ">
+      {/* The Upper NavBar */}
+      <div className="Navbar">
+        <Nav /> 
+      </div>      
+      <div className="CardCheckoutWrapper mx-[12px] lg:mx-[30px]  mt-[150px] lg:mt-[180px]">
+        {/* Heading */}
+        <div className="Heading">
+          <h1 className="text-center text-[#008000] text-[29px] lg:text-[40px] font-[900] lg:font-[700] font-inter my-0">Checkout</h1>
+        </div>
         
-
-        <div className="PaymentsPart block lg:flex justify-between mt-[20px]">
-          {/* Payment section */}
-          <div className="PaymentsWrapper p-[8px] lg:p-[70px] rounded-[12px] border-solid border-[1px] border-gray-400 lg:mr-[40px] mb-[20px] shadow-lg shadow-gray-400 lg:shadow-gray-700 h-fit">
-            <div className="Payment block">
-              <div className="UpperBanner bg-[#00AA5B14] flex justify-between border-[1px] border-gray-400 border-solid shadow-md shadow-gray-500 py-[18px] lg:py-[10px] px-[8px] lg:px-[20px] rounded-[8px] lg:rounded-[12px]">
+        {/* Back Button */}
+        <div className="block lg:-mt-[40px] ml-[16px] lg:ml-[30px]">
+          <Link to="/checkout" className="">
+            <img src="/static/media/image10.png" alt="Back" className="h-[21px] lg:h-[47px] w-[27px] lg:w-[61px]" />
+          </Link>
+        </div>
+        
+        <div className="InnerWrapper block mt-[20px] mb-[30px]">
+          <div className="lg:flex justify-between">
+            
+            {/*CardDetails Section */}
+            <section className="CardDetails block lg:w-[60%] h-full py-[12px] lg:py-[16px] px-[12px] lg:px-[18px] rounded-[10px] border-solid border-[1px] border-[#00000033] shadow-md shadow-[#00000040] ">   
+              {/*UpperBanner */}               
+              <div className="UpperBanner bg-[#00AA5B14] flex justify-between py-[18px] lg:py-[10px] px-[8px] lg:px-[20px] rounded-[8px] lg:rounded-[12px] border-solid border-[#00000033] border-[0.97px] shadow-md shadow-[#00000040]">
                 <div className="BrandNames">
-                  <p className="text-start text-shadow-custom font-inter font-[800] my-0 lg:pt-[14px] text-[14px] lg:text-[24px]">Credit/debit</p>
+                  <p className="text-start text-shadow-custom font-inter font-[800] my-0 lg:pt-[14px] text-[14px] lg:text-[24px]">Credit/debit card</p>
                 </div>
                 <div className="block lg:mr-[10px]">
                   <div className="BrandLogos flex justify-between lg:py-[10px]">
@@ -89,146 +92,148 @@ function Credit() {
                     <img src="/static/media/image 155.png" alt="" className="h-[10px] lg:h-[19px] pt-[5px] ml-[6px] lg:ml-[10px]" />
                   </div>
                 </div>
-              </div> {/* Upper part Ends Here */}
-
-              {/* Inner Contents */}
-              <div className="InnerContents mx-[14px] lg:mx-[30px]">
-                {/* Card Name */}
-                <div className="flex flex-col mb-4 mt-9">
-                  <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px]">
-                    <input
-                      className="border-none outline-none font-inter font-[700] text-[16px] w-full"
-                      placeholder="Card Number"
-                      value={'Card Number'}
-                    />
-                    <span className="ml-2 text-red-500 text-[16px]">*</span>
+              </div> {/* UpperBanner */}
+                  
+              {/* Card Name */}
+              <div className="CardName mt-[14px]">
+                <div className="NameLabels flex justify-between">
+                  <div className="block">
+                    <p className="text-start text-[#000000CC] text-[10px] lg:text-[18px] font-inter font-[800] my-0">Name on card</p>
                   </div>
+                  <div className="block">
+                    <p className="text-start text-[#0000008F] text-[10px] lg:text-[18px] font-inter font-[800] my-0">*Required</p>
+                  </div>          
                 </div>
+                <div className="InputBox mt-[6px] lg:mt-[8px] rounded-[6px] lg:rounded-[10px] overflow-hidden object-fill px-[6px] lg:px-[10px] border-solid border-[1px] border-[#0000006B] shadow-md shadow-[#00000040]">
+                  <input className="font-inter font-[600] text-[10px] lg:text-[18px] border-none outline-none py-[8px] w-[100%] h-full " />
+                </div>
+              </div>
 
-  {/* {card number} */}
-                <div className="flex flex-col mb-4 mt-9">
-                  <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px]">
-                    <input
-                      className="border-none outline-none font-inter font-[700] text-[16px] w-full"
-                      placeholder="Card Number"
+              {/*CardNumber */}
+              <div className="CardNumber mt-[12px] lg:mt-[16px]">
+                <div className="CardNumberLabels flex justify-between">
+                  <div className="block">
+                    <p className="text-start text-[#000000CC] text-[10px] lg:text-[18px] font-inter font-[800] my-0">Card Number</p>
+                  </div>
+                  <div className="block">
+                    <p className="text-start text-[#0000008F] text-[10px] lg:text-[18px] font-inter font-[800] my-0">*Required</p>
+                  </div>          
+                </div>
+                <div className="InputBox mt-[6px] lg:mt-[8px] rounded-[6px] lg:rounded-[10px] overflow-hidden object-fill px-[6px] lg:px-[10px] border-solid border-[1px] border-[#0000006B] shadow-md shadow-[#00000040]">
+                  <input className="font-inter font-[600] text-[10px] lg:text-[18px] border-none outline-none py-[8px] w-[100%] h-full"        
+                    value={cardNumber} // Updated: Controlled input
+                    onChange={(e) => setCardNumber(e.target.value)} // Updated: Set state on change
+                  />
+                </div>
+              </div>
               
-                      value={cardNumber} // Updated: Controlled input
-                      onChange={(e) => setCardNumber(e.target.value)} // Updated: Set state on change
+              {/* Expiry Date and CVC/CVC */}
+              <div className="flex justify-between mt-[16px]">
+                {/*Expire Date */}
+                <div className="Expiry Date w-[46%] lg:w-[48%]">
+                  <div className="ExpiryDateLabels flex justify-between">
+                    <div className="block">
+                      <p className="text-start text-[#000000CC] text-[10px] lg:text-[18px] font-inter font-[800] my-0">Expiry Date</p>
+                    </div>
+                    <div className="block">
+                      <p className="text-start text-[#0000008F] text-[10px] lg:text-[18px] font-inter font-[800] my-0">*Required</p>
+                    </div>          
+                  </div>
+                  <div className="InputBox mt-[6px] lg:mt-[8px] rounded-[6px] lg:rounded-[10px] overflow-hidden object-fill px-[6px] lg:px-[10px] border-solid border-[1px] border-[#0000006B] shadow-md shadow-[#00000040]">
+                    <input className="font-inter font-[600] text-[10px] lg:text-[18px] border-none outline-none py-[8px] w-[100%] h-full"
+                      placeholder="MM/DD/YY"
+                      type="date"
+                      value={expiryDate} // Updated: Controlled input
+                      onChange={(e) => setExpiryDate(e.target.value)} // Updated: Set state on change
                     />
-                    <span className="ml-2 text-red-500 text-[16px]">*</span>
                   </div>
                 </div>
-                {/* Expiry Date and CVC/CVC */}
-                <div className="flex justify-between mb-4 mt-9">
-                  <div className="w-[48%]">
-                    <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px]">
-                      <input
-                        className="border-none outline-none font-inter font-[700] text-[16px] w-full"
-                        placeholder="Expiry Date (MM/YY)"
-                        
-                        value={expiryDate} // Updated: Controlled input
-                        onChange={(e) => setExpiryDate(e.target.value)} // Updated: Set state on change
-                      />
-                      <span className="ml-2 text-red-500 text-[16px]">*</span>
-                    </div>
-                  </div>
-                  <div className="w-[48%]">
-                    <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px]">
-                      <input
-                        className="border-none outline-none font-inter font-[700] text-[16px] w-full"
-                        placeholder="CVC/CVV"
-                        
-                        value={cvc} // Updated: Controlled input
-                        onChange={(e) => setCvc(e.target.value)} // Updated: Set state on change
-                      />
-                      <span className="ml-2 text-red-500 text-[16px]">*</span>
-                    </div>
-                  </div>
-                </div>
-
                 
-                <div className="flex justify-between mb-4 mt-9">
-                  <div className="w-[48%]">
-                    <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px]">
-                      <input
-                        className="border-none outline-none font-inter font-[700] text-[16px] w-full"
-                        placeholder="Card Number"
-                        value={'Card Number'}
-                      />
-                      <span className="ml-2 text-red-500 text-[16px]">*</span>
-                    </div>
+                {/*CVC/CVV */}
+                <div className="CVC w-[46%] lg:w-[48%]">
+                  <div className="CVCLabels flex justify-between">
+                  <div className="block">
+                    <p className="text-start text-[#000000CC] text-[10px] lg:text-[18px] font-inter font-[800] my-0">CVV/CVC</p>
                   </div>
-                  <div className="w-[48%]">
-                    <div className="InputBox flex items-center border-gray-700 shadow-gray-500 shadow-md py-[6px] px-[8px] rounded-[8px]">
-                      <input
-                        className="border-none outline-none font-inter font-[700] text-[16px] w-full"
-                        placeholder="Phone"
-                        value={'Phone: +254899098678'}
-                      />
-                      <span className="ml-2 text-red-500 text-[16px]">*</span>
+                  <div className="block">
+                    <p className="text-start text-[#0000008F] text-[10px] lg:text-[18px] font-inter font-[800] my-0">*Required</p>
+                  </div>          
+                </div>
+                <div className="InputBox mt-[6px] lg:mt-[8px] rounded-[6px] lg:rounded-[10px] overflow-hidden object-fill px-[6px] lg:px-[10px] border-solid border-[1px] border-[#0000006B] shadow-md shadow-[#00000040]">
+                  <input className="font-inter font-[600] text-[10px] lg:text-[18px] border-none outline-none py-[8px] w-[100%] h-full"
+                    value={cvc} // Updated: Controlled input
+                    onChange={(e) => setCvc(e.target.value)} // Updated: Set state on change
+                  />
+                </div>
+                </div>
+              </div>
+
+              {/*Save Card Information */}
+              <div className="SaveInformation block mt-[12px]">
+                <div className="flex justify-between">
+                  <div className="block my-auto">
+                    <div className="flex justify-start">
+                      <input type="checkbox" className="block mr-[10px] lg:mr-[20px] w-[14px] lg:w-[22px] h-[14px] lg:h-[22px]" />
+                      <div className="block">
+                         <p className="text-start text-[10px] lg:text-[18px] text-[black] font-inter font-[800] my-0">Securely save this card for my later purchase</p>
+                      </div>               
                     </div>
+                  </div>                 
+                  <button className="bg-[#008000] text-center text-white text-[14px] lg:text-[25px] font-inter font-[800] px-[30px] py-[8px] rounded-[6px] lg:rounded-[9px] border-none outline-none cursor-pointer active:scale-90 transition-all duration-100 ease-out">OK</button>
+                </div>
+              </div>  
+            </section> {/* CardDetails */}
+            
+            {/* OrderSummary */}
+            <section className="OrderSummary block rounded-[12px] mt-[40px] lg:mt-0 mx-[10px] lg:ml-[90px] lg:mr-0 ">
+              <div className="OrderSummaryWrapper block h-fit py-[16px] px-[18px] rounded-[10px] border-solid border-[1px] border-[#00000033] shadow-md shadow-[#00000040]">
+                <div className="OrderHeading block">
+                  <h2 className="text-center text-[20px] text-[#008000] font-inter font-[800] my-0 ">ORDER SUMMARY</h2> 
+                </div>
+            
+                {/* Client details */}
+                <div className="ClientDetails">
+                  <OrderSummary />
+                </div>
+                
+                {/* Order Quantity Details */}                
+                <div className="Metrics  mx-[20px] lg:mx-[40px] mt-[26px] lg:mt-[14px] ">
+                  <div className="flex justify-between ">
+                    <p className="text-start font-[600] my-0 font-inter text-[#000000B2] text-[12px] lg:text-[18px] ">SubTotal</p>
+                    <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[12px] lg:text-[18px]">Ksh {totalPrice} </p>
                   </div>
+
+                  <div className="flex justify-between mt-[10px] lg:mt-[10px]">
+                    <p className="text-start font-[600] my-0 font-inter text-[#000000B2] text-[12px] lg:text-[18px]">Delivery</p>
+                    <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[12px] lg:text-[18px]">Ksh {delivery} </p>
+                  </div>
+
+                  <div className="flex justify-between mt-[14px] lg:mt-[10px]">
+                    <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[12px] lg:text-[18px]">TOTAL</p>
+                    <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[12px] lg:text-[18px]">Ksh {totalPrice + delivery} </p>
+                  </div>              
                 </div>
 
-                <div className="RememberMpesa flex justify-start mt-[40px] pb-[30px]">
-                  <input type="checkbox" className="block mr-[10px] lg:mr-[30px] w-[25px] h-[25px]" />
-                  <p className="text-start font-inter font-[800] my-0 text-[14px] lg:text-[18px] pt-[4px]">
-    Securely save this card for my later purchase
-  </p>
-  <button className="ml-4 bg-green-700 text-white px-8 py-2 rounded">OK</button>
+                {/* Terms and Complete Payment Button */}
+                <div className="mt-[12px]">
+                  <p className="text-start text-[9px] lg:text-[12px] text-[#00000066] font-inter font-[800] my-0 ">By completing your purchase you agree to our terms and service</p>
                 </div>
-              </div> {/* Inner Contents Ends Here */}
-            </div> {/* Payment Ends Here */}
-          </div> {/* Payments Wrapper Ends Here */}
 
-          {/* Invoice Summary  Left Side On Desktop */}
-          <div className="InvoiceSummary block rounded-[12px] mx-[12px] lg:mb-[60px] lg:ml-[40px] border-[1px] border-solid border-gray-400 shadow-lg shadow-gray-400 lg:shadow-gray-700">
-            <div className="InvoiceSummaryWrapper m-[8px] pb-[16px] lg:pb-[10px] lg:m-[20px]">
-              <div className="SummaryTittle">
-                 {/* New Section: Order Summary */}
-<div className="flex flex-col rounded-[24px] border-[4px] lg:w-[495px] lg:h-[500px] w-295 h-250 bg-white p-8">
-    <h2 className="text-[30px] font-bold text-green-700 text-center mb-0  font-inter">ORDER SUMMARY</h2> {/* No margin-bottom */}
-
-    {/* Container for Input Boxes */}
-    <OrderSummary />
-    {/* Order Summary Details */}
-    
-    <div className="Metrics mx-[30px] lg:mt-12 lg:mx-[40px]">
-              <div className="flex justify-between mt-[14px] lg:mt-[8px]">
-                <p className="text-start font-[900] my-0 font-inter text-[#000000B2] text-[16px] lg:text-[18px] ">SUB TOTAL</p>
-                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">Ksh {totalPrice} </p>
-              </div>
-
-              <div className="flex justify-between mt-[14px] lg:mt-[20px]">
-                <p className="text-start font-[900] my-0 font-inter text-[#000000B2] text-[16px] lg:text-[18px]">DELIVERY</p>
-                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">Ksh {delivery} </p>
-              </div>
-
-              <div className="flex justify-between mt-[14px] lg:mt-[20px]">
-                <p className="text-start font-[900] my-0 font-inter text-[#000000B2] text-[16px] lg:text-[18px]">Total</p>
-                <p className="text-start font-[900] my-0 font-inter text-[#FF0C1A] text-[16px] lg:text-[18px]">Ksh {totalPrice + delivery} </p>
-              </div>
-
-             {/* Terms and Complete Payment Button */}
-            <div className="mt-0 mt-30">
-              <p className="text-[16px] text-gray-600 mb-4  font-inter">
-                By completing purchase, you have accepted our Terms and Conditions.
-              </p>
-              <button
-              onClick={handleCheckout} // Updated: Directly on the button
-              className="  font-inter w-full text-[18px] font-bold text-white bg-green-700 py-3 mb-32 rounded-[12px] cursor-pointer active:scale-90 transition-all duration-100 ease-out">
-              
-                Complete Payment
-              </button>
-            </div>
-           </div>
-            </div>
-          </div> {/* order Summary Ends Here */}
-        </div> {/* Payments Part Ends Here */}
-      </div> {/* Inner Contents Ends Here */}
+                {/*Submit Button */}
+                <div className="SubmitButton mt-[14px] mx-[10px]">
+                  <button className="bg-[#008000] text-center text-[16px] lg:text-[18px] text-white font-inter font-[800] w-full py-[10px] rounded-[10px] border-none outline-none cursor-pointer active:scale-90 transition-all duration-100 ease-out"
+                    onClick={handleCheckout} // Updated: Directly on the button           
+                    >COMPLETE PAYMENT
+                  </button>
+                </div>
+                
+              </div>         
+            </section> {/* OrderSummary */}
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-    </div>
+     
   );
 }
 
