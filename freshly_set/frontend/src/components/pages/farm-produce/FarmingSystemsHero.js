@@ -1,7 +1,17 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { ProductsContext } from '../../context/ProductsContext';
 
 function FarmingSystemsHero() {
+
+    const navigate = useNavigate();
+
+    const { productType, setProductType } = useContext(ProductsContext);
+
+    const invoiceRequest = () => {
+        setProductType("farmingSystem")
+        navigate("/products/farmingSystems/search")
+    }
   return (
     <div className="block overflow-x-hidden">
         <div className="mt-[150px] relative h-[415px] lg:h-[667px] w-[100%] bg-hero-products bg-fixed  bg-cover bg-no-repeat mix-blend-luminosity ">
@@ -18,7 +28,7 @@ function FarmingSystemsHero() {
 
              <div>
                 <Link to="/products/farmingSystems/search">
-                    <button className="absolute top-[346px] left-[115px] lg:top-[275px] lg:left-[865px] h-[51px] w-[186px] lg:h-[71px] lg:w-[266px] bg-[#A6B1AD99]/[0.65] cursor-pointer rounded-[15px] border-none text-black text-[20px] lg:text-[25px] font-inter font-[900]">Request Invoice</button>
+                    <button onClick={invoiceRequest} className="absolute top-[346px] left-[115px] lg:top-[275px] lg:left-[865px] h-[51px] w-[186px] lg:h-[71px] lg:w-[266px] bg-[#A6B1AD99]/[0.65] cursor-pointer rounded-[15px] border-none text-black text-[20px] lg:text-[25px] font-inter font-[900]">Request Invoice</button>
                 </Link>
               </div>
 

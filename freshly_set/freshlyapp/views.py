@@ -1,3 +1,7 @@
+from .serializers import TransporterSerializer, GardenSystemImageSerializer, GardenSystemSerializer
+from .models import Order, Transporter, GardenSystemImages, GardenSystems
+from .serializers import ConsultantSerializer
+from .models import Consultant
 from .serializers import OrderSerializer
 from .models import Order
 from .serializers import FAQMainPageSerializer
@@ -39,7 +43,7 @@ from rest_framework import generics, permissions
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.views import APIView
-from .models import Blog, Comment, Like, Share, Poll, Vote, IDVerification, Cart, Category, Notification, Order, OrderItem, Product, FarmingSystems
+from .models import Blog, Comment, Like, Share, Poll, Vote, IDVerification, Cart, Category, Notification, Order, OrderItem, Product
 from django.db.models import Q
 from rest_framework.generics import get_object_or_404
 from .serializers import BlogSerializer, ProductSerializer, GardenSerializer, CommentSerializer, LikeSerializer, ShareSerializer, PollSerializer, VoteSerializer, IDVerificationSerializer, CartSerializer, BannerSerializer, CategorySerializer, NotificationSerializer
@@ -50,7 +54,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions, status
 from django.contrib.auth import get_user_model, login, logout
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer, OrderSerializer, FarmingSystemSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer, OrderSerializer
 from rest_framework.validators import UniqueValidator
 # Import your custom validation here
 from .validators import custom_validation, validate_email, validate_password
@@ -1028,11 +1032,6 @@ class FarmerListView(APIView):
         return paginator.get_paginated_response(serializer.data)
 
 
-
-#consaltations
-from .models import Consultant
-from .serializers import ConsultantSerializer
-
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def consultant_list(request):
@@ -1060,21 +1059,21 @@ class WriteFarmingSystems(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class UploadFarmingSystemImage(APIView):
-    def post(self,request,farmingsystem_id):
+    def post(self, request, farmingsystem_id):
 
         try:
             farmingsystem = FarmingSystems.objects.get(id=farmingsystem_id)
         except FarmingSystems.DoesNotExist:
             return Response({'error': 'Farming system not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer=FarmingSystemImages(data=request.data)
+        serializer = FarmingSystemImages(data=request.data)
 
         if serializer.is_valid():
             serializer.save(farmingsystem=farmingsystem)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class TeamMembers(APIView):
@@ -1135,6 +1134,7 @@ class QuotationListView(APIView):
         # Return the paginated response
         return paginator.get_paginated_response(serializer.data)
 
+
 class RegisterFarmerView(APIView):
     def post(self, request):
         user = request.user
@@ -1150,7 +1150,8 @@ class RegisterFarmerView(APIView):
         data = request.data
 
         # Validate farming_system choice
-        valid_farming_systems = [choice[0] for choice in Farmer.FARMING_SYSTEM_CHOICES]
+        valid_farming_systems = [choice[0]
+                                 for choice in Farmer.FARMING_SYSTEM_CHOICES]
         if 'farming_system' in data and data['farming_system'] not in valid_farming_systems:
             return Response(
                 {
@@ -1160,7 +1161,8 @@ class RegisterFarmerView(APIView):
             )
 
         # Validate garden_setup choice
-        valid_garden_setups = [choice[0] for choice in Farmer.GARDEN_SETUP_CHOICES]
+        valid_garden_setups = [choice[0]
+                               for choice in Farmer.GARDEN_SETUP_CHOICES]
         if 'garden_setup' in data and data['garden_setup'] not in valid_garden_setups:
             return Response(
                 {
@@ -1184,7 +1186,6 @@ class RegisterFarmerView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-
 class UnregisterFarmerView(APIView):
     def delete(self, request):
         user = request.user
@@ -1202,7 +1203,6 @@ class UnregisterFarmerView(APIView):
                 {"detail": "User is not registered as a farmer."},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
 
 
 class UpdateFarmerView(APIView):
@@ -1223,7 +1223,8 @@ class UpdateFarmerView(APIView):
         data = request.data
 
         # Validate farming_system choice if provided
-        valid_farming_systems = [choice[0] for choice in Farmer.FARMING_SYSTEM_CHOICES]
+        valid_farming_systems = [choice[0]
+                                 for choice in Farmer.FARMING_SYSTEM_CHOICES]
         if 'farming_system' in data:
             if data['farming_system'] not in valid_farming_systems:
                 return Response(
@@ -1235,7 +1236,8 @@ class UpdateFarmerView(APIView):
             farmer.farming_system = data['farming_system']
 
         # Validate garden_setup choice if provided
-        valid_garden_setups = [choice[0] for choice in Farmer.GARDEN_SETUP_CHOICES]
+        valid_garden_setups = [choice[0]
+                               for choice in Farmer.GARDEN_SETUP_CHOICES]
         if 'garden_setup' in data:
             if data['garden_setup'] not in valid_garden_setups:
                 return Response(
@@ -1289,7 +1291,6 @@ class FarmerProfileView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-
 class FarmerSalesHistoryView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -1326,10 +1327,6 @@ class FarmerSalesHistoryView(APIView):
         return paginator.get_paginated_response(serialized_data)
 
 
-
-
-
-
 class FarmerFarmProduceView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -1343,7 +1340,8 @@ class FarmerFarmProduceView(APIView):
 
         # Get products owned by the farmer
         farmer = request.user.farmer
-        products = Product.objects.filter(farmer=farmer).order_by('-created_at')
+        products = Product.objects.filter(
+            farmer=farmer).order_by('-created_at')
 
         # Paginate the results
         paginator = PageNumberPagination()
@@ -1362,7 +1360,6 @@ class FarmerFarmProduceView(APIView):
         ]
 
         return paginator.get_paginated_response(serialized_data)
-
 
 
 class CreatePaymentMethodView(APIView):
@@ -1618,18 +1615,6 @@ class DeletePaymentMethodView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
-
-
-
-
-
-
-
-
-
-
-
 
 
 class RegisterTransporterView(APIView):
@@ -1642,7 +1627,8 @@ class RegisterTransporterView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         data = request.data
-        valid_transport_choices = [choice[0] for choice in Transporter.TRANSPORT_CHOICES]
+        valid_transport_choices = [choice[0]
+                                   for choice in Transporter.TRANSPORT_CHOICES]
         if 'vehicle' in data and data['vehicle'] not in valid_transport_choices:
             return Response(
                 {
@@ -1658,8 +1644,8 @@ class RegisterTransporterView(APIView):
             id_front=data.get('id_front'),
             vehicle=data.get('vehicle'),
             address=data.get('address')
-            
-            )
+
+        )
         serializer = TransporterSerializer(transporter)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -1680,7 +1666,8 @@ class UpdateTransporterView(APIView):
             )
 
         data = request.data
-        valid_transport_choices = [choice[0] for choice in Transporter.TRANSPORT_CHOICES]
+        valid_transport_choices = [choice[0]
+                                   for choice in Transporter.TRANSPORT_CHOICES]
 
         # Validate vehicle choice if provided
         if 'vehicle' in data:
@@ -1723,10 +1710,6 @@ class UnregisterTransporterView(APIView):
             )
 
 
-
-
-
-
 class PreviousDeliveriesView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -1761,26 +1744,14 @@ class UpcomingDeliveriesView(APIView):
         return paginator.get_paginated_response(serializer.data)
 
 
-
-
-
-
-
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from django.utils import timezone
-from .models import Order, Transporter,GardenSystemImages,GardenSystems
-from .serializers import TransporterSerializer,GardenSystemImageSerializer,GardenSystemSerializer
-from rest_framework.permissions import IsAuthenticated
-
 class MarkAsDeliveredView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, order_id, *args, **kwargs):
         try:
             # Retrieve the order and check if the user is the assigned transporter
-            order = Order.objects.get(order_id=order_id, transporter__user=request.user)
+            order = Order.objects.get(
+                order_id=order_id, transporter__user=request.user)
 
             # Update order status and set delivered_at timestamp
             order.status = "Ready"
@@ -1825,46 +1796,46 @@ class TransporterDetailView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
+
 class GardenSystems(APIView):
-    def get (self,request):
+    def get(self, request):
         try:
-         gardensystem=GardenSystemSerializer.objects.prefetch_related('images').all()
-         serializer= GardenSystemSerializer(gardensystem,many=True)
-         return Response (serializer.data,status=status.HTTP_200_OK)
-        
+            gardensystem = GardenSystemSerializer.objects.prefetch_related(
+                'images').all()
+            serializer = GardenSystemSerializer(gardensystem, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
         except GardenSystems.DoesNotExist:
             return Response(
-                {'error':'No Garden systems found'},
+                {'error': 'No Garden systems found'},
                 status=status.HTTP_404_NOT_FOUND
             )
 
+
 class NewGardenSystems(APIView):
-    def post (self,request):
-    
-     serializer= GardenSystemSerializer(data=request.data)
-     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status= status.HTTP_201_CREATED)
+    def post(self, request):
 
-     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = GardenSystemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-##to upload the images
+# to upload the images
 
 class UploadGardenSystemImage(APIView):
-    def post(self,request,gardensystem_id):
+    def post(self, request, gardensystem_id):
 
         try:
             gardensystem = GardenSystems.objects.get(id=gardensystem_id)
         except GardenSystems.DoesNotExist:
             return Response({'error': 'Garden system not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer=GardenSystemImages(data=request.data)
+        serializer = GardenSystemImages(data=request.data)
 
         if serializer.is_valid():
             serializer.save(gardensystem=gardensystem)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-

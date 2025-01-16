@@ -29,11 +29,11 @@ function Mission() {
           {/*Descriptions */}
           <div className='Descriptions block mt-0 lg:mt-[20px]'>
             <div  data-aos="fade-in"  data-aos-easing="ease-in-out" data-aos-duration="5000" className='block'>
-              <p className='text-start font-josefin text-[14px] lg:text-[20px] text-[#525560] font-[400] my-0'> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+              <p className='text-start font-josefin text-[14px] lg:text-[20px] text-[#525560] font-[400] my-0'>At Freshly Farms, our mission is to empower communities by providing innovative, sustainable, and accessible urban farming solutions. </p>
             </div>
             {/*Only Visible on Desktop Version */}
-            <div  data-aos="fade-in"  data-aos-easing="ease-in-out" data-aos-duration="5000" className='hidden lg:block mt-[50px]'>
-              <p className='text-start font-josefin text-[10px] lg:text-[20px] text-[#525560] font-[400] my-0'>Aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,</p>
+            <div  data-aos="fade-in"  data-aos-easing="ease-in-out" data-aos-duration="5000" className='hidden lg:block mt-[20px]'>
+              <p className='text-start font-josefin text-[10px] lg:text-[20px] text-[#525560] font-[400] my-0'>We strive to transform everyday spaces into thriving gardens, fostering self-reliance, healthier living, and a greener planet for future generations.</p>
             </div>
           </div>
           </div> {/*Texts Wrapper */}

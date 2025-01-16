@@ -14,6 +14,8 @@ export const ProductsProvider = ({ children }) => {
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [selectedGardenSetup, setSelectedGardenSetup] = useState([]);
 
+    const [productType, setProductType] = useState("");
+    
     // For quotation Booking
     const [selected, setSelected] = useState({});
 
@@ -67,7 +69,7 @@ export const ProductsProvider = ({ children }) => {
         },[])
 
     return(
-        <ProductsContext.Provider value={{products, selectedProducts, setSelectedProducts, selected, setSelected}}>
+        <ProductsContext.Provider value={{products, selectedProducts, setSelectedProducts, selected, setSelected, productType, setProductType, gardenSetups, setGardenSetups, selectedGardenSetup, setSelectedGardenSetup}}>
                 {children}
         </ProductsContext.Provider>
     )

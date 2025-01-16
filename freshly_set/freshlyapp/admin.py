@@ -1,3 +1,4 @@
+from .models import Consultant
 from .models import FAQ
 from datetime import timezone
 from django.contrib import admin
@@ -127,25 +128,26 @@ class FAQMainPageAdmin(admin.ModelAdmin):
     search_fields = ['question']
 
 
-#consultant
-from .models import Consultant
+# consultant
+
 
 class ConsultantAdmin(admin.ModelAdmin):
     list_display = ('name', 'field', 'description', 'rate', 'img')
     search_fields = ('name', 'field')  # Add a search bar for these fields
     list_filter = ('field',)  # Add filters based on the consultant's field
 
+
 # Register the model with the custom admin class
 admin.site.register(Consultant, ConsultantAdmin)
 admin.site.register(Profile)
 
-admin.site.register(FarmingSystems)
-admin.site.register(FarmingSystemImages)
-admin.site.register(Quotation)
-admin.site.register(PaymentMethod)
-admin.site.register(CreditCardDetails)
-admin.site.register(MpesaDetails)
-admin.site.register(TeamMember)
+# admin.site.register(FarmingSystems)
+# admin.site.register(FarmingSystemImages)
+# admin.site.register(Quotation)
+# admin.site.register(PaymentMethod)
+# admin.site.register(CreditCardDetails)
+# admin.site.register(MpesaDetails)
+# admin.site.register(TeamMember)
 admin.site.register(Transporter)
-admin.site.register(GardenSystems)
-admin.site.register(GardenSystemImages)
+# admin.site.register(GardenSystems)
+# admin.site.register(GardenSystemImages)
