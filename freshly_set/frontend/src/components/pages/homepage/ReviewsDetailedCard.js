@@ -1,4 +1,8 @@
 import React from "react";
+import { FaStar } from "react-icons/fa"
+import { FaRegStar } from "react-icons/fa"
+import { FaStarHalfAlt } from "react-icons/fa"
+
 
 function ReviewsDetailedCard({img, name, role, reviews, ratings}) {
     return (
@@ -28,7 +32,7 @@ function ReviewsDetailedCard({img, name, role, reviews, ratings}) {
                             </div>
                             {/*Reviwer Ratings */}
                             <div className="ReviewerRatings mt-[12px] lg:mt-[20px]">
-                                <p className="text-start text-[12px] lg:text-[24px] text-[#008000] font-josefin font-[700] my-0">{ratings}</p>
+                                <StarRatings ratings={ratings} />
                             </div>
                         </div>
                     </div>
@@ -40,6 +44,54 @@ function ReviewsDetailedCard({img, name, role, reviews, ratings}) {
                
             </div> {/*ReviewsCardWrapper */}
         </div>  // ReviewerCard
+    )
+}
+
+function StarRatings({ ratings }) {
+    const maxStars = 5
+    var HalfStars = 0
+    var stars = 0
+
+    // Limiting the possible star ratings to 5 for any ratings above 5
+    if (ratings >= 5) {
+        ratings = 5
+    }
+
+    // Checking for the any floating points to render the half stars 
+    if (ratings % 1 !== 0) {
+        stars = Math.ceil(ratings)
+        HalfStars = 1
+    } else {
+        HalfStars = 0
+        stars = ratings
+    }
+     
+    // Rendering the empty stars from the remainder of rendered stars 
+    const EmptyStars = maxStars - stars
+    
+    return (
+        <div className="StarRatings text-[10px] lg:text-[24px] ">
+            {Array.from({length: ratings},(_, index) =>(
+                <span key={index} style={{ color: "#008000" }} >
+                    <FaStar className=""/>
+                </span>                
+            ))}
+
+            {Array.from({length: HalfStars},(_, index) =>(
+                <span key={index} style={{ color: "#008000" }} >
+                    <FaStarHalfAlt className=""/>
+                </span>                
+            ))}
+
+             {Array.from({length: EmptyStars},(_, index) =>(
+                <span key={index} style={{ color: "#008000" }} >
+                    <FaRegStar className=""/>
+                </span>                
+            ))}
+            
+           
+            
+        </div>
     )
 }
 
