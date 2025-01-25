@@ -6,7 +6,7 @@ import ReviewsDetailedData from './json/ReviewsDetailedData.json'
 
 function ReviewsDetailed() {
   // Number of Reviewers to display per page
-  const ReviewersNumber = 6;
+  const ReviewersNumber = 10;
 
   return (
     <div className="ReviewersDetailed">
