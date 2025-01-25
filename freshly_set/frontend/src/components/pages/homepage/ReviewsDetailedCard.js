@@ -31,7 +31,7 @@ function ReviewsDetailedCard({img, name, role, reviews, ratings}) {
                                 <p className="text-start text-[10px] lg:text-[24px] text-[#008000] font-josefin font-[700] my-0">{role}</p>
                             </div>
                             {/*Reviwer Ratings */}
-                            <div className="ReviewerRatings mt-[12px] lg:mt-[20px]">
+                            <div className="ReviewerRatings mt-[4px] lg:mt-[8px]">
                                 <StarRatings ratings={ratings} />
                             </div>
                         </div>
